@@ -13,6 +13,6 @@ CREATE TABLE Lancamentos (
   Extra        JSON,
   
   FOREIGN KEY (Conta,TipoConta) REFERENCES Contas(Conta,Tipo) ON DELETE RESTRICT ON UPDATE CASCADE,
-  FOREIGN KEY (DocNumSerie,TipoDoc) REFERENCES Documentos(NumSerie,Tipo) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (DocNumSerie,TipoDoc) REFERENCES Documentos(NumSerie,Tipo) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
