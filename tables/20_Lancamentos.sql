@@ -1,4 +1,4 @@
--- Tabela : Lancamentos
+-- Tabela: Lancamentos
 -- Descricao: Regista todos os lançamentos contabilísticos da empresa
 
 CREATE TABLE Lancamentos (
@@ -8,7 +8,7 @@ CREATE TABLE Lancamentos (
   CoefRateio   FLOAT NOT NULL,
   
   Mes          DATE NOT NULL,        -- desc: primeiro dia do mês a que o valor diz respeito
-  DocNumSerie  VARCHAR(25) NOT NULL,
+  DocNumSerie  VARCHAR(25) NOT NULL, -- foreign key
   TipoDoc      VARCHAR(50) NOT NULL, -- foreign key
   Extra        JSON,
   
