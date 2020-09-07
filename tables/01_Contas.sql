@@ -1,9 +1,9 @@
 -- Tabela: Contas
--- Descrição: Lista todas os nomes e propriedades das contas contabilísticas da aplicação
+-- Descrição: Lista todos os nomes e propriedades das contas contabilísticas da aplicação
 
-CREATE TABLE (
+CREATE TABLE Contas(
   Conta INT PRIMARY KEY,
   Nome VARCHAR(255) NOT NULL,
-  Tipo ENUM('CentroResultado','Analitica','Fornecedor','Cliente','Colaborador'),
-  Exta JSON
+  Tipo ENUM('CentroResultados','Analitica','Fornecedor','Cliente','Colaborador'),
+  Extra JSON
 );
