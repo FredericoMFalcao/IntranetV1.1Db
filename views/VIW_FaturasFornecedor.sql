@@ -14,6 +14,7 @@ SELECT
 	CAST(SELECT JSON_EXTRACT (a.Extra, '$.PeriodoFaturacaoInicio'), DATE) AS PeriodoFaturacaoInicio,
 	CAST(SELECT JSON_EXTRACT (a.Extra, '$.PeriodoFaturacaoFim'), DATE) AS PeriodoFaturacaoFim,
 	CAST(SELECT JSON_EXTRACT (a.Extra, '$.DataValFatura'), DATE) AS DataValFatura,
+	SELECT a.Estado,
 	SELECT c.Conta AS FornecedorCodigo,
 	SELECT c.Nome AS FornecedorNome,
 	SELECT JSON_EXTRACT (c.Extra, '$.FornecedorNIF') AS FornecedorNIF,
