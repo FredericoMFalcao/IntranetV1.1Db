@@ -1,3 +1,5 @@
+DROP PROCEDURE IF EXISTS NovaFaturaFornecedor;
+
 DELIMITER //
 
 CREATE PROCEDURE NovaFaturaFornecedor (IN NumSerie TEXT, IN FileId TEXT )
