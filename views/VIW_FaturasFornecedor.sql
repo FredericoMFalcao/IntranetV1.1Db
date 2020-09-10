@@ -8,7 +8,7 @@ CREATE VIEW VIW_FaturasFornecedor AS
 SELECT
 	a.NumSerie,
 	JSON_EXTRACT (a.Extra, '$.NumFatura') AS NumFatura,
-	JSON_EXTRACT (a.Extra, '$.Projecto') AS Projecto,
+	JSON_EXTRACT (a.Extra, '$.Projeto') AS Projeto,
 	CAST(JSON_EXTRACT (a.Extra, '$.DataFatura'), DATE) AS DataFatura,
 	CAST(JSON_EXTRACT (a.Extra, '$.DataRecebida'), DATE) AS DataRecebida,
 	CAST(JSON_EXTRACT (a.Extra, '$.PeriodoFaturacaoInicio'), DATE) AS PeriodoFaturacaoInicio,
