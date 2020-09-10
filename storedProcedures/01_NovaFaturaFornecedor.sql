@@ -6,11 +6,11 @@ CREATE PROCEDURE NovaFaturaFornecedor (IN NumSerie TEXT, IN FileId TEXT )
  BEGIN
  
   -- 0. Verificar validade dos argumentos
-  IF NumSerie NOT REGEXP '^FT[A-Z][a-z][0-9]{2}#[0-9]{3,4}\.pdf$'
+  IF NumSerie NOT REGEXP '^FT(An|Lx)[0-9]{2}#[0-9]{3,4}\.pdf$'
    THEN signal sqlstate '20000' set message_text = 'NumSerie com formato inválido';
   END IF;
    
-  -- 0. Começar Transacao
+  -- 1. Começar Transacao
   START TRANSACTION;
   
   -- 1. Inserir em Documentos 
