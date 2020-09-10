@@ -2,7 +2,7 @@ DELIMITER //
 
 CREATE PROCEDURE NovaFaturaFornecedor (IN NumSerie TEXT, IN FileId TEXT )
  BEGIN
-  --- 0. Começar Transacao
+  -- 0. Começar Transacao
   START TRANSACTION;
   
   -- 1. Inserir em Documentos 
