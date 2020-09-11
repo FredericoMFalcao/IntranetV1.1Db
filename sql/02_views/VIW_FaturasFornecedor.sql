@@ -22,10 +22,8 @@ SELECT
 	JSON_EXTRACT (a.Extra, '$.Moeda') AS Moeda,
 	JSON_EXTRACT (a.Extra, '$.Descricao') AS Descricao
 FROM Documentos AS a
-	JOIN Lancamentos AS b
-		ON a.NumSerie = b.DocNumSerie
-	JOIN Contas AS c
-		ON b.Conta = c.Conta AND b.TipoConta = c.Tipo
+INNER JOIN Lancamentos AS b 	ON a.NumSerie = b.DocNumSerie
+INNER JOIN Contas AS c		ON b.Conta = c.Conta AND b.TipoConta = c.Tipo
 WHERE a.Tipo = 'FacturaFornecedor'
-	AND c.TipoConta = 'Fornecedor'
+	AND c.Tipo = 'Fornecedor'
 ;
