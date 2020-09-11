@@ -1,9 +1,19 @@
 <?php require_once __DIR__."/../db_support_functions.php"; ?>
-<?php $data = sql("SELECT * FROM Contas;"); ?>
+<?php 
+	if (isset($_GET["q"])) 
+		$_GET["q"] = "SELECT * FROM Contas";
+	$data = sql($_GET["q"]); 
+?>
 <html>
 <head>
 </head>
 <body>
+	<form method="GET">
+		<input type="text" name="q" placeholder="sql query here..." ></input>
+		<input type="submit" value="submit" />
+	</form>
+	<hr>
+
 	<table>
 	<thead>
 		<tr>
