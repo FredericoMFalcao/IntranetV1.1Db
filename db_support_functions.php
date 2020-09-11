@@ -21,12 +21,11 @@ $dbo->prepare("USE $defaultDb;")->execute();
 *	1. SQL - raw sql query
 *
 */
-
+/* TESTED! works both for SELECT and INSERT/UPDATE/DELETE queries */
 function sql(string $sql) {
 	global $dbo;
 	$query = $dbo->prepare($sql);
 	$query->execute();
-	return $query->fetchAll();
+	return $query->fetchAll(PDO::FETCH_ASSOC);
 }
-
 
