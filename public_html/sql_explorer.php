@@ -1,6 +1,6 @@
 <?php require_once __DIR__."/../db_support_functions.php"; ?>
 <?php 
-	if (isset($_GET["q"])) 
+	if (!isset($_GET["q"])) 
 		$_GET["q"] = "SELECT * FROM Contas";
 	$data = sql($_GET["q"]); 
 ?>
