@@ -1,3 +1,4 @@
 .db_credentials.json
 log/
 public_html/last_update_error.txt
+public_html/last_compiled_code.txt
