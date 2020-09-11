@@ -8,6 +8,9 @@
 	<li>	<a href="update_code.php">update code</a></li>
 </ul>
 <hr>
+<h2>Last WebServer Errors</h2>
+<pre><?php passthru("tail ../log/apache2_error.log");  ?></pre>
+<hr>
 <h2>Last Compilation Error</h2>
 <pre><?php echo file_get_contents("./last_update_error.txt"); ?></pre>
 <hr>

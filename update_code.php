@@ -7,4 +7,4 @@ $shell_cmd = ""; foreach($db_cred as $k => $v) $shell_cmd .= "$k=$v ";
 $status = 0;
 $errorMsg = "";
 exec($shell_cmd.__DIR__.'/_update_code.sh 2>&1',$errorMsg,$status);
-file_put_contents("public_html/last_update_error.txt", date(DATE_ATOM)." ".($status?$errorMsg:"Success!"));
+file_put_contents(__DIR__."/public_html/last_update_error.txt", date(DATE_ATOM)." ".($status?$errorMsg:"Success!"));
