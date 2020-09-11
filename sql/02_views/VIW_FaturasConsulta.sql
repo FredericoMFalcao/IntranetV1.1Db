@@ -7,11 +7,11 @@ DROP VIEW IF EXISTS VIW_FaturasConsulta;
 CREATE VIEW VIW_FaturasConsulta AS
 SELECT
 	a.NumSerie,
-	CAST(JSON_EXTRACT (a.Extra, '$.DataFatura'), DATE) AS DataFatura,
+	CONVERT(JSON_EXTRACT (a.Extra, '$.DataFatura'), DATE) AS DataFatura,
 	JSON_EXTRACT (a.Extra, '$.NumFatura') AS NumFatura,
 	c.Nome AS FornecedorNome,
 	JSON_EXTRACT (c.Extra, '$.FornecedorNIF') AS FornecedorNIF,
-	CAST(JSON_EXTRACT (a.Extra, '$.Valor'), DECIMAL(18,2)) AS Valor,
+	CONVERT(JSON_EXTRACT (a.Extra, '$.Valor'), DECIMAL(18,2)) AS Valor,
 	JSON_EXTRACT (a.Extra, '$.Moeda') AS Moeda,
 	JSON_EXTRACT (a.Extra, '$.Projeto') AS Projeto
 FROM Documentos AS a
