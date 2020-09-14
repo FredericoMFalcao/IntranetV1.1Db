@@ -14,12 +14,10 @@ IN DataValFactura           TEXT,
 
 IN FornecedorCodigo         TEXT,
 
-
 IN Valor                    TEXT,
 -- e.g. {"Bens": {"ValorBase": 0.00, "Iva": 0.00}, "Servicos": {"ValorBase":0.00,"Iva":0.00}}
 
 IN Moeda                    TEXT,
-IN ValorUSD                 TEXT,
 
 IN Descricao                TEXT
 )
@@ -33,13 +31,24 @@ IN Descricao                TEXT
   
   -- 2. Alterar dados
   -- 2.1 Inserir Lancamento Fornecedor
-  INSERT INTO Lancamentos (NumSerie, Tipo, Estado, FileId) 
-  VALUES (NumSerie, 'FaturaFornecedor', 'PorClassificarFornecedor', FileId);
+  INSERT INTO Lancamentos (Conta, TipoConta, CoefRateio, DocNumSerie) 
+  VALUES (FornecedorCodigo, 'Fornecedor', 1, NumSerie);
   
   -- 2.2 Acrescentar dados a documento
-  UPDATE Documentos SET Extra = JSON_SET(Extra, 
+  UPDATE Documentos
+   SET
+    Estado = 'PorClassificarFornecedor',
+    Extra = JSON_SET(Extra, 
         '$.NumFatura', NumFatura,
-        '$.Projeto', Projeto
+        '$.Projeto', Projeto,
+        '$.DataFactura', DataFatura,
+        '$.DataRecebida', DataRecebida,
+        '$.PeriodoFacturacao', PeriodoFacturacao,
+        '$.DataValFactura', DataValFactura,
+        '$.FornecedorCodigo', FornecedorCodigo,
+        '$.Valor', Valor,
+        '$.Moeda', Moeda,
+        '$.Descricao', Descricao
   ) 
   WHERE NumSerie = NumSerie;
   
