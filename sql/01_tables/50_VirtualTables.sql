@@ -2,7 +2,7 @@
 -- Description: (1) this table will list all the REST available endpoints
 --                    - that are technically virtual tables (a combination of stored procedures for input / views for output)
 --              (2) allows client/browser to query data with "metadata"
---                    - metadata helps the browser to know how to auto-build create/edit forms and parse text data into images, icons, etc...
+--                    - metadata helps the browser to know how to auto-build create/edit forms and parse text data into images, icons, etc... 
 CREATE TABLE PLT_VirtualTables (
   Name VARCHAR(255) NOT NULL,
   PrimaryKey JSON,
