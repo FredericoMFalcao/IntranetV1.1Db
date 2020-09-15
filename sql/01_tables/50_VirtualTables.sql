@@ -14,6 +14,7 @@ CREATE TABLE PLT_VirtualTablesFields (
   ParentTable VARCHAR(255), -- foreign key
   Name VARCHAR(255) NOT NULL,
   Type VARCHAR(25) NOT NULL,
+  Options JSON,
   FOREIGN KEY (ParentTable) REFERENCES PLT_VirtualTables(Name) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
@@ -24,3 +25,9 @@ INSERT INTO PLT_VirtualTablesFields (ParentTable, Name, Type) VALUES ('PorClassi
 
 INSERT INTO PLT_VirtualTables (Name, PrimaryKey) VALUES ('PorClassificarAnalitica','["NumSerie"]');
 INSERT INTO PLT_VirtualTablesFields (ParentTable, Name, Type) VALUES ('PorClassificarAnalitica',"NumSerie",'TEXT');
+
+INSERT INTO PLT_VirtualTables (Name, PrimaryKey) VALUES ('Contas','["Conta","Tipo"]');
+INSERT INTO PLT_VirtualTablesFields (ParentTable, Name, Type) VALUES 
+  ('Contas',"Conta",'TEXT'),
+  ('Contas',"Nome",'TEXT'),
+  ('Contas',"Tipo",'TEXT');
