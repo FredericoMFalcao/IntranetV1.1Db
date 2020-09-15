@@ -23,4 +23,4 @@ INSERT INTO PLT_VirtualTables (Name, PrimaryKey) VALUES ('PorClassificarForneced
 INSERT INTO PLT_VirtualTablesFields (ParentTable, Name, Type) VALUES ('PorClassificarFornecedor','NumSerie','TEXT');
 
 INSERT INTO PLT_VirtualTables (Name, PrimaryKey) VALUES ('PorClassificarAnalitica','["NumSerie"]');
-INSERT INTO PLT_VirtualTablesFields (ParentTable, Name, Type) VALUES ('PorClassificarAnalitica','TEXT');
+INSERT INTO PLT_VirtualTablesFields (ParentTable, Name, Type) VALUES ('PorClassificarAnalitica',"NumSerie",'TEXT');
