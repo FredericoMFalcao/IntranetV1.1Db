@@ -20,7 +20,7 @@ CREATE TABLE PLT_VirtualTablesFields (
 
 -- -- INITIAL DATA ----
 INSERT INTO PLT_VirtualTables (Name, PrimaryKey) VALUES ('PorClassificarFornecedor','["NumSerie"]');
-INSERT INTO PLT_VirtualTablesFields (ParentTable, Name, Type) VALUES ('PorClassificarFornecedor','["NumSerie"]','TEXT');
+INSERT INTO PLT_VirtualTablesFields (ParentTable, Name, Type) VALUES ('PorClassificarFornecedor','NumSerie','TEXT');
 
-INSERT INTO PLT_VirtualTables (Name, PrimaryKey) VALUES ('PorClassificarAnalitica','NumSerie');
+INSERT INTO PLT_VirtualTables (Name, PrimaryKey) VALUES ('PorClassificarAnalitica','["NumSerie"]');
 INSERT INTO PLT_VirtualTablesFields (ParentTable, Name, Type) VALUES ('PorClassificarAnalitica','TEXT');
