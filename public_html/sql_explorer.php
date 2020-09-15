@@ -14,6 +14,7 @@
 	</form>
 	<hr>
 
+	<?php if (isset($data) && isset($data[0])) : ?>
 	<table>
 	<thead>
 		<tr>
@@ -32,6 +33,9 @@
 		<?php endforeach; ?>
 	</tbody>
 	</table>
+	<?php else : ?>
+	Empty result set.
+	<?php endif; ?>
 </body>
 </html>
 
