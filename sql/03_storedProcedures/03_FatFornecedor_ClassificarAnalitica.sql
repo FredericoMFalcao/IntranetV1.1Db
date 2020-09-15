@@ -55,7 +55,7 @@ IN ClassificacaoAnalitica        TEXT
     ITERATE loop_lancamentos;
    END IF;
    
-  END LOOP;
+  END LOOP loop_lancamentos;
 
 
 
