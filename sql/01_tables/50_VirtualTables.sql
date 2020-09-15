@@ -5,7 +5,7 @@
 --                    - metadata helps the browser to know how to auto-build create/edit forms and parse text data into images, icons, etc...
 CREATE TABLE PLT_VirtualTables (
   Name VARCHAR(255) NOT NULL,
-  PrimaryKey JSON,
+  PrimaryKey JSON
    
 );
 
