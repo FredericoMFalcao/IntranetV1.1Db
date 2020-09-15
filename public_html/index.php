@@ -16,5 +16,7 @@
 <hr>
 <h2>Last Compilation Text</h2>
 <pre><?php echo file_get_contents("./last_compiled_code.txt"); ?></pre>
+<h2>Last Unit Test Results</h2>
+<pre><?php echo file_get_contents("./last_unit_test_results.html"); ?></pre>
 </body>
 </html>
