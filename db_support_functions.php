@@ -15,6 +15,7 @@ $dsn = "mysql:host=$server;dbname=$defaultDb;";
 try {$dbo = new PDO($dsn, $user, $password);} 
 catch (PDOException $e) {die('Database Connection failed: ' . $e->getMessage());}    
 
+// Set the default database
 $dbo->prepare("USE $defaultDb;")->execute();
 
 /*
@@ -22,10 +23,22 @@ $dbo->prepare("USE $defaultDb;")->execute();
 *
 */
 /* TESTED! works both for SELECT and INSERT/UPDATE/DELETE queries */
-function sql(string $sql) {
+/*
+* ERROR returns e.g.: 
+*     (1) syntax: ["42000",1064,"You have an error in your SQL syntax; ...' at line 1"] 
+*     (2) invalid table name: ["42S02",1146,"Table 'IntranetV2.Documentoz' doesn't exist"] 
+*     (3) invalid column name: ["42S22",1054,"Unknown column 'Estadoz' in 'field list'"] 
+*     (4) Constraint violations: ["23000",1062,"Duplicate entry 'asdsa' for key 'PRIMARY'"]
+*     (5) User-defined exception condition: ["xxxx",1644,"NumSerie com formato inv\u00c3\u00a1lido"]
+*/
+define('MARIADB_ERRORINFO_CODE_FOR_SUCCESS',"00000");
+function sql(string $sql, string &$errorInfo = null) {
 	global $dbo;
 	$query = $dbo->prepare($sql);
 	$query->execute();
-	return $query->fetchAll(PDO::FETCH_ASSOC);
+	$errorInfo = $query->errorInfo();
+	if ($errorInfo[0] != MARIADB_ERRORINFO_CODE_FOR_SUCCESS)
+		return false;
+	else
+		return $query->fetchAll(PDO::FETCH_ASSOC);
 }
-
