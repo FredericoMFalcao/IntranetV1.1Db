@@ -1,5 +1,8 @@
-#!/bin/bash
+#!/bin/bash -e
 MYSQL_CMD="mysql -u $user -p$password"
+
+# Change to the dir provided
+cd "$1"
 
 git pull
 $MYSQL_CMD -e "DROP DATABASE IF EXISTS $defaultDb; CREATE DATABASE $defaultDb;"
