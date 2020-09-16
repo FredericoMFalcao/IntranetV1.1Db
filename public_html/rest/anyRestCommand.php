@@ -10,7 +10,7 @@ array_shift($url_parts); // Eliminate the "/rest/" mention
 
 
 /* DEFAULTS */
-$ouptut_mode = "print_r";
+$output_mode = "print_r";
 $primaryKeyValueSeparator = "--";
 
 /* OVERRIDE DEFAULTS provided by client in URL */
@@ -61,12 +61,12 @@ if(0) {
 }
 
 function output(array $a, bool $raw_mode = false) {
-	global $ouptut_mode;
+	global $output_mode;
 	
 	if (!$raw_mode) $a = ["status"=>"success", "content"=>$a];
 
-	if ($ouptut_mode == "print_r") { header("Content-type: text/plain"); print_r($a); }
-	if ($ouptut_mode == "json")    { header("Content-type: application/json"); echo json_encode($a); }
+	if ($output_mode == "print_r") { header("Content-type: text/plain"); print_r($a); }
+	if ($output_mode == "json")    { header("Content-type: application/json"); echo json_encode($a); }
 	
 }
 function output_error(string $msg) { return output(["status"=>"error", "error_msg" => $msg],true); }
