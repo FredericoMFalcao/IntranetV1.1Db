@@ -35,7 +35,7 @@ class UnitTest {
 		if (!empty($this->testQuery)) {
 			$errorInfo = 0;
 			/* 1st case: expected success but query failed */
-			if ($this->expectedResultType == TEST_SUCCEED && sql($this->testQuery,$errorInfo) == false) {
+			if ($this->expectedResultType == TEST_SUCCEED && sql($this->testQuery,$errorInfo) === false) {
 				echo "[".red_color("FAILED")." ] {$this->description}  \n";
 				echo "          Expected ".green_color("success")."!\n";
 				echo "          ".red_color("Failed")." with (code) message ({$errorInfo[ERROR_CODE_IDX]}) {$errorInfo[ERROR_MSG_IDX]}\n";
