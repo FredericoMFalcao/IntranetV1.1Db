@@ -1,5 +1,7 @@
 #!/bin/bash -e
 
+LC_ALL=C.UTF-8
+
 # 0. Change to the dir of the current script
 cd "$( dirname "${BASH_SOURCE[0]}" )"
 
