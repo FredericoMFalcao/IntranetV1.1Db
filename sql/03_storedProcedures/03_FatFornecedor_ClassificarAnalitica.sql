@@ -20,7 +20,7 @@ IN ClassificacaoAnalitica        TEXT
   
   -- 2. Alterar dados
   -- 2.1 Inserir lançamentos
-  loop_lancamentos: LOOP
+  WHILE i != JSON_LENGTH(ClassificacaoAnalitica) DO
  
    INSERT INTO Lancamentos (Conta, TipoConta, CoefRateio, DocNumSerie)
     VALUES (
@@ -47,14 +47,8 @@ IN ClassificacaoAnalitica        TEXT
     );
 
    SET i = i + 1;
-	
-   IF i = JSON_LENGTH(ClassificacaoAnalitica)
-    THEN LEAVE loop_lancamentos;
-   ELSE
-    ITERATE loop_lancamentos;
-   END IF;
    
-  END LOOP loop_lancamentos;
+  END WHILE;
 
 
 
