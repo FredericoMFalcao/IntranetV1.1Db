@@ -7,8 +7,8 @@ require_once __DIR__."/_tests_lib.php";
 ->addTest(
 	/* #1 : Formato do número de série */
 	(new UnitTest())
-	->describe("Classificar fatura de fornecedor com num de série inválido.")
-	->expectQuery('CALL NovaFaturaFornecedor("GG19#001.pdf","xxx-xxx")')
+	->describe("Classificar fatura de fornecedor com num de série válido (FTAn19#001.pdf).")
+	->expectQuery('CALL NovaFaturaFornecedor("FTAn19#001.pdf","xxx-xxx")')
 	->toSucceed()
 )
 ->addTest(
