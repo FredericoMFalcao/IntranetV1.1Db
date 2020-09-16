@@ -77,7 +77,7 @@ class TestSuite {
 	public function __construct(string $d) { $this->description = $d; }
 	public function addTest(UnitTest $t) { $this->tests[] = $t; return $this; }
 	public function go() {
-		echo "Testing : ".$this->description."\n";
+		echo "TEST GROUP : ".$this->description."\n";
 		foreach($this->tests as $k => $t)
 			$t->go();
 
