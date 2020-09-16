@@ -1,14 +1,16 @@
 #!/bin/bash -e
-MYSQL_CMD="mysql -u $user -p$password"
+
+# 0. Change to the dir of the current script
+cd "$( dirname "${BASH_SOURCE[0]}" )"
 
 # 1. Capture DB Credentials
- server=$(cat .db_credentials.json | jq -r .server)
- user=$(cat .db_credentials.json | jq -r .user)
- password=$(cat .db_credentials.json | jq -r .password)
- defaultDb=$(cat .db_credentials.json | jq -r .defaultDb)
+SERVER="$(cat .db_credentials.json | jq -r .server)"
+USER="$(cat .db_credentials.json | jq -r .user)"
+PASSWORD="$(cat .db_credentials.json | jq -r .password)"
+defaultDb="$(cat .db_credentials.json | jq -r .defaultDb)"
 
-# Change to the dir provided
-cd "$1"
+
+MYSQL_CMD="mysql -u $USER -p$PASSWORD"
 
 git pull
 # 2. Destroy old runtime (i.e. delete the database, and all its structure and data)
