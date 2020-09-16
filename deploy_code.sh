@@ -1,6 +1,12 @@
 #!/bin/bash -e
 MYSQL_CMD="mysql -u $user -p$password"
 
+# 1. Capture DB Credentials
+ server=$(cat .db_credentials.json | jq -r .server)
+ user=$(cat .db_credentials.json | jq -r .user)
+ password=$(cat .db_credentials.json | jq -r .password)
+ defaultDb=$(cat .db_credentials.json | jq -r .defaultDb)
+
 # Change to the dir provided
 cd "$1"
 
