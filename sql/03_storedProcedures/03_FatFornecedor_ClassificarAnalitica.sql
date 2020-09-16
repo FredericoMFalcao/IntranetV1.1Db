@@ -9,6 +9,8 @@ IN ClassificacaoAnalitica        TEXT
 -- e.g. [{"CentroResultados": "0101", "Analitica": "0202", "Colaborador": "ABC", "Valor": 1000}, {...}]
 )
  BEGIN
+  DECLARE i INT;
+  SET i = 0;
  
   -- 0. Verificar validade dos argumentos
  
@@ -18,9 +20,6 @@ IN ClassificacaoAnalitica        TEXT
   
   -- 2. Alterar dados
   -- 2.1 Inserir lançamentos
-  DECLARE i INT;
-  SET i = 0;
-  
   loop_lancamentos: LOOP
  
    INSERT INTO Lancamentos (Conta, TipoConta, CoefRateio, DocNumSerie)
