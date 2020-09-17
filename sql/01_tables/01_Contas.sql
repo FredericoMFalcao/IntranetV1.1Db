@@ -13,3 +13,5 @@ CREATE TABLE Contas (
 -- - SAMPLE -- -
 INSERT INTO Contas (Conta, Nome, Tipo) VALUES ('01',"Teste01","Fornecedor");
 INSERT INTO Contas (Conta, Nome, Tipo) VALUES ('02',"Teste02","Fornecedor");
+
+vim: syntax=sql
