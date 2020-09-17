@@ -6,7 +6,7 @@ LC_ALL=C.UTF-8
 cd "$( dirname "${BASH_SOURCE[0]}" )"
 
 #0.2 Redirect output to file
-exec 1>/public_html/last_update_error.txt
+exec 1>public_html/last_update_error.txt
 exec 2>&1
 echo "["$(date)"]"
 
