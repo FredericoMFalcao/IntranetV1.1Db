@@ -2,16 +2,17 @@
 -- Descrição: Lista todos os nomes e propriedades das contas contabilísticas da aplicação
 
 CREATE TABLE Contas (
-  Conta VARCHAR(30) NOT NULL, -- Dois primeiros digitos reflectem o tipo de conta
+  Conta VARCHAR(20) NOT NULL, -- Dois primeiros digitos reflectem o tipo de conta
   Nome VARCHAR(255) NOT NULL,
-  Tipo VARCHAR(50) NOT NULL, -- Redundante
   Extra JSON,
   PRIMARY KEY (Conta)
 );
 
 
--- - SAMPLE -- -
-INSERT INTO Contas (Conta, Nome, Tipo) VALUES ('01',"Teste01","Fornecedor");
-INSERT INTO Contas (Conta, Nome, Tipo) VALUES ('02',"Teste02","Fornecedor");
+-- - Dados Iniciais -- -
+INSERT INTO Contas (Conta, Nome) VALUES ('CR0101',"Teste01"); -- centro de resultados
+INSERT INTO Contas (Conta, Nome) VALUES ('AN0202',"Teste02"); -- analítica
+INSERT INTO Contas (Conta, Nome) VALUES ('FO32121000',"Teste03"); -- fornecedor
+INSERT INTO Contas (Conta, Nome) VALUES ('COabc',"Teste04"); -- colaborador
 
 vim: syntax=sql
