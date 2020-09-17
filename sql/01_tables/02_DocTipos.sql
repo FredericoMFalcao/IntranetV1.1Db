@@ -7,3 +7,6 @@ CREATE TABLE DocTipos (
   
   PRIMARY KEY (Tipo)
 );
+
+-- Dados Iniciais
+INSERT INTO DocTipos (Tipo) VALUES ('FaturaFornecedor');
