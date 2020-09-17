@@ -20,8 +20,8 @@ IN Descricao                TEXT
  BEGIN
  
   -- 0. Verificar validade dos argumentos
-  IF NumSerie NOT IN (SELECT NumSerie FROM Documentos)
-   THEN signal sqlstate '20000' set message_text = 'Não existe nenhuma factura com este NumSerie';
+  IF NumSerie NOT IN (SELECT NumSerie FROM Documentos WHERE Estado = PorClassificarFornecedor)
+   THEN signal sqlstate '20000' set message_text = 'Fatura inexistente ou indisponível para esta ação';
   END IF;
    
   -- 1. Começar Transacao
