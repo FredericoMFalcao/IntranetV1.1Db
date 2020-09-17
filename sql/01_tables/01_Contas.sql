@@ -14,5 +14,6 @@ INSERT INTO Contas (Conta, Nome) VALUES ('CR0101',"Teste01"); -- centro de resul
 INSERT INTO Contas (Conta, Nome) VALUES ('AN0202',"Teste02"); -- analítica
 INSERT INTO Contas (Conta, Nome) VALUES ('FO32121000',"Teste03"); -- fornecedor
 INSERT INTO Contas (Conta, Nome) VALUES ('COabc',"Teste04"); -- colaborador
+INSERT INTO Contas (Conta, Nome) VALUES ('CG01',"FaturasFornecedor"); -- custos gerais
 
 vim: syntax=sql
