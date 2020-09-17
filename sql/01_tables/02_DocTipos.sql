@@ -3,7 +3,7 @@
 
 CREATE TABLE DocTipos (  
   Tipo VARCHAR(50) NOT NULL,
-  Schema JSON,
+  DocSchema JSON,
   
   PRIMARY KEY (Tipo)
 );
