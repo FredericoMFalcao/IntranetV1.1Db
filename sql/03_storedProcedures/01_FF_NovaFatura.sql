@@ -1,8 +1,8 @@
-DROP PROCEDURE IF EXISTS NovaFaturaFornecedor;
+DROP PROCEDURE IF EXISTS FF_NovaFatura;
 
 DELIMITER //
 
-CREATE PROCEDURE NovaFaturaFornecedor (IN NumSerie TEXT, IN FileId TEXT )
+CREATE PROCEDURE FF_NovaFatura (IN NumSerie TEXT, IN FileId TEXT )
  BEGIN
  
   -- 0. Verificar validade dos argumentos
