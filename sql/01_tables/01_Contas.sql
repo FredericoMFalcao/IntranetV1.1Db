@@ -16,4 +16,4 @@ INSERT INTO Contas (Conta, Nome) VALUES ('FO32121000',"Teste03"); -- fornecedor
 INSERT INTO Contas (Conta, Nome) VALUES ('COabc',"Teste04"); -- colaborador
 INSERT INTO Contas (Conta, Nome) VALUES ('CG01',"FaturasFornecedor"); -- custos gerais
 
-vim: syntax=sql
+-- vim: syntax=sql
