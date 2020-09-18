@@ -13,3 +13,6 @@ CREATE TABLE PLT_BDS_Javascript (
  PRIMARY KEY (_id),
  UNIQUE KEY Namespace (Namespace,FuncName)
 );
+
+-- - Sample Lines ---
+INSERT INTO PLT_BDS_Javascript(FuncName, InputArgs_json, Code) VALUES ('RootController', '{}', 'return {"renderDOM": function() { var el = document.createElement("span"); el.innerText = "Hello! The \"last build dashboard\" moved to /last_build.php "; return el; }}');
