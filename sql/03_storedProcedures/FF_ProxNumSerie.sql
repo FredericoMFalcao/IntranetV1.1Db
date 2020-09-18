@@ -1,11 +1,10 @@
 DROP FUNCTION IF EXISTS FF_ProxNumSerie;
 
-DELIMITER //
-
 CREATE FUNCTION FF_ProxNumSerie (Pais TEXT, Ano TEXT) -- e.g. Pais = 'An', Ano = '20'
 RETURNS TEXT
 RETURN
- CONCAT('FT',
+ CONCAT(
+  'FT',
   Pais,
   Ano,
   '#',
@@ -16,8 +15,4 @@ RETURN
     AND LEFT(NumSerie,6) = CONCAT('FT', Pais, Ano)
   ),
   '.pdf'
- ),
- 
-END //
-
-DELIMITER ;
+ );
