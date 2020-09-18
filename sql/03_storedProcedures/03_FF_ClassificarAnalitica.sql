@@ -45,7 +45,7 @@ IN ClassificacaoAnalitica        TEXT
 
   -- 2.3 Alterar estado do documento
    UPDATE Documentos
-   SET Estado = 'PorAnexarCPagamento',
+   SET Estado = 'PorAnexarCPagamento';
                   
   -- 10. Salvar
   COMMIT;
