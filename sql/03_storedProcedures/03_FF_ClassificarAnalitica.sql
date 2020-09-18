@@ -13,7 +13,7 @@ IN ClassificacaoAnalitica        TEXT
   SET i = 0;
  
   -- 0. Verificar validade dos argumentos
-  IF NumSerie NOT IN (SELECT NumSerie FROM Documentos WHERE Estado = PorClassificarAnalitica)
+  IF NumSerie NOT IN (SELECT NumSerie FROM Documentos WHERE Estado = 'PorClassificarAnalitica')
    THEN signal sqlstate '20000' set message_text = 'Fatura inexistente ou indisponível para esta ação';
   END IF;
    
