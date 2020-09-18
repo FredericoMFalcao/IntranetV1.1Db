@@ -6,7 +6,7 @@ CREATE PROCEDURE FF_ClassificarAnalitica (
 IN NumSerie                      TEXT,
 IN ValorFatura                   DECIMAL(18,2),
 IN ClassificacaoAnalitica        TEXT
--- e.g. [{"CentroResultados": "0101", "Analitica": "0202", "Colaborador": "ABC", "Valor": 1000}, {...}]
+-- e.g. [{"CentroResultados": "CR0101", "Analitica": "AN0202", "Colaborador": "COabc", "Valor": 1000}, {...}]
 )
  BEGIN
   DECLARE i INT;
