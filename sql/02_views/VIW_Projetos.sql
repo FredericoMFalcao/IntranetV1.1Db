@@ -6,8 +6,8 @@ DROP VIEW IF EXISTS VIW_Projetos;
 
 CREATE VIEW VIW_Projetos AS
 SELECT
-  Conta AS Codigo,
+  Conta,
   Nome
 FROM Contas
-WHERE Tipo = 'CentroResultados' AND LENGTH(Conta) = 2
+WHERE LEFT(Conta,2) = 'CR' AND LENGTH(Conta) = 4
 ;
