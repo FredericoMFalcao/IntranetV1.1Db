@@ -20,7 +20,7 @@ IN Descricao                TEXT
  BEGIN
  
   -- 0. Verificar validade dos argumentos
-  IF NumSerie NOT IN (SELECT NumSerie FROM Documentos WHERE Estado = PorClassificarFornecedor)
+  IF NumSerie NOT IN (SELECT NumSerie FROM Documentos WHERE Estado = 'PorClassificarFornecedor')
    THEN signal sqlstate '20000' set message_text = 'Fatura inexistente ou indisponível para esta ação';
   END IF;
    
