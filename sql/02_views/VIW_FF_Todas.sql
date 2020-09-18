@@ -1,11 +1,12 @@
--- View: VIW_FaturasConsulta
--- Descrição: Lista todas as faturas para a window 'Estado das Faturas'
+-- View: VIW_FF_Todas
+-- Descrição: Lista todas as faturas de fornecedores, independentemente do seu estado
 -- Depende de: tabelas 'Documentos', 'Lancamentos' e 'Contas'
 
-DROP VIEW IF EXISTS VIW_FaturasConsulta;
+DROP VIEW IF EXISTS VIW_FF_Todas;
 
-CREATE VIEW VIW_FaturasConsulta AS
+CREATE VIEW VIW_FF_Todas AS
 SELECT
+	a.FileId,
 	a.NumSerie,
 	CONVERT(JSON_EXTRACT (a.Extra, '$.DataFatura'), DATE) AS DataFatura,
 	JSON_EXTRACT (a.Extra, '$.NumFatura') AS NumFatura,
@@ -13,10 +14,11 @@ SELECT
 	JSON_EXTRACT (c.Extra, '$.FornecedorNIF') AS FornecedorNIF,
 	CONVERT(JSON_EXTRACT (a.Extra, '$.Valor'), DECIMAL(18,2)) AS Valor,
 	JSON_EXTRACT (a.Extra, '$.Moeda') AS Moeda,
-	JSON_EXTRACT (a.Extra, '$.Projeto') AS Projeto
+	JSON_EXTRACT (a.Extra, '$.Projeto') AS Projeto,
+	a.Estado
 FROM Documentos AS a
 INNER JOIN Lancamentos AS b ON a.NumSerie = b.DocNumSerie
-INNER JOIN Contas AS c      ON b.Conta = c.Conta AND b.TipoConta = c.Tipo
+INNER JOIN Contas AS c      ON b.Conta = c.Conta
 WHERE a.Tipo = 'FaturaFornecedor'
-	AND c.Tipo = 'Fornecedor'
+	AND LEFT(c.Conta,2) = 'FO'
 ;
