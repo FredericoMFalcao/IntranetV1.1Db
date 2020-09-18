@@ -77,9 +77,11 @@ class TestSuite {
 	public function __construct(string $d) { $this->description = $d; }
 	public function addTest(UnitTest $t) { $this->tests[] = $t; return $this; }
 	public function go() {
+		sql("START TRANSACTION;");
 		echo "TEST GROUP : ".$this->description."\n";
 		foreach($this->tests as $k => $t)
 			$t->go();
+		sql("ROLLBACK;");
 
 	}
 }
