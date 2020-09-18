@@ -11,5 +11,5 @@ SELECT
 	JSON_EXTRACT (Extra, '$.NomeCurto') AS NomeCurto,
 	JSON_EXTRACT (Extra, '$.NIF') AS NIF
 FROM Contas
-WHERE Tipo = 'Fornecedor'
+WHERE LEFT(Conta,2) = 'FO'
 ;
