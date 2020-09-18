@@ -2,7 +2,7 @@
 -- Description: Lists all the global javascript functions available at the browser programming environment
 --              (1) The Code includes is ONLY the javascript code inside the function, not the wrapper "function xxx (...) { ... }"
 
-CREATE TABLE PLT_BDS_Javascript (
+CREATE TABLE PLT_GUI_Javascript (
  _id 			      int(11) NOT NULL AUTO_INCREMENT,
  lastUpdate 	  timestamp NOT NULL DEFAULT current_timestamp(),
  Namespace 		  varchar(255) DEFAULT NULL,
