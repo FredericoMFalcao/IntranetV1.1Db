@@ -15,6 +15,6 @@ CREATE TABLE PLT_GUI_Javascript (
 );
 
 -- - Sample Lines ---
-INSERT INTO PLT_BDS_Javascript(FuncName, InputArgs_json, Code) VALUES ('RootController', '{}', 'return {"renderDOM": function() { var el = document.createElement("span"); el.innerText = "Hello! The \"last build dashboard\" moved to /last_build.php "; return el; }}');
+INSERT INTO PLT_GUI_Javascript(FuncName, InputArgs_json, Code) VALUES ('RootController', '{}', 'return {"renderDOM": function() { var el = document.createElement("span"); el.innerText = "Hello! The \"last build dashboard\" moved to /last_build.php "; return el; }}');
 
 
