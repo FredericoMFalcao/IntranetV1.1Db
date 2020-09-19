@@ -8,9 +8,9 @@ IN NumFatura                TEXT,
 IN Projecto                 TEXT,
 IN DataFatura               DATE,
 IN DataRecebida             DATE,
-IN PeriodoFacturacao        TEXT,
+IN PeriodoFaturacao        TEXT,
 -- e.g. {"Inicio": "2011-11-25", "Fim": "2011-11-25"}
-IN DataValFactura           TEXT,
+IN DataValFatura           TEXT,
 IN FornecedorCodigo         TEXT,
 IN Valor                    TEXT,
 -- e.g. {"Bens": {"ValorBase": 0.00, "Iva": 0.00}, "Servicos": {"ValorBase":0.00,"Iva":0.00}}
@@ -29,10 +29,10 @@ IN Descricao                TEXT
   
   -- 2. Alterar dados
   -- 2.1 Inserir Lançamento Fornecedor
-  CALL GerarLancamentos (FornecedorCodigo, 1, PeriodoFacturacao, NumSerie);
+  CALL GerarLancamentos (FornecedorCodigo, 1, PeriodoFaturacao, NumSerie);
   
   -- 2.2 Inserir Lançamento Custos Gerais
-  CALL GerarLancamentos ("CG01", -1, PeriodoFacturacao, NumSerie);
+  CALL GerarLancamentos ("CG01", -1, PeriodoFaturacao, NumSerie);
   
   -- 2.3 Acrescentar dados a documento
   UPDATE Documentos
@@ -41,10 +41,10 @@ IN Descricao                TEXT
     Extra = JSON_SET(Extra, 
         '$.NumFatura', NumFatura,
         '$.Projeto', Projeto,
-        '$.DataFactura', DataFatura,
+        '$.DataFatura', DataFatura,
         '$.DataRecebida', DataRecebida,
-        '$.PeriodoFacturacao', PeriodoFacturacao,
-        '$.DataValFactura', DataValFactura,
+        '$.PeriodoFaturacao', PeriodoFaturacao,
+        '$.DataValFatura', DataValFatura,
         '$.FornecedorCodigo', FornecedorCodigo,
         '$.Valor', Valor,
         '$.Moeda', Moeda,
