@@ -43,6 +43,7 @@ IN ClassificacaoAnalitica   TEXT
   
   -- 2.3 Inserir novos lançamentos em custos gerais
   CALL GerarLancamentos ("CG01", -1, PeriodoFaturacao, NumSerie);
+  CALL GerarLancamentos ("CG01", 1, PeriodoFaturacao, NumSerie);
 
   -- 2.4 Inserir novos lançamentos com analíticas discriminadas
   WHILE i != JSON_LENGTH(ClassificacaoAnalitica) DO
