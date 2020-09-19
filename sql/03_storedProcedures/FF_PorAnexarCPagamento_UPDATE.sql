@@ -34,30 +34,27 @@ IN ClassificacaoAnalitica   TEXT
   START TRANSACTION;
   
   -- 2. Alterar dados
-  -- 2.1 Alterar Lançamento Fornecedor
-  UPDATE Lancamentos
-  SET Conta = FornecedorCodigo, Mes = DataFatura
-  WHERE NumSerie = NumSerie AND LEFT(Conta,2) = 'FO';
-  
-  -- 2.2 Alterar Lançamentos Custos Gerais
-  UPDATE Lancamentos
-  SET Mes = DataFatura
-  WHERE NumSerie = NumSerie AND LEFT(Conta,2) = 'CG';
-
-  -- 2.3 Alterar lançamentos com analíticas discriminadas
+  -- 2.1 Apagar lançamentos
   DELETE FROM Lancamentos
-  WHERE NumSerie = NumSerie AND LEFT(Conta,2) = 'CR';
+  WHERE NumSerie = NumSerie;
   
+  -- 2.2 Inserir novos lançamentos em fornecedor
+  CALL GerarLancamentos (FornecedorCodigo, 1, PeriodoFaturacao, NumSerie);
+  
+  -- 2.3 Inserir novos lançamentos em custos gerais
+  CALL GerarLancamentos ("CG01", -1, PeriodoFaturacao, NumSerie);
+
+  -- 2.4 Inserir novos lançamentos com analíticas discriminadas
   WHILE i != JSON_LENGTH(ClassificacaoAnalitica) DO
  
-   INSERT INTO Lancamentos (Conta, CoefRateio, Mes, DocNumSerie)
-    VALUES (
+   CALL GerarLancamentos (
      CONCAT_WS(":",
       JSON_EXTRACT(JSON_EXTRACT(ClassificacaoAnalitica, CONCAT("'$[", i, "]'")), '$.CentroResultados'),
       JSON_EXTRACT(JSON_EXTRACT(ClassificacaoAnalitica, CONCAT("'$[", i, "]'")), '$.Analitica'),
       JSON_EXTRACT(JSON_EXTRACT(ClassificacaoAnalitica, CONCAT("'$[", i, "]'")), '$.Colaborador')
      ),
      JSON_EXTRACT(JSON_EXTRACT(ClassificacaoAnalitica, CONCAT("'$[", i, "]'")), '$.Valor') / ValorFatura * -1,
+     PeriodoFaturacao,
      NumSerie
     );
 
@@ -65,7 +62,7 @@ IN ClassificacaoAnalitica   TEXT
    
   END WHILE;
 
-  -- 2.3 Alterar dados do documento
+  -- 2.5 Alterar dados do documento
   UPDATE Documentos
    SET
     FileId = FileId,
