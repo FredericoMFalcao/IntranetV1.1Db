@@ -9,9 +9,9 @@ IN NumFatura                TEXT,
 IN Projecto                 TEXT,
 IN DataFatura               DATE,
 IN DataRecebida             DATE,
-IN PeriodoFaturacao        TEXT,
+IN PeriodoFaturacao         TEXT,
 -- e.g. {"Inicio": "2011-11-25", "Fim": "2011-11-25"}
-IN DataValFatura           TEXT,
+IN DataValFatura            TEXT,
 IN FornecedorCodigo         TEXT,
 IN Valor                    TEXT,
 -- e.g. {"Bens": {"ValorBase": 0.00, "Iva": 0.00}, "Servicos": {"ValorBase":0.00,"Iva":0.00}}
@@ -29,17 +29,18 @@ IN Descricao                TEXT
   START TRANSACTION;
   
   -- 2. Alterar dados
-  -- 2.1 Alterar Lançamento Fornecedor
-  UPDATE Lancamentos
-  SET Conta = FornecedorCodigo, Mes = DataFatura
-  WHERE NumSerie = NumSerie AND LEFT(Conta,2) = 'FO';
   
-  -- 2.2 Alterar Lançamento Custos Gerais
-  UPDATE Lancamentos
-  SET Mes = DataFatura
-  WHERE NumSerie = NumSerie AND LEFT(Conta,2) = 'CG';
+  -- 2.1 Apagar lançamentos
+  DELETE FROM Lancamentos
+  WHERE NumSerie = NumSerie;
   
-  -- 2.3 Alterar dados do documento
+  -- 2.2 Inserir novos lançamentos em fornecedor
+  CALL GerarLancamentos (FornecedorCodigo, 1, PeriodoFaturacao, NumSerie);
+  
+  -- 2.3 Inserir novos lançamentos em custos gerais
+  CALL GerarLancamentos ("CG01", -1, PeriodoFaturacao, NumSerie);
+  
+  -- 2.4 Alterar dados do documento
   UPDATE Documentos
    SET
     FileId = FileId,
