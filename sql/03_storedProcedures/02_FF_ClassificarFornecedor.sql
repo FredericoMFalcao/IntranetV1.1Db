@@ -29,12 +29,10 @@ IN Descricao                TEXT
   
   -- 2. Alterar dados
   -- 2.1 Inserir Lançamento Fornecedor
-  INSERT INTO Lancamentos (Conta, CoefRateio, Mes, DocNumSerie)
-  VALUES (FornecedorCodigo, 1, DataFatura, NumSerie);
+  CALL GerarLancamentos (FornecedorCodigo, 1, PeriodoFacturacao, NumSerie);
   
   -- 2.2 Inserir Lançamento Custos Gerais
-  INSERT INTO Lancamentos (Conta, CoefRateio, Mes, DocNumSerie)
-  VALUES ("CG01", -1, DataFatura, NumSerie);
+  CALL GerarLancamentos ("CG01", -1, PeriodoFacturacao, NumSerie);
   
   -- 2.3 Acrescentar dados a documento
   UPDATE Documentos
