@@ -24,14 +24,14 @@ IN ClassificacaoAnalitica        TEXT
   -- 2.1 Inserir lançamentos com analíticas discriminadas
   WHILE i != JSON_LENGTH(ClassificacaoAnalitica) DO
  
-   INSERT INTO Lancamentos (Conta, CoefRateio, Mes, DocNumSerie)
-    VALUES (
+   CALL GerarLancamentos (
      CONCAT_WS(":",
       JSON_EXTRACT(JSON_EXTRACT(ClassificacaoAnalitica, CONCAT("'$[", i, "]'")), '$.CentroResultados'),
       JSON_EXTRACT(JSON_EXTRACT(ClassificacaoAnalitica, CONCAT("'$[", i, "]'")), '$.Analitica'),
       JSON_EXTRACT(JSON_EXTRACT(ClassificacaoAnalitica, CONCAT("'$[", i, "]'")), '$.Colaborador')
      ),
      JSON_EXTRACT(JSON_EXTRACT(ClassificacaoAnalitica, CONCAT("'$[", i, "]'")), '$.Valor') / ValorFatura * -1,
+     JSON_EXTRACT((SELECT Extra FROM Documentos WHERE NumSerie = NumSerie), '$.PeriodoFaturacao'),
      NumSerie
     );
 
@@ -40,8 +40,7 @@ IN ClassificacaoAnalitica        TEXT
   END WHILE;
 
   -- 2.2 Inserir lançamento em custos gerais (com sinal contrário ao que foi lançado ao classificar o fornecedor)
-   INSERT INTO Lancamentos (Conta, CoefRateio, Mes, DocNumSerie)
-    VALUES ("CG01", 1, DataFatura, NumSerie);
+   CALL GerarLancamentos ("CG01", 1, JSON_EXTRACT((SELECT Extra FROM Documentos WHERE NumSerie = NumSerie), '$.PeriodoFaturacao'), NumSerie);
 
   -- 2.3 Alterar estado do documento
    UPDATE Documentos
