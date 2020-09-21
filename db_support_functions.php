@@ -32,7 +32,7 @@ $dbo->prepare("USE $defaultDb;")->execute();
 *     (5) User-defined exception condition: ["xxxx",1644,"NumSerie com formato inv\u00c3\u00a1lido"]
 */
 define('MARIADB_ERRORINFO_CODE_FOR_SUCCESS',"00000");
-function sql(string $sql, string &$errorInfo = null) {
+function sql(string $sql, &$errorInfo = null) {
 	global $dbo;
 	$query = $dbo->prepare($sql);
 	$query->execute();
@@ -40,5 +40,16 @@ function sql(string $sql, string &$errorInfo = null) {
 	if ($errorInfo[0] != MARIADB_ERRORINFO_CODE_FOR_SUCCESS)
 		return false;
 	else
-		return $query->fetchAll(PDO::FETCH_ASSOC);
+		return extractJsonFields($query->fetchAll(PDO::FETCH_ASSOC));
+}
+
+function extractJsonFields(array $in) {
+	$out = [];
+	foreach($in as $rowNo => $row) 
+		foreach($row as $colName => $colValue) 
+			if (strpos($colName, "_json") !== false)
+				$out[$rowNo][$colName] = json_decode($colValue,1);
+			else 
+				$out[$rowNo][$colName] = $colValue;
+	return $out;
 }
