@@ -1,0 +1,6 @@
+DROP FUNCTION IF EXISTS Extrair_Conta;
+
+CREATE FUNCTION Extrair_Conta (Tipo CHAR(2), Conta_Multi TEXT)
+RETURNS TEXT
+RETURN
+  SUBSTRING_INDEX(SUBSTRING(Conta_Multi, LOCATE(Tipo, Conta_Multi)), ":", 1);
