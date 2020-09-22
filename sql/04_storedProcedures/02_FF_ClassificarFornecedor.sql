@@ -8,9 +8,9 @@ IN NumFatura                TEXT,
 IN Projecto                 TEXT,
 IN DataFatura               DATE,
 IN DataRecebida             DATE,
-IN PeriodoFaturacao        TEXT,
+IN PeriodoFaturacao         TEXT,
 -- e.g. {"Inicio": "2011-11-25", "Fim": "2011-11-25"}
-IN DataValFatura           TEXT,
+IN DataValFatura            TEXT,
 IN FornecedorCodigo         TEXT,
 IN Valor                    TEXT,
 -- e.g. {"Bens": {"ValorBase": 0.00, "Iva": 0.00}, "Servicos": {"ValorBase":0.00,"Iva":0.00}}
