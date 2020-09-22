@@ -31,7 +31,7 @@ cat $(find sql/ -name "*.sql" | sort) | $MYSQL_CMD $defaultDb
 
 # 11. Run the unit tests
 echo > public_html/last_unit_test_results.html
-for f in $(find sql/04_tests/ -name "*.php")
+for f in $(find sql/05_tests/ -name "*.php")
 do
 	HTML_MODE=1 php "$f" >> public_html/last_unit_test_results.html
 done
