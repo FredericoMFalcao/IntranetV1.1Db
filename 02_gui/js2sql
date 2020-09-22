@@ -1,0 +1,30 @@
+#!/usr/bin/php
+<?php
+// vim: set syntax=php
+
+define("SQL_TBL_NAME", "PLT_GUI_Javascript");
+
+/* 1. Capture all the code provided via STDIN */
+$data = file_get_contents("php://stdin");
+
+/* 2. Capture JavaDoc style comments */
+$description = (preg_match(";^// @Description: ([^\n]+);", $data, $matches)?$matches[1]:"");
+$return_type = (preg_match(";^// @return ([^ ]+) ([^\n]+);", $data, $matches)?[$matches[1],$matches[2]]:["void"]);
+
+/* 3. Capture all the input Parameters */
+$parameters = [];
+preg_match_all(";// @param ([^ ]+) ([^ ]+) ([^\n]+);", $data, $matches,PREG_SET_ORDER);
+print_r($matches);
+if (preg_match_all(";// @param ([^ ]+) ([^ ]+) ([^\n]+);", $data, $matches,PREG_SET_ORDER))
+	foreach($matches as $match)
+		$parameters[$match[1]] = $match[2];
+
+
+/* 10. Generate the SQL command */
+$insertData = [
+	"FuncName"       => "\"{$argv[1]}\"",
+	"InputArgs_json" => '0x'.bin2hex(empty($parameters)?"{}":json_encode($parameters)),
+	"Description"    => '"'.$description.'"',
+	"Code"           => '0x'.bin2hex($data)
+];
+echo "INSERT INTO ".SQL_TBL_NAME." (".implode(",",array_keys($insertData)).") VALUES (".implode(",",$insertData).")";
