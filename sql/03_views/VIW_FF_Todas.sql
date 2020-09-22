@@ -12,7 +12,7 @@ SELECT
 	JSON_EXTRACT (a.Extra, '$.NumFatura') AS NumFatura,
 	c.Nome AS FornecedorNome,
 	JSON_EXTRACT (c.Extra, '$.FornecedorNIF') AS FornecedorNIF,
-	CONVERT(JSON_EXTRACT (a.Extra, '$.Valor'), DECIMAL(18,2)) AS Valor,
+	FF_Valor_Total(a.Extra) AS Valor,
 	JSON_EXTRACT (a.Extra, '$.Moeda') AS Moeda,
 	JSON_EXTRACT (a.Extra, '$.Projeto') AS Projeto,
 	a.Estado
