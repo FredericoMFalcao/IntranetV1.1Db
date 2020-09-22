@@ -24,14 +24,15 @@ git pull
 $MYSQL_CMD -e "DROP DATABASE IF EXISTS $defaultDb; CREATE DATABASE $defaultDb;"
 
 # 3. Preserver the source code (i.e. write the code about to be deployed with line number (easier for debugging))
-cat -n $(find sql/ -name "*.sql" | sort) > public_html/last_compiled_code.txt
+cat -n $(find . -name "*.sql" | sort) | php > public_html/last_compiled_code.txt
 
 # 10. Deploy the code - run it at the sql server
-cat $(find sql/ -name "*.sql" | sort) | $MYSQL_CMD $defaultDb
+cat $(find . -name "*.sql" | sort) | php | $MYSQL_CMD $defaultDb
 
 # 11. Run the unit tests
+#########################
 echo > public_html/last_unit_test_results.html
-for f in $(find sql/05_tests/ -name "*.php")
+for f in $(find 01_sql/05_tests/ -name "*.php")
 do
 	HTML_MODE=1 php "$f" >> public_html/last_unit_test_results.html
 done
