@@ -26,6 +26,14 @@ $MYSQL_CMD -e "DROP DATABASE IF EXISTS $defaultDb; CREATE DATABASE $defaultDb;"
 # 3. Preserver the source code (i.e. write the code about to be deployed with line number (easier for debugging))
 cat -n $(find . -name "*.sql" | sort) | php > public_html/last_compiled_code.txt
 
+# 9. Generate SQL instructions to populate GUI javascript table
+echo > 02_gui/gui_js_funcs.dml.sql 
+for i in $(ls 02_gui/*.js)
+do
+	FUNC_NAME=${i##*/}
+	cat "$i" | 02_gui/js2sql "${FUNC_NAME%.js}" >> 02_gui/gui_js_funcs.dml.sql
+done
+
 # 10. Deploy the code - run it at the sql server
 cat $(find . -name "*.sql" | sort) | php | $MYSQL_CMD $defaultDb
 
