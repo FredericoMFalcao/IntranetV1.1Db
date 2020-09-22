@@ -13,7 +13,7 @@ SELECT
 	JSON_EXTRACT(c.Extra, '$.FornecedorNIF') AS FornecedorNIF,
 	JSON_EXTRACT(a.Extra, '$.NumFatura') AS NumFatura,
 	JSON_EXTRACT(a.Extra, '$.Moeda') AS Moeda,
-	FF_Valor_Total(a.Extra) AS Valor
+	FF_ValorTotal(a.Extra) AS Valor
 FROM Documentos AS a
 INNER JOIN Lancamentos AS b ON a.NumSerie = b.DocNumSerie
 INNER JOIN Contas AS c ON b.Conta = c.Conta
