@@ -11,3 +11,4 @@ function prependModule(string $tblName) {
   return strtoupper(substr($moduleName, 3))."_".$tblName;
 
 }
+?>
