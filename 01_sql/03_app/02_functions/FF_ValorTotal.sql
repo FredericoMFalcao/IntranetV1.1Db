@@ -1,3 +1,5 @@
+-- Devolve o valor total da fatura (soma de todos os componentes do campo 'Valor' do campo 'Extra', e.g. ValorBaseBens + IVABens + ValorBaseServicos + IVAServicos)
+
 DROP FUNCTION IF EXISTS FF_ValorTotal;
 
 DELIMITER //
