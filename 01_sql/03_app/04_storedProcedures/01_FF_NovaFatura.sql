@@ -13,7 +13,7 @@ CREATE PROCEDURE FF_NovaFatura (IN FileId TEXT )
  BEGIN
  
   -- 0. Verificar validade dos argumentos
-  IF EXISTS (SELECT Id FROM SYS_Files WHERE Id = FileId)
+  IF NOT EXISTS (SELECT Id FROM SYS_Files WHERE Id = FileId)
    THEN signal sqlstate '20000' set message_text = 'FileId inexistente.';
   END IF;
    
