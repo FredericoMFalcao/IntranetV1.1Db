@@ -1,7 +1,7 @@
 <?php
 // vim: syntax=php
 
-function tableNameWithModule(string $tblName, string $moduleName) {
+function tableNameWithModule(string $tblName = 'Contas') {
 //   $key = array_search(__FUNCTION__, array_column(debug_backtrace(), 'function'));
 //   $callerFileNameAndPath = debug_backtrace()[$key]['file'];
 
@@ -10,7 +10,7 @@ function tableNameWithModule(string $tblName, string $moduleName) {
   
 //  return strtoupper(substr($moduleName, 3))."_".$tblName;
   
-  return strtoupper($moduleName)."_".$tblName;
+  return "APP_$tblName";
 
 }
 ?>
