@@ -2,6 +2,13 @@ DROP PROCEDURE IF EXISTS FF_NovaFatura;
 
 DELIMITER //
 
+-- Descrição: transforma um ficheiro no disco numa fatura de fornecedor por classificar
+--
+--        será chamada pelo sistema quando:
+--         (1) recebe um email com anexo PDF
+--         (2) ficheiro Dropbox
+--
+
 CREATE PROCEDURE FF_NovaFatura (IN NumSerie TEXT, IN FileId TEXT )
  BEGIN
  
