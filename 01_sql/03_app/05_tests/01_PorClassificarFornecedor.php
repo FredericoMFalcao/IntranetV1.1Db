@@ -25,5 +25,12 @@ require_once __DIR__."/_tests_lib.php";
 	->expectQuery('CALL FF_ClassificarFornecedor("FTAn19#001.pdf","NumFatura","01 Geral","2012-12-12","2012-12-12","{\"Inicio\": \"2011-11-25\", \"Fim\": \"2011-11-25\"}","2012-12-12","0000111","{\"Bens\": {\"ValorBase\": 0.00, \"Iva\": 0.00}, \"Servicos\": {\"ValorBase\":0.00,\"Iva\":0.00}}","AKZ","Fatura de teste");')
 	->toSucceed()
 )
-
+->addTest(
+	/* #4 : Criar fatura de fornecedor e associar a um ficheiro */
+	(new UnitTest())
+	->describe("Criar fatura de fornecedor e associar a um ficheiro")
+	->expectQuery('CALL FF_NovaFatura("ficheironaoexistente.pdf");')
+	->toErrWithCode("1452")
+)
+	
 ->go();
