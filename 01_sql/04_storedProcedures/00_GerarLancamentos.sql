@@ -2,6 +2,9 @@ DROP PROCEDURE IF EXISTS GerarLancamentos;
 
 DELIMITER //
 
+-- Descrição: separa lancamentos por meses
+--
+
 CREATE PROCEDURE GerarLancamentos (
   Conta TEXT,
   CoefRateio FLOAT,
