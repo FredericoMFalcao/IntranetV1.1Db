@@ -52,7 +52,7 @@ class UnitTest {
 				echo "[".red_color("FAILED")." ] {$this->description} \n";
 				echo "          Expected ".red_color("failure")." with code {$this->expectedResultCode}.\n";
 				if ($errorInfo[ERROR_CODE_IDX] != $this->expectedResultCode)
-				echo "          Got code ".$errorInfo[ERROR_CODE_IDX]."\n";
+				echo "          Got code ".$errorInfo[ERROR_CODE_IDX]." and message {$errorInfo[ERROR_MSG_IDX]}\n";
 				else
 				echo "          But ".green_color("suceeded")."!\n";
 			} else {
