@@ -6,4 +6,4 @@ cgitb.enable()
 print("Content-Type: text/html;charset=utf-8")
 print("")
 
-print(json1.dumps(db.sql("SELECT * FROM DocEstados")))
+print(json.dumps(db.sql("SELECT * FROM DocEstados")))
