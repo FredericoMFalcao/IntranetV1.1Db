@@ -9,20 +9,20 @@ DELIMITER //
 --         (2) ficheiro Dropbox
 --
 
-CREATE PROCEDURE FF_NovaFatura (IN NumSerie TEXT, IN FileId TEXT )
+CREATE PROCEDURE FF_NovaFatura (IN FileId TEXT )
  BEGIN
  
   -- 0. Verificar validade dos argumentos
-  IF NumSerie NOT REGEXP '^FT(An|Lx)[0-9]{2}#[0-9]{3,4}\.pdf$'
-   THEN signal sqlstate '20000' set message_text = 'NumSerie com formato inválido';
+  IF EXISTS (SELECT Id FROM SYS_Files WHERE Id = FileId)
+   THEN signal sqlstate '20000' set message_text = 'FileId inexistente.';
   END IF;
    
   -- 1. Começar Transacao
   START TRANSACTION;
   
   -- 1. Inserir em Documentos 
-  INSERT INTO Documentos (NumSerie, Tipo, Estado, FileId) 
-  VALUES (NumSerie, 'FaturaFornecedor', 'PorClassificarFornecedor', FileId);
+  INSERT INTO Documentos (Tipo, Estado, FileId) 
+  VALUES ('FaturaFornecedor', 'PorClassificarFornecedor', FileId);
   
   -- 10. Salvar
   COMMIT;
