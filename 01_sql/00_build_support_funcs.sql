@@ -1,7 +1,7 @@
 <?php
 // vim: syntax=php
 
-function prependModule(string $tblName) {
+function tableNameWithModule(string $tblName) {
   $key = array_search(__FUNCTION__, array_column(debug_backtrace(), 'function'));
   $callerFileNameAndPath = debug_backtrace()[$key]['file'];
 
