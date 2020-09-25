@@ -1,5 +1,5 @@
 <?php
-
+// vim: set syntax=php
 
 function prependModule(string $tblName) {
   $key = array_search(__FUNCTION__, array_column(debug_backtrace(), 'function'));
