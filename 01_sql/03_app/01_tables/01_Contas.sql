@@ -1,7 +1,8 @@
 -- Tabela: Contas
 -- Descrição: Lista todos os nomes e propriedades das contas contabilísticas da aplicação
 
-CREATE TABLE <?=tableNameWithModule("Contas","app")?> (
+-- CREATE TABLE <?=tableNameWithModule("Contas","app")?> (
+CREATE TABLE Contas (
   Conta VARCHAR(20) NOT NULL, -- Dois primeiros digitos reflectem o tipo de conta
   Nome VARCHAR(255) NOT NULL,
   Extra JSON,
