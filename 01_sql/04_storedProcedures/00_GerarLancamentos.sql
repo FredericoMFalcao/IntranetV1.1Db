@@ -2,7 +2,7 @@ DROP PROCEDURE IF EXISTS GerarLancamentos;
 
 DELIMITER //
 
--- Descrição: separa lancamentos por meses
+-- Descrição: separa lancamentos por meses. Função de suporte para outros stored procedures poderem fazer lancamentos.
 --
 
 CREATE PROCEDURE GerarLancamentos (
