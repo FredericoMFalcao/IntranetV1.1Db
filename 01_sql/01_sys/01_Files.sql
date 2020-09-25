@@ -1,0 +1,4 @@
+CREATE TABLE SYS_Files (
+  Id VARCHAR(255),
+  PRIMARY KEY (Id)  
+);
