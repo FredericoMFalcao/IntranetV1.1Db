@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__."/../../db_support_functions.php";
+require_once __DIR__."/../../../db_support_functions.php";
 
 /* MODES */
 define("TEST_SUCCEED", 1);
