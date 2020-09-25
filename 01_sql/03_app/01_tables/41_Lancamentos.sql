@@ -8,5 +8,5 @@ CREATE TABLE Lancamentos (
   DocNumSerie  VARCHAR(25) NOT NULL, -- foreign key
   
   PRIMARY KEY (Conta,CoefRateio,Mes,DocNumSerie),
-  FOREIGN KEY (DocNumSerie) REFERENCES Documentos(NumSerie) ON DELETE CASCADE ON UPDATE CASCADE
+  FOREIGN KEY (DocNumSerie) REFERENCES <?=tableNameWithModule("Documentos")?> (NumSerie) ON DELETE CASCADE ON UPDATE CASCADE
 );
