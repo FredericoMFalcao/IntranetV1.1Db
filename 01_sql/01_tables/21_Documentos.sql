@@ -10,6 +10,7 @@ CREATE TABLE Documentos (
   FileId VARCHAR(255),
   Extra JSON,
   
-  PRIMARY KEY (NumSerie),
+--  FOREIGN KEY (FileId) REFERENCES SYS_Files(Id),
+  UNIQUE (NumSerie),
   FOREIGN KEY (Tipo,Estado) REFERENCES DocEstados(TipoDoc,Estado) ON DELETE RESTRICT ON UPDATE CASCADE
 );
