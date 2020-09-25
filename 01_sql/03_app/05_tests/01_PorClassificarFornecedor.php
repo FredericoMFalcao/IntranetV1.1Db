@@ -30,7 +30,7 @@ require_once __DIR__."/_tests_lib.php";
 	(new UnitTest())
 	->describe("Criar fatura de fornecedor e associar a um ficheiro")
 	->expectQuery('CALL FF_NovaFatura("ficheironaoexistente.pdf");')
-	->toErrWithCode("1452")
+	->toErrWithCode("23000")
 )
 	
 ->go();
