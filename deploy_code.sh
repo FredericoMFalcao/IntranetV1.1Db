@@ -57,4 +57,4 @@ do
 	HTML_MODE=1 php "$f" >> public_html/last_unit_test_results.html
 done
 
-@rm $TMP_FILE
+rm $TMP_FILE > /dev/null 2> /dev/null
