@@ -53,3 +53,7 @@ function extractJsonFields(array $in) {
 				$out[$rowNo][$colName] = $colValue;
 	return $out;
 }
+
+function sql_startTransaction() { global $dbo; $dbo->startTransaction(); }
+function sql_rollback()         { global $dbo; $dbo->rollBack(); }
+function sql_commit()           { global $dbo; $dbo->commit(); }
