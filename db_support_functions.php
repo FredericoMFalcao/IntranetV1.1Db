@@ -54,6 +54,6 @@ function extractJsonFields(array $in) {
 	return $out;
 }
 
-function sql_startTransaction() { global $dbo; $dbo->startTransaction(); }
+function sql_startTransaction() { global $dbo; $dbo->beginTransaction(); }
 function sql_rollback()         { global $dbo; $dbo->rollBack(); }
 function sql_commit()           { global $dbo; $dbo->commit(); }
