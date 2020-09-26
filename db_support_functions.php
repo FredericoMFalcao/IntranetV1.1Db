@@ -12,7 +12,7 @@ $dsn = "mysql:host=$server;dbname=$defaultDb;";
 
 /* 1. Attempt to connect */
 /* 1.1 Create global database object (dbo) */
-try {$dbo = new PDO($dsn, $user, $password);} 
+try {$dbo = new PDO($dsn, $user, $password, [PDO::ATTR_PERSISTENT => false]);} 
 catch (PDOException $e) {die('Database Connection failed: ' . $e->getMessage());}    
 
 // Set the default database
