@@ -1,16 +1,23 @@
 <?php
 // vim: syntax=php
 
-function tableNameWithModule(string $tblName = 'Contas') {
-//   $key = array_search(__FUNCTION__, array_column(debug_backtrace(), 'function'));
-//   $callerFileNameAndPath = debug_backtrace()[$key]['file'];
+ini_set("display_errors", "stderr");
+ini_set("error_reporting", E_ALL);
 
-//  $path = explode("/",$callerFileNameAndPath);
-//  $moduleName = $path[count($path)-3];
-  
-//  return strtoupper(substr($moduleName, 3))."_".$tblName;
-  
-  return "APP_$tblName";
+function tableNameWithModule(string $tblName = '') {
+  // Import variables from outer scope
+  global $outerScopeCompleteFilePath;
+  // Set default of no value was provided
+  if ($tblName == "") {
+	if(!preg_match(";[0-9]{2}_([A-Za-z0-9_]+)\.sql$;", $outerScopeCompleteFilePath,$matches)) 
+		die("INTERNAL ERROR! Could not figure out tableName from current file name. ($outerScopeCompleteFilePath)");
+	$tblName = $matches[1]; 
+  }
+  // Extract module name
+  $moduleName = array_slice(explode("/", $outerScopeCompleteFilePath),-3,1)[0];
+  $moduleName = substr($moduleName, 3);
 
+  return strtoupper($moduleName)."_".$tblName;
+  
 }
 ?>
