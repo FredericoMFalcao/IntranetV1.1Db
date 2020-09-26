@@ -22,7 +22,7 @@ defaultDb="$(cat .db_credentials.json | jq -r .defaultDb)"
 
 MYSQL_CMD="mysql -u $USER -p$PASSWORD"
 
-git pull
+git pull 2> /dev/null
 # 2. Destroy old runtime (i.e. delete the database, and all its structure and data)
 $MYSQL_CMD -e "DROP DATABASE IF EXISTS $defaultDb; CREATE DATABASE $defaultDb;"
 
