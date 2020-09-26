@@ -75,16 +75,16 @@ class TestSuite {
 	private $tests = [];
 
 	public function __construct(string $d) { 
-		sql("SET autocommit=0;");
+
 		$this->description = $d; 
 	}
 	public function addTest(UnitTest $t) { $this->tests[] = $t; return $this; }
 	public function go() {	
-		sql("START TRANSACTION;");
+		sql_startTransaction();
 		echo "TEST GROUP : ".$this->description."\n";
 		foreach($this->tests as $k => $t)
 			$t->go();
-		sql("ROLLBACK;");
+		sql_rollback();
 
 	}	
 }
