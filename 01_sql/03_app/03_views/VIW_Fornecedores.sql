@@ -1,6 +1,6 @@
 -- View: VIW_Fornecedores
 -- Descrição: Lista todos os fornecedores
--- Depende de: tabela 'APP_Contas'
+-- Depende de: tabela 'Contas'
 
 DROP VIEW IF EXISTS VIW_Fornecedores;
 
