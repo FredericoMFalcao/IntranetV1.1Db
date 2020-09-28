@@ -26,11 +26,11 @@ CREATE PROCEDURE GerarLancamentos (
         DAY(JSON_UNQUOTE(JSON_EXTRACT(Periodo, '$.Inicio'))) = 1 AND
         JSON_UNQUOTE(JSON_EXTRACT(Periodo, '$.Fim')) = LAST_DAY(JSON_UNQUOTE(JSON_EXTRACT(Periodo, '$.Fim')))
         ) THEN
-          INSERT INTO Lancamentos (Conta, CoefRateio, Mes, DocNumSerie)
+          INSERT INTO <?=tableNameWithModule("Lancamentos")?> (Conta, CoefRateio, Mes, DocNumSerie)
           VALUES (Conta, CoefRateio / n, d, DocNumSerie);
       -- b) Caso em que o período começa e/ou acaba a meio de um mês:
       ELSE
-        INSERT INTO Lancamentos (Conta, CoefRateio, Mes, DocNumSerie)
+        INSERT INTO <?=tableNameWithModule("Lancamentos")?> (Conta, CoefRateio, Mes, DocNumSerie)
         VALUES (
           Conta,
           CoefRateio * (
