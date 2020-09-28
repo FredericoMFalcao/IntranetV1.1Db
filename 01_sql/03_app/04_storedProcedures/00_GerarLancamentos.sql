@@ -19,8 +19,6 @@ CREATE PROCEDURE GerarLancamentos (
     SET n = MONTH(JSON_UNQUOTE(JSON_EXTRACT(Periodo, '$.Fim'))) - MONTH(JSON_UNQUOTE(JSON_EXTRACT(Periodo, '$.Inicio'))) + 1;
     -- n: número de meses abrangidos pelo período
     
-    START TRANSACTION;
-    
     WHILE d <= JSON_UNQUOTE(JSON_EXTRACT(Periodo, '$.Fim')) DO
     
       -- a) Caso em que o período é composto apenas por meses completos:
@@ -48,8 +46,6 @@ CREATE PROCEDURE GerarLancamentos (
       
     END WHILE;
     
-    COMMIT;
-  
   END;
 //
 
