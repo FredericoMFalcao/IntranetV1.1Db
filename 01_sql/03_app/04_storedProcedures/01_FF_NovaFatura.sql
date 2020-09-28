@@ -17,15 +17,10 @@ CREATE PROCEDURE FF_NovaFatura (IN FileId TEXT )
    THEN signal sqlstate '23000' set message_text = 'FileId inexistente.';
   END IF;
    
-  -- 1. Começar Transacao
-  START TRANSACTION;
-  
   -- 1. Inserir em Documentos 
   INSERT INTO Documentos (Tipo, Estado, FileId) 
   VALUES ('FaturaFornecedor', 'PorClassificarFornecedor', FileId);
   
-  -- 10. Salvar
-  COMMIT;
  END;
 //
 
