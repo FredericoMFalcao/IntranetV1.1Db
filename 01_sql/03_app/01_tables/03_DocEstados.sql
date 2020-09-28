@@ -6,7 +6,7 @@ CREATE TABLE <?=tableNameWithModule()?> (
   TipoDoc VARCHAR(50) NOT NULL,
   Estado VARCHAR(50) NOT NULL,
   Descricao VARCHAR(255),
-  Schema TEXT DEFAULT '{}',
+  `Schema` JSON DEFAULT '{}',
   
   UNIQUE (TipoDoc,Estado),
   FOREIGN KEY (TipoDoc) REFERENCES <?=tableNameWithModule("DocTipos")?>(Tipo) ON DELETE RESTRICT ON UPDATE CASCADE
