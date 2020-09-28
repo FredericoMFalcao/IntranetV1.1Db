@@ -10,6 +10,6 @@ SELECT
   Nome,
   JSON_EXTRACT (Extra, '$.NomeCurto') AS NomeCurto,
   JSON_EXTRACT (Extra, '$.NIF') AS NIF
-FROM <?=tableNameWithModule("Contas")?>
+FROM <?=tableNameWithModule("Contas")?> 
 WHERE LEFT(Conta,2) = 'FO'
 ;
