@@ -1,7 +1,7 @@
 -- Tabela: DocTipos
 -- Descricao: Lista todos os tipos de documento e respectivos schemas
 
-CREATE TABLE DocTipos (  
+CREATE TABLE <?=tableNameWithModule()?> (  
   Tipo VARCHAR(50) NOT NULL,
   DocSchema JSON,
   
@@ -9,4 +9,4 @@ CREATE TABLE DocTipos (
 );
 
 -- Dados Iniciais
-INSERT INTO DocTipos (Tipo) VALUES ('FaturaFornecedor');
+INSERT INTO <?=tableNameWithModule()?> (Tipo) VALUES ('FaturaFornecedor');
