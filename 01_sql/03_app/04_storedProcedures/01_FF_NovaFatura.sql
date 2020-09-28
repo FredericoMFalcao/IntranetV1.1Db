@@ -9,7 +9,7 @@ DELIMITER //
 --         (2) ficheiro Dropbox
 --
 
-CREATE PROCEDURE FF_NovaFatura (IN FileId TEXT )
+CREATE PROCEDURE FF_NovaFatura (IN FileId TEXT)
  BEGIN
  
   -- 0. Verificar validade dos argumentos
@@ -18,7 +18,7 @@ CREATE PROCEDURE FF_NovaFatura (IN FileId TEXT )
   END IF;
    
   -- 1. Inserir em Documentos 
-  INSERT INTO Documentos (Tipo, Estado, FileId) 
+  INSERT INTO <?=tableNameWithModule("Documentos")?> (Tipo, Estado, FileId) 
   VALUES ('FaturaFornecedor', 'PorClassificarFornecedor', FileId);
   
  END;
