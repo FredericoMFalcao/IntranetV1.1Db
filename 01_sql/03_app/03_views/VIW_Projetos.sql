@@ -8,6 +8,6 @@ CREATE VIEW VIW_Projetos AS
 SELECT
   Conta,
   Nome
-FROM <?=tableNameWithModule("Contas")?>
+FROM <?=tableNameWithModule("Contas")?> 
 WHERE LEFT(Conta,2) = 'CR' AND LENGTH(Conta) = 4
 ;
