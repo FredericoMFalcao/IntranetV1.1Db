@@ -1,6 +1,6 @@
 -- View: VIW_Projetos
 -- Descrição: Lista todos os projetos (primeiro nível dos centros de resultados)
--- Depende de: tabela 'APP_Contas'
+-- Depende de: tabela 'Contas'
 
 DROP VIEW IF EXISTS VIW_Projetos;
 
