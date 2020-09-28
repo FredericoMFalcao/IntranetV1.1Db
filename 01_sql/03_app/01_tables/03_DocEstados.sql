@@ -7,7 +7,7 @@ CREATE TABLE <?=tableNameWithModule()?> (
   Estado VARCHAR(50) NOT NULL,
   Descricao VARCHAR(255),
   
-  PRIMARY KEY (TipoDoc,Estado),
+  UNIQUE (TipoDoc,Estado),
   FOREIGN KEY (TipoDoc) REFERENCES <?=tableNameWithModule("DocTipos")?>(Tipo) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
