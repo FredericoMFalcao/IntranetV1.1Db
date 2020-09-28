@@ -16,12 +16,9 @@ IN ClassificacaoAnalitica        TEXT
   IF NumSerie NOT IN (SELECT NumSerie FROM Documentos WHERE Estado = 'PorClassificarAnalitica')
    THEN signal sqlstate '20000' set message_text = 'Fatura inexistente ou indisponível para esta ação';
   END IF;
-   
-  -- 1. Começar Transacao
-  START TRANSACTION;
   
-  -- 2. Alterar dados
-  -- 2.1 Inserir lançamentos com analíticas discriminadas
+  -- 1. Alterar dados
+  -- 1.1 Inserir lançamentos com analíticas discriminadas
   WHILE i != JSON_LENGTH(ClassificacaoAnalitica) DO
  
    CALL GerarLancamentos (
@@ -39,15 +36,13 @@ IN ClassificacaoAnalitica        TEXT
    
   END WHILE;
 
-  -- 2.2 Inserir lançamento em custos gerais (com sinal contrário ao que foi lançado ao classificar o fornecedor)
+  -- 1.2 Inserir lançamentos em custos gerais (com sinal contrário ao que foi lançado ao classificar o fornecedor)
    CALL GerarLancamentos ("CG01", 1, JSON_EXTRACT((SELECT Extra FROM Documentos WHERE NumSerie = NumSerie), '$.PeriodoFaturacao'), NumSerie);
 
   -- 2.3 Alterar estado do documento
    UPDATE Documentos
    SET Estado = 'PorAnexarCPagamento';
                   
-  -- 10. Salvar
-  COMMIT;
  END;
 //
 
