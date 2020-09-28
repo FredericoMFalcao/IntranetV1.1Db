@@ -14,9 +14,9 @@ SELECT
 	JSON_EXTRACT(a.Extra, '$.NumFatura') AS NumFatura,
 	JSON_EXTRACT(a.Extra, '$.Moeda') AS Moeda,
 	FF_ValorTotal(a.Extra) AS Valor
-FROM Documentos AS a
-INNER JOIN Lancamentos AS b ON a.NumSerie = b.DocNumSerie
-INNER JOIN Contas AS c ON b.Conta = c.Conta
+FROM <?=tableNameWithModule("Documentos")?> AS a
+INNER JOIN <?=tableNameWithModule("Lancamentos")?> AS b ON a.NumSerie = b.DocNumSerie
+INNER JOIN <?=tableNameWithModule("Contas")?> AS c ON b.Conta = c.Conta
 WHERE a.Tipo = 'FaturaFornecedor'
 	AND LEFT(c.Conta,2) = 'FO'
 	AND a.Estado = 'PorClassificarAnalitica'
