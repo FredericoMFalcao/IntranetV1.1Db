@@ -8,5 +8,5 @@ CREATE VIEW VIW_FF_PorClassificarFornecedor AS
 SELECT FileId
 FROM <?=tableNameWithModule("Documentos")?> 
 WHERE Tipo = 'FaturaFornecedor'
-  AND a.Estado = 'PorClassificarFornecedor'
+  AND Estado = 'PorClassificarFornecedor'
 ;
