@@ -13,7 +13,7 @@ IN ClassificacaoAnalitica        TEXT
   SET i = 0;
  
   -- 0. Verificar validade dos argumentos
-  IF NumSerie NOT IN (SELECT NumSerie FROM Documentos WHERE Estado = 'PorClassificarAnalitica')
+  IF NumSerie NOT IN (SELECT NumSerie FROM <?=tableNameWithModule("Documentos")?> WHERE Estado = 'PorClassificarAnalitica')
    THEN signal sqlstate '20000' set message_text = 'Fatura inexistente ou indisponível para esta ação';
   END IF;
   
@@ -28,7 +28,7 @@ IN ClassificacaoAnalitica        TEXT
       JSON_EXTRACT(JSON_EXTRACT(ClassificacaoAnalitica, CONCAT("'$[", i, "]'")), '$.Colaborador')
      ),
      JSON_EXTRACT(JSON_EXTRACT(ClassificacaoAnalitica, CONCAT("'$[", i, "]'")), '$.Valor') / ValorFatura * -1,
-     JSON_EXTRACT((SELECT Extra FROM Documentos WHERE NumSerie = NumSerie), '$.PeriodoFaturacao'),
+     JSON_EXTRACT((SELECT Extra FROM <?=tableNameWithModule("Documentos")?> WHERE NumSerie = NumSerie), '$.PeriodoFaturacao'),
      NumSerie
     );
 
@@ -37,10 +37,10 @@ IN ClassificacaoAnalitica        TEXT
   END WHILE;
 
   -- 1.2 Inserir lançamentos em custos gerais (com sinal contrário ao que foi lançado ao classificar o fornecedor)
-   CALL GerarLancamentos ("CG01", 1, JSON_EXTRACT((SELECT Extra FROM Documentos WHERE NumSerie = NumSerie), '$.PeriodoFaturacao'), NumSerie);
+   CALL GerarLancamentos ("CG01", 1, JSON_EXTRACT((SELECT Extra FROM <?=tableNameWithModule("Documentos")?> WHERE NumSerie = NumSerie), '$.PeriodoFaturacao'), NumSerie);
 
   -- 2.3 Alterar estado do documento
-   UPDATE Documentos
+   UPDATE <?=tableNameWithModule("Documentos")?> 
    SET Estado = 'PorAnexarCPagamento';
                   
  END;
