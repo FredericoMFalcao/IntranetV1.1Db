@@ -25,13 +25,13 @@ IN ClassificacaoAnalitica   TEXT
   SET i = 0;
  
   -- 0. Verificar validade dos argumentos
-  IF NumSerie NOT IN (SELECT NumSerie FROM Documentos WHERE Estado = 'PorAnexarCPagamento')
+  IF NumSerie NOT IN (SELECT NumSerie FROM <?=tableNameWithModule("Documentos")?> WHERE Estado = 'PorAnexarCPagamento')
    THEN signal sqlstate '20000' set message_text = 'Fatura inexistente ou indisponível para esta ação';
   END IF;
   
   -- 1. Alterar dados
   -- 1.1 Apagar lançamentos
-  DELETE FROM Lancamentos
+  DELETE FROM <?=tableNameWithModule("Lancamentos")?> 
   WHERE NumSerie = NumSerie;
   
   -- 1.2 Inserir novos lançamentos em fornecedor
@@ -60,7 +60,7 @@ IN ClassificacaoAnalitica   TEXT
   END WHILE;
 
   -- 1.5 Alterar dados do documento
-  UPDATE Documentos
+  UPDATE <?=tableNameWithModule("Documentos")?> 
    SET
     FileId = FileId,
     Extra = JSON_SET(Extra, 
