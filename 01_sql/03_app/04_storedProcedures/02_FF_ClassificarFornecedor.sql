@@ -20,7 +20,7 @@ IN Descricao                TEXT
  BEGIN
  
   -- 0. Verificar validade dos argumentos
-  IF NumSerie NOT IN (SELECT NumSerie FROM Documentos WHERE Estado = 'PorClassificarFornecedor')
+  IF NumSerie NOT IN (SELECT NumSerie FROM <?=tableNameWithModule("Documentos")?> WHERE Estado = 'PorClassificarFornecedor')
    THEN signal sqlstate '20000' set message_text = 'Fatura inexistente ou indisponível para esta ação';
   END IF;
   
@@ -32,7 +32,7 @@ IN Descricao                TEXT
   CALL GerarLancamentos ("CG01", -1, PeriodoFaturacao, NumSerie);
   
   -- 1.3 Acrescentar dados a documento
-  UPDATE Documentos
+  UPDATE <?=tableNameWithModule("Documentos")?> 
    SET
     Estado = 'PorClassificarAnalitica',
     Extra = JSON_SET(Extra, 
