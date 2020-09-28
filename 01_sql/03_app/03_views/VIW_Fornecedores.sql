@@ -1,6 +1,6 @@
 -- View: VIW_Fornecedores
 -- Descrição: Lista todos os fornecedores
--- Depende de: tabela 'Contas'
+-- Depende de: tabela 'APP_Contas'
 
 DROP VIEW IF EXISTS VIW_Fornecedores;
 
@@ -10,6 +10,6 @@ SELECT
 	Nome,
 	JSON_EXTRACT (Extra, '$.NomeCurto') AS NomeCurto,
 	JSON_EXTRACT (Extra, '$.NIF') AS NIF
-FROM Contas
+FROM <?=tableNameWithModule("Contas")?>
 WHERE LEFT(Conta,2) = 'FO'
 ;
