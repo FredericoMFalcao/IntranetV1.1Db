@@ -23,18 +23,15 @@ IN Descricao                TEXT
   IF NumSerie NOT IN (SELECT NumSerie FROM Documentos WHERE Estado = 'PorClassificarFornecedor')
    THEN signal sqlstate '20000' set message_text = 'Fatura inexistente ou indisponível para esta ação';
   END IF;
-   
-  -- 1. Começar Transacao
-  START TRANSACTION;
   
-  -- 2. Alterar dados
-  -- 2.1 Inserir Lançamento Fornecedor
+  -- 1. Alterar dados
+  -- 1.1 Inserir Lançamentos em Fornecedor
   CALL GerarLancamentos (FornecedorCodigo, 1, PeriodoFaturacao, NumSerie);
   
-  -- 2.2 Inserir Lançamento Custos Gerais
+  -- 1.2 Inserir Lançamentos em Custos Gerais
   CALL GerarLancamentos ("CG01", -1, PeriodoFaturacao, NumSerie);
   
-  -- 2.3 Acrescentar dados a documento
+  -- 1.3 Acrescentar dados a documento
   UPDATE Documentos
    SET
     Estado = 'PorClassificarAnalitica',
@@ -52,8 +49,6 @@ IN Descricao                TEXT
   ) 
   WHERE NumSerie = NumSerie;
   
-  -- 10. Salvar
-  COMMIT;
  END;
 //
 
