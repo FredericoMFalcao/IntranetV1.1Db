@@ -7,6 +7,7 @@ DROP VIEW IF EXISTS VIW_FF_Todas;
 CREATE VIEW VIW_FF_Todas AS
 SELECT
 	a.FileId,
+	'CPagamento123.pdf' AS ComprovativoPagamento,                           -- provisório
 	a.NumSerie,
 	CONVERT(JSON_EXTRACT (a.Extra, '$.DataFatura'), DATE) AS DataFatura,
 	JSON_EXTRACT (a.Extra, '$.NumFatura') AS NumFatura,
