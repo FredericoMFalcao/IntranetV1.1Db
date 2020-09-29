@@ -2,8 +2,9 @@ DROP PROCEDURE IF EXISTS GerarLancamentos;
 
 DELIMITER //
 
--- Descrição: separa lancamentos por meses. Função de suporte para outros stored procedures poderem fazer lancamentos.
---
+-- Descrição: separa lancamentos por meses. 
+-- Função de suporte para outros stored procedures poderem criar linhas na tabela lançamentos. 
+-- Cada linha é automaticamente desdobradas nas linhas necessárias para que fique uma linha cada mês incluído no período dado na chamada desta função.
 
 CREATE PROCEDURE GerarLancamentos (
   Conta TEXT,
