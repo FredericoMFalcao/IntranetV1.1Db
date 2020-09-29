@@ -31,10 +31,10 @@ IN Descricao                TEXT
   WHERE NumSerie = NumSerie;
   
   -- 1.2 Inserir novos lançamentos em fornecedor
-  CALL GerarLancamentos (FornecedorCodigo, 1, PeriodoFaturacao, NumSerie);
+  CALL CriarLancamento (FornecedorCodigo, 1, PeriodoFaturacao, NumSerie);
   
   -- 1.3 Inserir novos lançamentos em custos gerais
-  CALL GerarLancamentos ("CG01", -1, PeriodoFaturacao, NumSerie);
+  CALL CriarLancamento ("CG01", -1, PeriodoFaturacao, NumSerie);
   
   -- 1.4 Alterar dados do documento
   UPDATE <?=tableNameWithModule("Documentos")?> 

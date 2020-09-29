@@ -1,4 +1,4 @@
-DROP PROCEDURE IF EXISTS GerarLancamentos;
+DROP PROCEDURE IF EXISTS CriarLancamento;
 
 DELIMITER //
 
@@ -6,7 +6,7 @@ DELIMITER //
 -- Função de suporte para outros stored procedures poderem criar linhas na tabela lançamentos. 
 -- Cada linha é automaticamente desdobradas nas linhas necessárias para que fique uma linha cada mês incluído no período dado na chamada desta função.
 
-CREATE PROCEDURE GerarLancamentos (
+CREATE PROCEDURE CriarLancamento (
   Conta TEXT,
   CoefRateio FLOAT,
   Periodo TEXT, -- e.g. {"Inicio": "2011-11-25", "Fim": "2011-11-25"}

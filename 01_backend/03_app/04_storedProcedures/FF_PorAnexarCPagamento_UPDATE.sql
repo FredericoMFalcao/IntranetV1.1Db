@@ -35,16 +35,16 @@ IN ClassificacaoAnalitica   TEXT
   WHERE NumSerie = NumSerie;
   
   -- 1.2 Inserir novos lançamentos em fornecedor
-  CALL GerarLancamentos (FornecedorCodigo, 1, PeriodoFaturacao, NumSerie);
+  CALL CriarLancamento (FornecedorCodigo, 1, PeriodoFaturacao, NumSerie);
   
   -- 1.3 Inserir novos lançamentos em custos gerais
-  CALL GerarLancamentos ("CG01", -1, PeriodoFaturacao, NumSerie);
-  CALL GerarLancamentos ("CG01", 1, PeriodoFaturacao, NumSerie);
+  CALL CriarLancamento ("CG01", -1, PeriodoFaturacao, NumSerie);
+  CALL CriarLancamento ("CG01", 1, PeriodoFaturacao, NumSerie);
 
   -- 1.4 Inserir novos lançamentos com analíticas discriminadas
   WHILE i != JSON_LENGTH(ClassificacaoAnalitica) DO
  
-   CALL GerarLancamentos (
+   CALL CriarLancamento (
      CONCAT_WS(":",
       JSON_EXTRACT(JSON_EXTRACT(ClassificacaoAnalitica, CONCAT("'$[", i, "]'")), '$.CentroResultados'),
       JSON_EXTRACT(JSON_EXTRACT(ClassificacaoAnalitica, CONCAT("'$[", i, "]'")), '$.Analitica'),

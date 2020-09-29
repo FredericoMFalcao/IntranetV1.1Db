@@ -26,10 +26,10 @@ IN Descricao                TEXT
   
   -- 1. Alterar dados
   -- 1.1 Inserir Lançamentos em Fornecedor
-  CALL GerarLancamentos (FornecedorCodigo, 1, PeriodoFaturacao, NumSerie);
+  CALL CriarLancamento (FornecedorCodigo, 1, PeriodoFaturacao, NumSerie);
   
   -- 1.2 Inserir Lançamentos em Custos Gerais
-  CALL GerarLancamentos ("CG01", -1, PeriodoFaturacao, NumSerie);
+  CALL CriarLancamento ("CG01", -1, PeriodoFaturacao, NumSerie);
   
   -- 1.3 Acrescentar dados a documento
   UPDATE <?=tableNameWithModule("Documentos")?> 
