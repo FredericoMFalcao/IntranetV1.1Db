@@ -2,6 +2,7 @@
 -- Descricao: Lista todos os códigos e propriedades dos documentos inseridos na aplicação
 
 CREATE TABLE <?=tableNameWithModule()?> (
+  id INT PRIMARY KEY AUTO_INCREMENT,
   NumSerie VARCHAR(25), -- unique key
   
   Tipo VARCHAR(50) NOT NULL, -- foreign key
