@@ -39,11 +39,11 @@ cat -n $TMP_FILE > public_html/last_compiled_code_0.txt
 cat $TMP_FILE | php | cat -n > public_html/last_compiled_code.txt
 
 # 9. Generate SQL instructions to populate GUI javascript table
-echo > 02_gui/gui_js_funcs.dml.sql 
-for i in $(ls 02_gui/*.js)
+echo > 02_frontend/gui_js_funcs.dml.sql 
+for i in $(ls 02_frontend/*.js)
 do
 	FUNC_NAME=${i##*/}
-	cat "$i" | 02_gui/js2sql "${FUNC_NAME%.js}" >> 02_gui/gui_js_funcs.dml.sql
+	cat "$i" | 02_frontend/js2sql "${FUNC_NAME%.js}" >> 02_frontend/gui_js_funcs.dml.sql
 done
 
 # 10. Deploy the code - run it at the sql server - after parsing through PHP template engine
@@ -52,7 +52,7 @@ cat $TMP_FILE | php  | $MYSQL_CMD $defaultDb
 # 11. Run the unit tests
 #########################
 echo > public_html/last_unit_test_results.html
-for f in $(find 01_sql/03_app/05_tests/ -name "*.php")
+for f in $(find 01_backend/03_app/05_tests/ -name "*.php")
 do
 	HTML_MODE=1 php "$f" >> public_html/last_unit_test_results.html
 done
