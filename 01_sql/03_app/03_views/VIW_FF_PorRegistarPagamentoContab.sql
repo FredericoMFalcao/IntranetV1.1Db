@@ -7,7 +7,7 @@ DROP VIEW IF EXISTS VIW_FF_PorRegistarPagamentoContab;
 CREATE VIEW VIW_FF_PorRegistarPagamentoContab AS
 SELECT
 	a.FileId,
-	'CPagamento123.pdf' AS DocComprovativo,                                  -- provisório
+	'CPagamento123.pdf' AS ComprovativoPagamento,                            -- provisório
 	a.NumSerie,
 	CONVERT(JSON_EXTRACT (a.Extra, '$.DataFatura'), DATE) AS DataFatura,
 	c.Nome AS FornecedorNome,
