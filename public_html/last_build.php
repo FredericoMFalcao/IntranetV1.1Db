@@ -37,7 +37,7 @@
 	  <div class="card">
 	    <div class="card-header" id="headingOne">
 	      <h2 class="mb-0">
-	        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse<?=$i?>>" aria-expanded="true" aria-controls="collapseOne">
+	        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseGroup<?=$i?>>" aria-expanded="true" aria-controls="collapseOne">
 				<?= $content['title']?>
 	        </button>
 	      </h2>
