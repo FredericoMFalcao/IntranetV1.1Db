@@ -43,7 +43,7 @@
 	      </h2>
 	    </div>
 
-	    <div id="collapseGroup<?=$i?>" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+	    <div id="collapseGroup<?=$i?>" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
 	      <div class="card-body">
 		      <pre><?= $content['body']?></pre>
 	      </div>
