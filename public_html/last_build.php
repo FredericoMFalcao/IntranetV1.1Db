@@ -45,7 +45,7 @@
 
 	    <div id="collapseGroup<?=$i?>" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
 	      <div class="card-body">
-		      <pre><?= $content['body']?></pre>
+		      <pre><?= htmlentities($content['body'])?></pre>
 	      </div>
 	    </div>
 	  </div>
