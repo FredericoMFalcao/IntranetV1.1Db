@@ -3,7 +3,8 @@ DROP PROCEDURE IF EXISTS FF_ClassificarFornecedor;
 DELIMITER //
 
 CREATE PROCEDURE FF_ClassificarFornecedor (
-IN NumSerie                 TEXT,
+IN _NumSerie                TEXT,
+-- underscore serve para distinguir dos campos de tabelas com o mesmo nome
 IN NumFatura                TEXT,
 IN Projecto                 TEXT,
 IN DataFatura               DATE,
@@ -22,16 +23,16 @@ IN Amortizacao              BOOLEAN
  BEGIN
  
   -- 0. Verificar validade dos argumentos
-  IF NumSerie NOT IN (SELECT NumSerie FROM <?=tableNameWithModule("Documentos")?> WHERE Estado = 'PorClassificarFornecedor')
+  IF _NumSerie NOT IN (SELECT NumSerie FROM <?=tableNameWithModule("Documentos")?> WHERE Estado = 'PorClassificarFornecedor')
    THEN signal sqlstate '20000' set message_text = 'Fatura inexistente ou indisponível para esta ação';
   END IF;
   
   -- 1. Alterar dados
   -- 1.1 Inserir Lançamentos em Fornecedor
-  CALL CriarLancamento (FornecedorCodigo, 1, PeriodoFaturacao, NumSerie);
+  CALL CriarLancamento (FornecedorCodigo, 1, PeriodoFaturacao, _NumSerie);
   
   -- 1.2 Inserir Lançamentos em Custos Gerais
-  CALL CriarLancamento ("CG01", -1, PeriodoFaturacao, NumSerie);
+  CALL CriarLancamento ("CG01", -1, PeriodoFaturacao, _NumSerie);
   
   -- 1.3 Acrescentar dados a documento
   UPDATE <?=tableNameWithModule("Documentos")?> 
@@ -51,7 +52,7 @@ IN Amortizacao              BOOLEAN
         '$.ImpostoConsumo', ImpostoConsumo,
         '$.Amortizacao', Amortizacao
   ) 
-  WHERE NumSerie = NumSerie;
+  WHERE NumSerie = _NumSerie;
   
  END;
 //
