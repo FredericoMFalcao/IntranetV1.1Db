@@ -10,12 +10,14 @@ IN DataFatura               DATE,
 IN DataRecebida             DATE,
 IN PeriodoFaturacao         TEXT,
 -- e.g. {"Inicio": "2011-11-25", "Fim": "2011-11-25"}
-IN DataValFatura            TEXT,
+IN DataValidade             DATE,
 IN FornecedorCodigo         TEXT,
 IN Valor                    TEXT,
 -- e.g. {"Bens": {"ValorBase": 0.00, "Iva": 0.00}, "Servicos": {"ValorBase":0.00,"Iva":0.00}}
 IN Moeda                    TEXT,
-IN Descricao                TEXT
+IN Descricao                TEXT,
+IN ImpostoConsumo           DECIMAL(18,2),
+IN Amortizacao              BOOLEAN
 )
  BEGIN
  
@@ -45,7 +47,9 @@ IN Descricao                TEXT
         '$.FornecedorCodigo', FornecedorCodigo,
         '$.Valor', Valor,
         '$.Moeda', Moeda,
-        '$.Descricao', Descricao
+        '$.Descricao', Descricao,
+        '$.ImpostoConsumo', ImpostoConsumo,
+        '$.Amortizacao', Amortizacao
   ) 
   WHERE NumSerie = NumSerie;
   
