@@ -1,5 +1,5 @@
--- Tabela: DocWorkflow
--- Descricao: Regista todas as alterações feitas a documentos
+-- Tabela: DocumentosHist
+-- Descricao: Regista todas as alterações feitas à tabela Documentos
 
 CREATE TABLE <?=tableNameWithModule()?> (
   NumSerie VARCHAR(25) NOT NULL, -- foreign key
