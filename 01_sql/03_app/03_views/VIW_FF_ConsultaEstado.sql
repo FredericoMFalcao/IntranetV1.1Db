@@ -1,10 +1,10 @@
--- View: VIW_FF_Todas
--- Descrição: Lista todas as faturas de fornecedores, independentemente do seu estado
+-- View: VIW_FF_ConsultaEstado
+-- Descrição: Lista todas as faturas de fornecedores excepto as que se encontram no estado 'PorClassificarFornecedor'
 -- Depende de: tabelas 'Documentos', 'Lancamentos' e 'Contas'
 
-DROP VIEW IF EXISTS VIW_FF_Todas;
+DROP VIEW IF EXISTS VIW_FF_ConsultaEstado;
 
-CREATE VIEW VIW_FF_Todas AS
+CREATE VIEW VIW_FF_ConsultaEstado AS
 SELECT
 	a.FileId,
 	'CPagamento123.pdf' AS ComprovativoPagamento,                           -- provisório
@@ -21,5 +21,6 @@ FROM <?=tableNameWithModule("Documentos")?> AS a
 INNER JOIN <?=tableNameWithModule("Lancamentos")?> AS b ON a.NumSerie = b.DocNumSerie
 INNER JOIN <?=tableNameWithModule("Contas")?> AS c ON b.Conta = c.Conta
 WHERE a.Tipo = 'FaturaFornecedor'
+	AND a.Estado != 'PorClassificarFornecedor'
 	AND LEFT(c.Conta,2) = 'FO'
 ;
