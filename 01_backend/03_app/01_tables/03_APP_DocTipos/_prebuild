@@ -1,0 +1,25 @@
+#!/bin/bash
+cd $(dirname ${BASH_SOURCE[0]})
+echo > compiledCode.sql
+for i in $(find . -name "*.in")
+do
+	TABLE_NAME=$(pwd)
+	TABLE_NAME=${TABLE_NAME##*/} # keep only last subdir
+	TABLE_NAME=${TABLE_NAME##??_} # remove leading number
+
+	PK_KEY=${i/\.\//}      # remove inital "./"
+	PK_KEY=${PK_KEY%%/*} # remove file name, keep dir name
+	PK_KEY=${PK_KEY%.*}   # remove right side of the ".", i.e. PK_VALUE
+
+	PK_VALUE=${i/\.\//}      # remove inital "./"
+	PK_VALUE=${PK_VALUE%%/*} # remove file name, keep dir name
+	PK_VALUE=${PK_VALUE#*.}   # remove left side of the ".", i.e. PK_KEY
+	
+	COLUMN_NAME=${i##*/}     # remove path, keep file name
+	COLUMN_NAME=${COLUMN_NAME%.in} # remove file extension
+
+	CODE_CONTENT=$(cat $i | xxd -p | tr -d '\n') # Convert the contents of file to hex stream
+
+	echo "REPLACE INTO $TABLE_NAME ($PK_KEY, $COLUMN_NAME) VALUES ("'"'"$PK_VALUE"'"'", 0x$CODE_CONTENT);" >> compiledCode.sql
+done
+

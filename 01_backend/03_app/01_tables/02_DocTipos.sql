@@ -4,9 +4,8 @@
 CREATE TABLE <?=tableNameWithModule()?> (  
   Tipo VARCHAR(50) NOT NULL,
   DocSchema JSON,
+  selectCode TEXT,
   
   PRIMARY KEY (Tipo)
 );
 
--- Dados Iniciais
-INSERT INTO <?=tableNameWithModule()?> (Tipo) VALUES ('FaturaFornecedor');

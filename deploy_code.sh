@@ -13,7 +13,9 @@ echo "["$(date)"]"
 #0.3 Get a temporary filename
 TMP_FILE=$(mktemp)
 
+#############################
 # 1. Capture DB Credentials
+#############################
 SERVER="$(cat .db_credentials.json | jq -r .server)"
 USER="$(cat .db_credentials.json | jq -r .user)"
 PASSWORD="$(cat .db_credentials.json | jq -r .password)"
@@ -26,7 +28,12 @@ git pull 2> /dev/null
 # 2. Destroy old runtime (i.e. delete the database, and all its structure and data)
 $MYSQL_CMD -e "DROP DATABASE IF EXISTS $defaultDb; CREATE DATABASE $defaultDb;"
 
+# 3. Run _prebuild scripts
+for i in $(find . -name "_prebuild" -executable); do $i; done
+
+#############################
 # 3. Write all the source code as text
+#############################
 echo > $TMP_FILE # Clear the contents
 for f in $(find . -name "*.sql" | sort)
 do
@@ -34,7 +41,7 @@ do
 	cat "$f" >> $TMP_FILE
 done 
 
-# 4. Write the code about to be deployed with line number (easier for debugging)
+# 4. Write out the code about to be deployed with line number (easier for debugging)
 cat -n $TMP_FILE > public_html/last_compiled_code_0.txt
 cat $TMP_FILE | php | cat -n > public_html/last_compiled_code.txt
 
