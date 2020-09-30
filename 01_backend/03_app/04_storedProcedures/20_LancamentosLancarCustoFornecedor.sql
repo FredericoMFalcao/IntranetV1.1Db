@@ -15,7 +15,7 @@ CREATE PROCEDURE LancamentosLancarCustoFornecedor (
       THEN signal sqlstate '20000' set message_text = 'Fatura inexistente ou indisponível para esta ação';
     END IF;
 		
-    -- 1. Lançar em custos gerais / anular lançamentos em fornecedor
+    -- 1. Lançar em custos gerais / apagar lançamentos em fornecedor
     IF _NumSerie IN (SELECT NumSerie FROM <?=tableNameWithModule("Lancamentos")?> WHERE LEFT(Conta, 2) = 'FO') THEN
       DELETE FROM <?=tableNameWithModule("Lancamentos")?> WHERE DocNumSerie = _NumSerie AND LEFT(Conta, 2) = 'FO';
     ELSE
