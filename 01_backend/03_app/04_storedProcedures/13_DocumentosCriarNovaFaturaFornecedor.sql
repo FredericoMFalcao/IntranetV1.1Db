@@ -9,17 +9,17 @@ DELIMITER //
 --         (2) ficheiro Dropbox
 --
 
-CREATE PROCEDURE DocumentosCriarNovaFaturaFornecedor (IN _FileId TEXT)
+CREATE PROCEDURE DocumentosCriarNovaFaturaFornecedor (IN in_FileId TEXT)
   BEGIN
  
     -- 0. Verificar validade dos argumentos
-    IF NOT EXISTS (SELECT Id FROM SYS_Files WHERE Id = _FileId)
+    IF NOT EXISTS (SELECT Id FROM SYS_Files WHERE Id = in_FileId)
       THEN signal sqlstate '23000' set message_text = 'FileId inexistente.';
     END IF;
    
     -- 1. Inserir em Documentos 
     INSERT INTO <?=tableNameWithModule("Documentos")?> (Tipo, Estado, FileId) 
-    VALUES ('FaturaFornecedor', 'PorClassificarFornecedor', _FileId);
+    VALUES ('FaturaFornecedor', 'PorClassificarFornecedor', in_FileId);
   
   END;
   
