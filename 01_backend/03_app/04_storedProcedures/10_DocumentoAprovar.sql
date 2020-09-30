@@ -28,8 +28,8 @@ CREATE PROCEDURE DocumentoAprovar (
 )
 
   BEGIN
-    DECLARE Estado TEXT;
-    SET Estado = (SELECT Estado FROM <?=tableNameWithModule("Documentos")?> WHERE Id = in_FaturaId);
+    DECLARE v_Estado TEXT;
+    SET v_Estado = (SELECT Estado FROM <?=tableNameWithModule("Documentos")?> WHERE Id = in_FaturaId);
 
     -- 0. Verificar validade dos argumentos
     IF NOT EXISTS (SELECT Id FROM <?=tableNameWithModule("Documentos")?> WHERE Id = in_FaturaId AND Tipo = 'FaturaFornecedor')
@@ -37,7 +37,7 @@ CREATE PROCEDURE DocumentoAprovar (
     END IF;
 
     -- 1. 'PorClassificarFornecedor' -> 'PorClassificarAnalitica'
-    IF Estado = 'PorClassificarFornecedor' THEN
+    IF v_Estado = 'PorClassificarFornecedor' THEN
       UPDATE <?=tableNameWithModule("Documentos")?> 
       SET
         NumSerie = in_NumSerie,
@@ -62,7 +62,7 @@ CREATE PROCEDURE DocumentoAprovar (
       CALL LancamentosLancarCustoFornecedor (in_NumSerie, in_PeriodoFaturacao, in_FornecedorCodigo);
 
     -- 2. 'PorClassificarAnalitica' -> 'PorRegistarContabilidade'
-    ELSEIF Estado = 'PorClassificarAnalitica' THEN
+    ELSEIF v_Estado = 'PorClassificarAnalitica' THEN
       UPDATE <?=tableNameWithModule("Documentos")?> 
       SET Estado = 'PorRegistarContabilidade'
       WHERE Id = in_FaturaId;
@@ -71,13 +71,13 @@ CREATE PROCEDURE DocumentoAprovar (
       CALL LancamentosReclassificarCusto  (in_NumSerie, in_ClassificacaoAnalitica);
 
     -- 3. 'PorRegistarContabilidade' -> 'PorAnexarCPagamento'
-    ELSEIF Estado = 'PorRegistarContabilidade' THEN
+    ELSEIF v_Estado = 'PorRegistarContabilidade' THEN
       UPDATE <?=tableNameWithModule("Documentos")?> 
       SET Estado = 'PorAnexarCPagamento'
       WHERE Id = in_FaturaId;
 
     -- 4. 'PorAnexarCPagamento' -> 'PorRegistarPagamentoContab'
-    ELSEIF Estado = 'PorAnexarCPagamento' THEN
+    ELSEIF v_Estado = 'PorAnexarCPagamento' THEN
       UPDATE <?=tableNameWithModule("Documentos")?> 
       SET
         Estado = 'PorRegistarPagamentoContab',
@@ -85,7 +85,7 @@ CREATE PROCEDURE DocumentoAprovar (
       WHERE Id = in_FaturaId;
 
     -- 5. 'PorRegistarPagamentoContab' -> 'Concluido'
-    ELSEIF Estado = 'PorRegistarPagamentoContab' THEN
+    ELSEIF v_Estado = 'PorRegistarPagamentoContab' THEN
       UPDATE <?=tableNameWithModule("Documentos")?> 
       SET Estado = 'Concluido'
       WHERE Id = in_FaturaId;
