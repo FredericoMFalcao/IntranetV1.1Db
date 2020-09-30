@@ -16,7 +16,7 @@ CREATE PROCEDURE LancamentosLancarCustoFornecedor (
     END IF;
 		
     -- 1. Lançar em custos gerais / anular lançamentos em fornecedor
-    IF _NumSerie IN (SELECT NumSerie FROM <?=tableNameWithModule("Lancamentos")?> WHERE LEFT(Conta, 2) = 'FO')
+    IF _NumSerie IN (SELECT NumSerie FROM <?=tableNameWithModule("Lancamentos")?> WHERE LEFT(Conta, 2) = 'FO') THEN
       DELETE FROM <?=tableNameWithModule("Lancamentos")?> WHERE DocNumSerie = _NumSerie AND LEFT(Conta, 2) = 'FO';
     ELSE
       CALL CriarLancamento ("CG01", -1, _PeriodoFaturacao, _NumSerie);
