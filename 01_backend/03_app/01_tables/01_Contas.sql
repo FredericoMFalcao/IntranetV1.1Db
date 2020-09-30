@@ -4,7 +4,7 @@
 CREATE TABLE <?=tableNameWithModule()?> (
   Conta VARCHAR(20) NOT NULL, -- Dois primeiros caracteres reflectem o tipo de conta
   Nome VARCHAR(255) NOT NULL,
-  Extra JSON,
+  Extra JSON DEFAULT '{}',
   PRIMARY KEY (Conta)
 );
 
