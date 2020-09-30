@@ -9,7 +9,7 @@ CREATE TABLE <?=tableNameWithModule()?> (
   Estado VARCHAR(50) NOT NULL, -- foreign key
   
   FileId VARCHAR(255) NOT NULL, -- foreign key
-  Extra JSON,
+  Extra JSON DEFAULT '{}',
   
   FOREIGN KEY (FileId) REFERENCES SYS_Files(Id),
   UNIQUE (NumSerie),
