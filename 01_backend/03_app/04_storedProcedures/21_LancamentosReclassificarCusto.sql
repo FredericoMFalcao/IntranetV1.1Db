@@ -14,14 +14,9 @@ CREATE PROCEDURE LancamentosReclassificarCusto (
     SET ValorFatura = FF_ValorTotal((SELECT Extra FROM <?=tableNameWithModule("Documentos")?> WHERE NumSerie = _NumSerie));
     SET PeriodoFaturacao = JSON_EXTRACT((SELECT Extra FROM <?=tableNameWithModule("Documentos")?> WHERE NumSerie = _NumSerie), '$.PeriodoFaturacao');
     SET i = 0;
-	
-    -- 0. Verificar validade dos argumentos
-    IF _NumSerie NOT IN (SELECT NumSerie FROM <?=tableNameWithModule("Documentos")?> WHERE Estado != 'PorClassificarFornecedor')
-      THEN signal sqlstate '20000' set message_text = 'Fatura inexistente ou indisponível para esta ação';
-    END IF;
     
     -- 1. Anular lançamentos em custos gerais / apagar lançamentos em custos específicos
-    IF _NumSerie IN (SELECT NumSerie FROM <?=tableNameWithModule("Lancamentos")?> WHERE LEFT(Conta, 2) = 'CR') THEN
+    IF EXISTS (SELECT DocNumSerie FROM <?=tableNameWithModule("Lancamentos")?> WHERE DocNumSerie = _NumSerie AND LEFT(Conta, 2) = 'CR') THEN
       DELETE FROM <?=tableNameWithModule("Lancamentos")?> WHERE DocNumSerie = _NumSerie AND LEFT(Conta, 2) = 'CR';
     ELSE
       CALL CriarLancamento ("CG01", 1, PeriodoFaturacao, _NumSerie);
