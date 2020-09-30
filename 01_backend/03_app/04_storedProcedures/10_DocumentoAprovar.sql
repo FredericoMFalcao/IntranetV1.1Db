@@ -57,12 +57,18 @@ CREATE PROCEDURE DocumentoAprovar (
           '$.Amortizacao', _Amortizacao
         ) 
       WHERE Id = _FaturaId;
+      
+      -- Lançar dívida de fornecedor e custos gerais:
+      CALL LancamentosLancarCustoFornecedor (_NumSerie, _PeriodoFaturacao, _FornecedorCodigo);
 
     -- 2. 'PorClassificarAnalitica' -> 'PorRegistarContabilidade'
     ELSEIF Estado = 'PorClassificarAnalitica' THEN
       UPDATE <?=tableNameWithModule("Documentos")?> 
       SET Estado = 'PorRegistarContabilidade'
       WHERE Id = _FaturaId;
+      
+      -- Lançar custos específicos e anular custos gerais:
+      CALL LancamentosReclassificarCusto  (_NumSerie, _ClassificacaoAnalitica);
 
     -- 3. 'PorRegistarContabilidade' -> 'PorAnexarCPagamento'
     ELSEIF Estado = 'PorRegistarContabilidade' THEN
