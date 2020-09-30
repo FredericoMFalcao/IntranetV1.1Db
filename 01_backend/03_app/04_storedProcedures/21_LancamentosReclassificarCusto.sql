@@ -8,17 +8,18 @@ CREATE PROCEDURE LancamentosReclassificarCusto (
   -- e.g. [{"CentroResultados": "CR0101", "Analitica": "AN0202", "Colaborador": "COabc", "Valor": 1000}, {...}]
 )
   BEGIN
-    DECLARE ValorFatura DECIMAL (18, 2);
-    SET ValorFatura = FF_ValorTotal((SELECT Extra FROM <?=tableNameWithModule("Documentos")?> WHERE NumSerie = _NumSerie));
-	DECLARE PeriodoFaturacao TEXT;
-	SET PeriodoFaturacao = JSON_EXTRACT((SELECT Extra FROM <?=tableNameWithModule("Documentos")?> WHERE NumSerie = _NumSerie), '$.PeriodoFaturacao');
-    DECLARE i INT;
-    SET i = 0;
-    
+
     -- 0. Verificar validade dos argumentos
     IF _NumSerie NOT IN (SELECT NumSerie FROM <?=tableNameWithModule("Documentos")?> WHERE Estado != 'PorClassificarFornecedor')
       THEN signal sqlstate '20000' set message_text = 'Fatura inexistente ou indisponível para esta ação';
     END IF;
+
+    DECLARE ValorFatura DECIMAL(18,2);
+    SET ValorFatura = FF_ValorTotal((SELECT Extra FROM <?=tableNameWithModule("Documentos")?> WHERE NumSerie = _NumSerie));
+    DECLARE PeriodoFaturacao TEXT;
+    SET PeriodoFaturacao = JSON_EXTRACT((SELECT Extra FROM <?=tableNameWithModule("Documentos")?> WHERE NumSerie = _NumSerie), '$.PeriodoFaturacao');
+    DECLARE i INT;
+    SET i = 0;
     
     -- 1. Anular lançamentos em custos gerais / apagar lançamentos em custos específicos
     IF _NumSerie IN (SELECT NumSerie FROM <?=tableNameWithModule("Lancamentos")?> WHERE LEFT(Conta, 2) = 'CR') THEN
