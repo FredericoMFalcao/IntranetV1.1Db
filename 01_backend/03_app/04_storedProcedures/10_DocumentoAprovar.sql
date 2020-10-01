@@ -54,7 +54,7 @@ CREATE PROCEDURE DocumentoAprovar (
 
 						          'DataValidade', in_DataValidade,
 						          'FornecedorCodigo', in_FornecedorCodigo,
-						          'Valor', in_Valor,
+
 						          'Moeda', in_Moeda,
 						          'Descricao', in_Descricao,
 						          'ImpostoConsumo', in_ImpostoConsumo,
