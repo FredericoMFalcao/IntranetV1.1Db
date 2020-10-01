@@ -42,20 +42,29 @@ CREATE PROCEDURE DocumentoAprovar (
       SET
         NumSerie = in_NumSerie,
         Estado = 'PorClassificarAnalitica',
-        Extra = JSON_SET(Extra, 
-          '$.NumFatura', in_NumFatura,
-          '$.ProjetoProvisorio', in_Projeto,
-          '$.DataFatura', in_DataFatura,
-          '$.DataRecebida', in_DataRecebida,
-          '$.PeriodoFaturacao', in_PeriodoFaturacao,
-          '$.DataValidade', in_DataValidade,
-          '$.FornecedorCodigo', in_FornecedorCodigo,
-          '$.Valor', in_Valor,
-          '$.Moeda', in_Moeda,
-          '$.Descricao', in_Descricao,
-          '$.ImpostoConsumo', in_ImpostoConsumo,
-          '$.Amortizacao', in_Amortizacao
-        ) 
+        Extra = JSON_MERGE (
+						Extra,
+						JSON_MERGE(
+							JSON_MERGE(
+								JSON_OBJECT(
+								  'NumFatura', in_NumFatura,
+						          'ProjetoProvisorio', in_Projeto,
+						          'DataFatura', in_DataFatura,
+						          'DataRecebida', in_DataRecebida,
+
+						          'DataValidade', in_DataValidade,
+						          'FornecedorCodigo', in_FornecedorCodigo,
+						          'Valor', in_Valor,
+						          'Moeda', in_Moeda,
+						          'Descricao', in_Descricao,
+						          'ImpostoConsumo', in_ImpostoConsumo,
+						          'Amortizacao', in_Amortizacao		
+								  )
+								  ,CONCAT("{\"PeriodoFaturacao\":", in_PeriodoFaturacao,"}")
+							  )
+							,CONCAT("{\"Valor\":", in_Valor,"}")
+						)
+					)
       WHERE Id = in_FaturaId;
       
       -- Lançar dívida de fornecedor e custos gerais:
