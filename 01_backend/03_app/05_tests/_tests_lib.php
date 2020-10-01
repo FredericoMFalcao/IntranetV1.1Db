@@ -39,6 +39,11 @@ class UnitTest {
 				echo "[".red_color("FAILED")." ] {$this->description}  \n";
 				echo "          Expected ".green_color("success")."!\n";
 				echo "          ".red_color("Failed")." with (code) message ({$errorInfo[ERROR_CODE_IDX]}) {$errorInfo[ERROR_MSG_IDX]}\n";
+				$warnings = sql("SHOW WARNINGS");
+				if (count($warnings) > 0 ) {
+					echo "           -- Backtrace --\n";
+					foreach($warnings as $warning) echo "          {$warning["Message"]}\n";
+				}
 			/* 2nd case: expected fail but either suceeded or message is wrong */
 			} elseif($this->expectedResultType == TEST_ERROR_WITH_MESSAGE && (sql($this->testQuery, $errorInfo) || $errorInfo[ERROR_MSG_IDX] != $this->expectedResultMsg)) {
 				echo "[".red_color("FAILED")." ] {$this->description} \n";
