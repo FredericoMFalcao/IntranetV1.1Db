@@ -33,7 +33,7 @@ require_once __DIR__."/_tests_lib.php";
 	(new UnitTest())
 	->describe("Classificar analítica")
 	->expectQuery('
-		CALL DocumentoAprovar (1,"FTAn12#123.pdf",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"[{\"CentroResultados\": \"CR0101\", \"Analitica\": \"AN0202\", \"Valor\": 1000}]",NULL);
+		CALL DocumentoAprovar (1,"FTAn12#123.pdf",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"[{\"CentroResultados\": \"CR0101\", \"Analitica\": \"AN0202\", \"Colaborador\": \"CO123\", \"Valor\": 1000}]",NULL);
 	')
 	->toSucceed()
 )
