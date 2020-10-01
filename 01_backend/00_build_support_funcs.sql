@@ -4,7 +4,7 @@
 ini_set("display_errors", "stderr");
 ini_set("error_reporting", E_ALL);
 
-function tableNameWithModule(string $tblName = '') {
+function tableNameWithModule(string $tblName = '', string $moduleName = '') {
   // Import variables from outer scope
   global $outerScopeCompleteFilePath;
   // Set default of no value was provided
@@ -14,8 +14,10 @@ function tableNameWithModule(string $tblName = '') {
 	$tblName = $matches[1]; 
   }
   // Extract module name
-  $moduleName = array_slice(explode("/", $outerScopeCompleteFilePath),-3,1)[0];
-  $moduleName = substr($moduleName, 3);
+  if ($moduleName == '') {
+	  $moduleName = array_slice(explode("/", $outerScopeCompleteFilePath),-3,1)[0];
+	  $moduleName = substr($moduleName, 3);
+  }
 
   return strtoupper($moduleName)."_".$tblName." ";
   
