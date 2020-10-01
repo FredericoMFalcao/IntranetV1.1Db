@@ -11,17 +11,17 @@ CREATE PROCEDURE DocumentoAprovar (
   IN in_Projeto                  TEXT,
   IN in_DataFatura               DATE,
   IN in_DataRecebida             DATE,
-  IN in_PeriodoFaturacao         TEXT,  -- e.g. {"Inicio": "2011-11-25", "Fim": "2011-11-25"}
+  IN in_PeriodoFaturacao         JSON,  -- e.g. {"Inicio": "2011-11-25", "Fim": "2011-11-25"}
   IN in_DataValidade             DATE,
   IN in_FornecedorCodigo         TEXT,
-  IN in_Valor                    TEXT,  -- e.g. {"Bens": {"ValorBase": 0.00, "Iva": 0.00}, "Servicos": {"ValorBase":0.00,"Iva":0.00}}
+  IN in_Valor                    JSON,  -- e.g. {"Bens": {"ValorBase": 0.00, "Iva": 0.00}, "Servicos": {"ValorBase":0.00,"Iva":0.00}}
   IN in_Moeda                    TEXT,
   IN in_Descricao                TEXT,
   IN in_ImpostoConsumo           DECIMAL(18,2),
   IN in_Amortizacao              BOOLEAN,
   
   -- Inputs para classificar analítica:
-  IN in_ClassificacaoAnalitica   TEXT,  -- e.g. [{"CentroResultados": "CR0101", "Analitica": "AN0202", "Colaborador": "COabc", "Valor": 1000}, {...}]
+  IN in_ClassificacaoAnalitica   JSON,  -- e.g. [{"CentroResultados": "CR0101", "Analitica": "AN0202", "Colaborador": "COabc", "Valor": 1000}, {...}]
   
   -- Inputs para anexar comprovativo de pagamento:
   IN in_ComprovativoPagamentoId   INT
