@@ -25,7 +25,7 @@ require_once __DIR__."/_tests_lib.php";
 	(new UnitTest())
 	->describe("Classificar fornecedor")
 	->expectQuery('
-		CALL DocumentoAprovar (1,"FTAn12#123.pdf","123","01","2012-12-12","2012-12-12","{\"Inicio\": \"2011-11-01\", \"Fim\": \"2011-12-31\"}","2012-12-12","FO0000111","{\"Bens\": {\"ValorBase\": 0.00, \"Iva\": 0.00}, \"Servicos\": {\"ValorBase\":0.00,\"Iva\":0.00}}","AKZ","Fatura de teste",0,0,NULL,NULL);
+		CALL DocumentoAprovar (1,"FTAn12#123.pdf","123","01","2012-12-12","2012-12-12","{\"Inicio\": \"2011-11-01\", \"Fim\": \"2011-12-31\"}","2012-12-12","FO0000111","{\"Bens\": {\"ValorBase\": 0.00, \"Iva\": 0.00}, \"Servicos\": {\"ValorBase\":900,\"Iva\":100}}","AKZ","Fatura de teste",0,0,NULL,NULL);
 	')
 	->toSucceed()
 )
