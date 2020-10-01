@@ -12,7 +12,7 @@ CREATE PROCEDURE LancamentosReclassificarCusto (
     DECLARE v_PeriodoFaturacao TEXT;
     DECLARE i INT;
     SET v_ValorFatura = FF_ValorTotal((SELECT Extra FROM <?=tableNameWithModule("Documentos")?> WHERE NumSerie = in_NumSerie));
-    SET v_PeriodoFaturacao = JSON_VALUE((SELECT Extra FROM <?=tableNameWithModule("Documentos")?> WHERE NumSerie = in_NumSerie), '$.PeriodoFaturacao');
+    SET v_PeriodoFaturacao = JSON_EXTRACT((SELECT Extra FROM <?=tableNameWithModule("Documentos")?> WHERE NumSerie = in_NumSerie), '$.PeriodoFaturacao');
     SET i = 0;
     
     -- 1. Anular lançamentos em custos gerais / apagar lançamentos em custos específicos
