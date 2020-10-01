@@ -8,5 +8,6 @@ CREATE TABLE <?=tableNameWithModule()?> (
   ValorDefeito TEXT,
   Opcoes JSON,
   
-  FOREIGN KEY (ContaTipo) REFERENCES <?=tableNameWithModule("ContaTipos")?> (Tipo)
+  FOREIGN KEY (ContaTipo) REFERENCES <?=tableNameWithModule("ContaTipos")?> (Tipo),
+  FOREIGN KEY (Tipo)      REFERENCES <?=tableNameWithModule("Types","PLT")?>(Name)
 );
