@@ -27,11 +27,11 @@ CREATE PROCEDURE LancamentosReclassificarCusto (
 
       CALL CriarLancamento (
         CONCAT_WS(":",
-          JSON_VALUE(JSON_EXTRACT(in_ClassificacaoAnalitica, CONCAT("'$[", i, "]'")), '$.CentroResultados'),
-          JSON_VALUE(JSON_EXTRACT(in_ClassificacaoAnalitica, CONCAT("'$[", i, "]'")), '$.Analitica'),
-          JSON_VALUE(JSON_EXTRACT(in_ClassificacaoAnalitica, CONCAT("'$[", i, "]'")), '$.Colaborador')
+          JSON_VALUE(JSON_EXTRACT(in_ClassificacaoAnalitica, CONCAT("$[", i, "]")), '$.CentroResultados'),
+          JSON_VALUE(JSON_EXTRACT(in_ClassificacaoAnalitica, CONCAT("$[", i, "]")), '$.Analitica'),
+          JSON_VALUE(JSON_EXTRACT(in_ClassificacaoAnalitica, CONCAT("$[", i, "]")), '$.Colaborador')
         ),
-        JSON_VALUE(JSON_EXTRACT(in_ClassificacaoAnalitica, CONCAT("'$[", i, "]'")), '$.Valor') / v_ValorFatura * -1,
+        JSON_VALUE(JSON_EXTRACT(in_ClassificacaoAnalitica, CONCAT("$[", i, "]")), '$.Valor') / v_ValorFatura * -1,
         v_PeriodoFaturacao,
         in_NumSerie
       );
