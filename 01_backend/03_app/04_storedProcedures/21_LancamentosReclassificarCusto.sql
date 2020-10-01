@@ -12,7 +12,7 @@ CREATE PROCEDURE LancamentosReclassificarCusto (
     DECLARE v_PeriodoFaturacao TEXT;
     DECLARE i INT;
     SET v_ValorFatura = FF_ValorTotal((SELECT Extra FROM <?=tableNameWithModule("Documentos")?> WHERE NumSerie = in_NumSerie));
-    SET v_PeriodoFaturacao = JSON_EXTRACT((SELECT Extra FROM <?=tableNameWithModule("Documentos")?> WHERE NumSerie = in_NumSerie), '$.PeriodoFaturacao');
+    SET v_PeriodoFaturacao = JSON_VALUE((SELECT Extra FROM <?=tableNameWithModule("Documentos")?> WHERE NumSerie = in_NumSerie), '$.PeriodoFaturacao');
     SET i = 0;
     
     -- 1. Anular lançamentos em custos gerais / apagar lançamentos em custos específicos
@@ -27,11 +27,11 @@ CREATE PROCEDURE LancamentosReclassificarCusto (
 
       CALL CriarLancamento (
         CONCAT_WS(":",
-          JSON_EXTRACT(JSON_EXTRACT(in_ClassificacaoAnalitica, CONCAT("'$[", i, "]'")), '$.CentroResultados'),
-          JSON_EXTRACT(JSON_EXTRACT(in_ClassificacaoAnalitica, CONCAT("'$[", i, "]'")), '$.Analitica'),
-          JSON_EXTRACT(JSON_EXTRACT(in_ClassificacaoAnalitica, CONCAT("'$[", i, "]'")), '$.Colaborador')
+          JSON_VALUE(JSON_EXTRACT(in_ClassificacaoAnalitica, CONCAT("'$[", i, "]'")), '$.CentroResultados'),
+          JSON_VALUE(JSON_EXTRACT(in_ClassificacaoAnalitica, CONCAT("'$[", i, "]'")), '$.Analitica'),
+          JSON_VALUE(JSON_EXTRACT(in_ClassificacaoAnalitica, CONCAT("'$[", i, "]'")), '$.Colaborador')
         ),
-        JSON_EXTRACT(JSON_EXTRACT(in_ClassificacaoAnalitica, CONCAT("'$[", i, "]'")), '$.Valor') / v_ValorFatura * -1,
+        JSON_VALUE(JSON_EXTRACT(in_ClassificacaoAnalitica, CONCAT("'$[", i, "]'")), '$.Valor') / v_ValorFatura * -1,
         v_PeriodoFaturacao,
         in_NumSerie
       );
