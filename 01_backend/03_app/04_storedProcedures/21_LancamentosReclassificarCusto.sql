@@ -11,8 +11,7 @@ CREATE PROCEDURE LancamentosReclassificarCusto (
     DECLARE v_ValorFatura DECIMAL(18,2);
     DECLARE v_PeriodoFaturacao TEXT;
     DECLARE i INT;
---    SET v_ValorFatura = FF_ValorTotal((SELECT Extra FROM <?=tableNameWithModule("Documentos")?> WHERE NumSerie = in_NumSerie));
-    SET v_ValorFatura = 1000; -- provisório
+    SET v_ValorFatura = FF_ValorTotal((SELECT Extra FROM <?=tableNameWithModule("Documentos")?> WHERE NumSerie = in_NumSerie));
     SET v_PeriodoFaturacao = JSON_EXTRACT((SELECT Extra FROM <?=tableNameWithModule("Documentos")?> WHERE NumSerie = in_NumSerie), '$.PeriodoFaturacao');
     SET i = 0;
     
