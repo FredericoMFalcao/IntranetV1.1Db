@@ -7,3 +7,4 @@ public_html/last_unit_test_results.html
 *.pyc
 02_frontend/*.dml.sql
 *.swp
+*compiledCode*
