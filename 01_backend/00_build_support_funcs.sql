@@ -17,7 +17,7 @@ function tableNameWithModule(string $tblName = '') {
   $moduleName = array_slice(explode("/", $outerScopeCompleteFilePath),-3,1)[0];
   $moduleName = substr($moduleName, 3);
 
-  return strtoupper($moduleName)."_".$tblName;
+  return strtoupper($moduleName)."_".$tblName." ";
   
 }
 ?>
