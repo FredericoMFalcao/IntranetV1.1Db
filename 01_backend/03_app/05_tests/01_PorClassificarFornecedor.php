@@ -8,7 +8,7 @@ require_once __DIR__."/_tests_lib.php";
 	(new UnitTest())
 	->describe("Criar fatura de fornecedor, associar a um ficheiro inexistente e receber erro")
 	->expectQuery('
-		CALL DocumentosCriarNovaFaturaFornecedor ("ficheironaoexistente.pdf");
+		CALL DocumentosCriar ("FaturaFornecedor", "PorClassificarFornecedor", "ficheironaoexistente.pdf");
 	')
 	->toErrWithCode("23000")
 )
@@ -17,7 +17,7 @@ require_once __DIR__."/_tests_lib.php";
 	->describe("Criar fatura de fornecedor e associar a um ficheiro existente")
 	->expectQuery('
 		INSERT INTO SYS_Files (Id) VALUES ("fatura123.pdf");
-		CALL DocumentosCriarNovaFaturaFornecedor ("fatura123.pdf");
+		CALL DocumentosCriar ("FaturaFornecedor", "PorClassificarFornecedor", "fatura123.pdf");
 	')
 	->toSucceed()
 )
