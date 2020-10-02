@@ -1,9 +1,9 @@
 <VirtualHost *:443>
 	ServerAdmin webmaster@localhost
-	DocumentRoot /var/www/intranet_v2/public_html
+	DocumentRoot <?=getcwd()?>/public_html
 
 	# Enable BASH scripts
-	<Directory "/var/www/intranet_v2">
+	<Directory "<?=getcwd()?>">
     		Options +ExecCGI
 		AddHandler cgi-script .py
 		AddHandler cgi-script .sh
@@ -24,7 +24,7 @@
 	</FilesMatch>
 
 	## Server Name
-	ServerName v2.intranetafm.com
+	ServerName <?=basename(getcwd())=="master"?"v2":basename(getcwd())?>.intranetafm.com
 	
 
 	## SSL keys
@@ -32,6 +32,6 @@
 	SSLCertificateKeyFile /home/ubuntu/Dropbox/ApacheSSL/server.key
 	
 	## Custom Logs
-	ErrorLog /var/www/intranet_v2/log/apache2_error.log
-	CustomLog /var/www/intranet_v2/log/apache2_access.log combined
+	ErrorLog <?=getcwd()?>/log/apache2_error.log
+	CustomLog <?=getcwd()?>/log/apache2_access.log combined
 </VirtualHost>

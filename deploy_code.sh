@@ -14,6 +14,14 @@ echo "["$(date)"]"
 TMP_FILE=$(mktemp)
 
 #############################
+# 1. Create a new subdomain
+#############################
+php apache_config.conf.php > apache_config.conf
+# @TODO: automate this part
+# ln -s $(pwd)/apache_config.conf /etc/apache2/sites-enabled/xxx_site.conf
+sudo -n apachectl restart
+
+#############################
 # 1. Capture DB Credentials
 #############################
 SERVER="$(cat .db_credentials.json | jq -r .server)"
