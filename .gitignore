@@ -1,5 +1,6 @@
 .db_credentials.json
 log/
+!log/readme.md
 public_html/last_update_error.txt
 public_html/last_compiled_code.txt
 public_html/last_compiled_code_0.txt
