@@ -8,7 +8,7 @@ require_once __DIR__."/_tests_lib.php";
 	(new UnitTest())
 	->describe("Criar fatura de fornecedor, associar a um ficheiro inexistente e receber erro")
 	->expectQuery('
-		CALL DocumentosCriar ("FaturaFornecedor", "PorClassificarFornecedor", "ficheironaoexistente.pdf");
+		CALL DocumentosCriar ("FaturaFornecedor", "ficheironaoexistente.pdf", NULL);
 	')
 	->toErrWithCode("23000")
 )
@@ -17,7 +17,7 @@ require_once __DIR__."/_tests_lib.php";
 	->describe("Criar fatura de fornecedor e associar a um ficheiro existente")
 	->expectQuery('
 		INSERT INTO SYS_Files (Id) VALUES ("fatura123.pdf");
-		CALL DocumentosCriar ("FaturaFornecedor", "PorClassificarFornecedor", "fatura123.pdf");
+		CALL DocumentosCriar ("FaturaFornecedor", "fatura123.pdf", NULL);
 	')
 	->toSucceed()
 )
@@ -34,6 +34,32 @@ require_once __DIR__."/_tests_lib.php";
 	->describe("Classificar analítica")
 	->expectQuery('
 		CALL DocumentoAprovar (1,"FTAn12#123.pdf",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"[{\"CentroResultados\": \"CR0101\", \"Analitica\": \"AN0202\", \"Colaborador\": \"CO123\", \"Valor\": 800}, {\"CentroResultados\": \"CR0101\", \"Analitica\": \"AN0202\", \"Colaborador\": \"CO456\", \"Valor\": 200}]",NULL);
+	')
+	->toSucceed()
+)
+->addTest(
+	(new UnitTest())
+	->describe("Registar na contabilidade")
+	->expectQuery('
+		CALL DocumentoAprovar (1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+	')
+	->toSucceed()
+)
+->addTest(
+	(new UnitTest())
+	->describe("Anexar comprovativo de pagamento")
+	->expectQuery('
+		INSERT INTO SYS_Files (Id) VALUES ("cpagamento123.pdf");
+		CALL DocumentosCriar ("ComprovativoPagamento", "cpagamento123.pdf", NULL);
+		CALL DocumentoAprovar (1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,2);
+	')
+	->toSucceed()
+)
+->addTest(
+	(new UnitTest())
+	->describe("Registar pagamento na contabilidade")
+	->expectQuery('
+		CALL DocumentoAprovar (1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 	')
 	->toSucceed()
 )
