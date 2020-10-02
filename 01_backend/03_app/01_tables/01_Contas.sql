@@ -12,8 +12,10 @@ CREATE TABLE <?=tableNameWithModule()?> (
 -- - Dados Iniciais -- -
 INSERT INTO <?=tableNameWithModule()?> (Conta, Nome) VALUES ('CR0101',"Teste01"); -- centro de resultados
 INSERT INTO <?=tableNameWithModule()?> (Conta, Nome) VALUES ('AN0202',"Teste02"); -- analítica
-INSERT INTO <?=tableNameWithModule()?> (Conta, Nome) VALUES ('FO32121000',"Teste03"); -- fornecedor
-INSERT INTO <?=tableNameWithModule()?> (Conta, Nome) VALUES ('COabc',"Teste04"); -- colaborador
-INSERT INTO <?=tableNameWithModule()?> (Conta, Nome) VALUES ('CG01',"FaturasFornecedor"); -- custos gerais
+INSERT INTO <?=tableNameWithModule()?> (Conta, Nome) VALUES ('FO0000111',"Teste03"); -- fornecedor
+INSERT INTO <?=tableNameWithModule()?> (Conta, Nome) VALUES ('CO123',"Teste04"); -- colaborador
+INSERT INTO <?=tableNameWithModule()?> (Conta, Nome) VALUES ('CO456',"Teste05"); -- colaborador
+INSERT INTO <?=tableNameWithModule()?> (Conta, Nome) VALUES ('CB01',"Teste06"); -- conta bancária
+
 
 -- vim: syntax=sql
