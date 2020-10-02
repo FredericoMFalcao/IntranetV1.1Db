@@ -19,7 +19,7 @@ CREATE PROCEDURE DocumentosCriar (IN in_DocTipo TEXT, IN in_DocEstado TEXT, IN i
    
     -- 1. Inserir em Documentos 
     INSERT INTO <?=tableNameWithModule("Documentos")?> (Tipo, Estado, FileId) 
-    VALUES ('in_DocTipo', 'in_DocEstado', in_FileId);
+    VALUES (in_DocTipo, in_DocEstado, in_FileId);
   
   END;
   
