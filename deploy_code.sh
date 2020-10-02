@@ -18,7 +18,8 @@ TMP_FILE=$(mktemp)
 #############################
 php apache_config.conf.php > apache_config.conf
 # @TODO: automate this part
-ln -s $(pwd)/apache_config.conf /etc/apache2/sites-enabled/020-intranet_v2_$(basename $(pwd)).conf
+
+ln -f -s $(pwd)/apache_config.conf /etc/apache2/sites-enabled/020-intranet_v2_$(basename $(pwd)).conf
 sudo -n apachectl restart
 
 #############################
