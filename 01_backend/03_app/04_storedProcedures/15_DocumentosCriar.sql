@@ -9,7 +9,12 @@ DELIMITER //
 --         (2) ficheiro Dropbox
 --
 
-CREATE PROCEDURE DocumentosCriar (IN in_DocTipo TEXT, IN in_DocEstado TEXT, IN in_FileId TEXT)
+CREATE PROCEDURE DocumentosCriar (
+  IN in_DocTipo TEXT,
+  IN in_FileId TEXT,
+  -- campo especifico de comprovativos de pagamento:
+  IN in_ContaBancaria TEXT
+)
   BEGIN
  
     -- 0. Verificar validade dos argumentos
@@ -17,9 +22,22 @@ CREATE PROCEDURE DocumentosCriar (IN in_DocTipo TEXT, IN in_DocEstado TEXT, IN i
       THEN signal sqlstate '23000' set message_text = 'FileId inexistente.';
     END IF;
    
-    -- 1. Inserir em Documentos 
-    INSERT INTO <?=tableNameWithModule("Documentos")?> (Tipo, Estado, FileId) 
-    VALUES (in_DocTipo, in_DocEstado, in_FileId);
+   
+    -- 1. Inserir em Documentos
+	
+	-- 1.1. Inserir fatura de fornecedor
+	IF in_DocTipo = 'FaturaFornecedor' THEN
+      INSERT INTO <?=tableNameWithModule("Documentos")?> (Tipo, Estado, FileId) 
+      VALUES (in_DocTipo, 'PorClassificarFornecedor', in_FileId);
+	  
+	  
+	-- 1.2. Inserir comprovativo de pagamento
+	ELSEIF in_DocTipo = 'ComprovativoPagamento' THEN
+      INSERT INTO <?=tableNameWithModule("Documentos")?> (Tipo, Estado, FileId, Extra) 
+      VALUES (in_DocTipo, 'Concluido', in_FileId, JSON_SET(Extra, '$.ContaBancaria', in_ContaBancaria));
+	  
+	  
+	END IF;
   
   END;
   
