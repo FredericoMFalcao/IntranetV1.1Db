@@ -16,51 +16,51 @@
 			
 
 	</head>
-<body class="container">
-	<h2>Links</h2>
-		<ul>
-			<li>	<a href="sql_explorer.php">sql explorer</a></li>
-			<li>	<a href="deploy_code.sh">force code deployment</a></li>
-		</ul>
-	<hr>
-	
-	<h2>Last WebServer Errors</h2>
-	<pre><?php passthru("tail ../log/apache2_error.log");  ?></pre>
-	<hr>
-	
-	<h2>Last Compilation Status</h2>
-	<pre><?php echo file_get_contents("./last_update_error.txt"); ?></pre>
-	<hr>
-	
-	<h2>Last Unit Test Results</h2>
-	<pre><?php echo file_get_contents("./last_unit_test_results.html"); ?></pre>
+	<body class="container">
+		<h2>Links</h2>
+			<ul>
+				<li>	<a href="sql_explorer.php">sql explorer</a></li>
+				<li>	<a href="deploy_code.sh">force code deployment</a></li>
+			</ul>
+		<hr>
+		
+		<h2>Last WebServer Errors</h2>
+		<pre><?php passthru("tail ../log/apache2_error.log");  ?></pre>
+		<hr>
+		
+		<h2>Last Compilation Status</h2>
+		<pre><?php echo file_get_contents("./last_update_error.txt"); ?></pre>
+		<hr>
+		
+		<h2>Last Unit Test Results</h2>
+		<pre><?php echo file_get_contents("./last_unit_test_results.html"); ?></pre>
 
-	<h2>Last Compilation Text</h2>
-	<?php
-	$contentGroup = [
-		["title"=> "Before PHP preprocessing", "body" => file_get_contents("./last_compiled_code_0.txt")],
-		["title"=> "After PHP preprocessing", "body" => file_get_contents("./last_compiled_code.txt")]
-	];
-	?>
-	<div class="accordion" id="accordionExample">
-		<?php foreach($contentGroup as $i => $content): ?>
-	  <div class="card">
-	    <div class="card-header" id="headingOne">
-	      <h2 class="mb-0">
-	        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseGroup<?=$i?>" aria-expanded="true" aria-controls="collapseOne">
-				<?= $content['title']?>
-	        </button>
-	      </h2>
-	    </div>
+		<h2>Last Compilation Text</h2>
+		<?php
+		$contentGroup = [
+			["title"=> "Before PHP preprocessing", "body" => file_get_contents("./last_compiled_code_0.txt")],
+			["title"=> "After PHP preprocessing", "body" => file_get_contents("./last_compiled_code.txt")]
+		];
+		?>
+		<div class="accordion" id="accordionExample">
+			<?php foreach($contentGroup as $i => $content): ?>
+		  <div class="card">
+		    <div class="card-header" id="headingOne">
+		      <h2 class="mb-0">
+			<button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseGroup<?=$i?>" aria-expanded="true" aria-controls="collapseOne">
+					<?= $content['title']?>
+			</button>
+		      </h2>
+		    </div>
 
-	    <div id="collapseGroup<?=$i?>" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
-	      <div class="card-body">
-		      <pre><code class="language-sql" ><?= htmlspecialchars($content['body'])?></code></pre>
-	      </div>
-	    </div>
-	  </div>
-		<?php endforeach; ?>
-	</div>
-	
-</body>
+		    <div id="collapseGroup<?=$i?>" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+		      <div class="card-body">
+			      <pre><code class="language-sql" ><?= htmlspecialchars($content['body'])?></code></pre>
+		      </div>
+		    </div>
+		  </div>
+			<?php endforeach; ?>
+		</div>
+		
+	</body>
 </html>
