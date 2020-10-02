@@ -2,7 +2,7 @@ DROP PROCEDURE IF EXISTS LancamentosPagarDividaFornecedor;
 
 DELIMITER //
 
-CREATE PROCEDURE LancamentosPagarDividaFornecedor (IN in_NumSerie TEXT)
+CREATE PROCEDURE LancamentosPagarDividaFornecedor (IN in_NumSerie TEXT, IN in_ComprovativoPagamentoId INT)
  
   BEGIN
            
@@ -17,13 +17,7 @@ CREATE PROCEDURE LancamentosPagarDividaFornecedor (IN in_NumSerie TEXT)
     
     -- 2. Inserir lançamentos na conta bancária
     CALL CriarLancamento (
-	  JSON_EXTRACT(
-	    (SELECT Extra
-	    FROM <?=tableNameWithModule("Documentos")?>
-	    WHERE Id = JSON_EXTRACT((SELECT Extra FROM <?=tableNameWithModule("Documentos")?> WHERE NumSerie = in_NumSerie), '$.ComprovativoPagamentoId')
-		),
-        '$.ContaBancaria'
-      ),
+      JSON_EXTRACT((SELECT Extra FROM <?=tableNameWithModule("Documentos")?> WHERE Id = in_ComprovativoPagamentoId), '$.ContaBancaria'),
       1,
       JSON_EXTRACT((SELECT Extra FROM <?=tableNameWithModule("Documentos")?> WHERE NumSerie = in_NumSerie), '$.PeriodoFaturacao'),
       in_NumSerie
