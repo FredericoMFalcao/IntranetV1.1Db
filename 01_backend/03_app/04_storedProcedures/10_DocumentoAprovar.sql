@@ -92,6 +92,9 @@ CREATE PROCEDURE DocumentoAprovar (
         Estado = 'PorRegistarPagamentoContab',
         Extra = JSON_SET(Extra, '$.ComprovativoPagamentoId', in_ComprovativoPagamentoId)
       WHERE Id = in_FaturaId;
+      
+      -- Lançar pagamento e abater à conta de fornecedores:
+      CALL LancamentosPagarDividaFornecedor  (in_NumSerie, in_ComprovativoPagamentoId);
 
 
     -- 5. 'PorRegistarPagamentoContab' -> 'Concluido'
