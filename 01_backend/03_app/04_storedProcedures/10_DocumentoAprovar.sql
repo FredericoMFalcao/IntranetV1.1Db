@@ -43,32 +43,30 @@ CREATE PROCEDURE DocumentoAprovar (
         NumSerie = in_NumSerie,
         Estado = 'PorClassificarAnalitica',
         Extra = JSON_MERGE (
-						Extra,
-						JSON_MERGE(
-							JSON_MERGE(
-								JSON_OBJECT(
-								  'NumFatura', in_NumFatura,
-						          'ProjetoProvisorio', in_Projeto,
-						          'DataFatura', in_DataFatura,
-						          'DataRecebida', in_DataRecebida,
+          Extra,
+          JSON_MERGE(
+            JSON_MERGE(
+              JSON_OBJECT(
+                'NumFatura', in_NumFatura,
+                'ProjetoProvisorio', in_Projeto,
+                'DataFatura', in_DataFatura,
+                'DataRecebida', in_DataRecebida,
 
-						          'DataValidade', in_DataValidade,
-						          'FornecedorCodigo', in_FornecedorCodigo,
+                'DataValidade', in_DataValidade,
+                'FornecedorCodigo', in_FornecedorCodigo,
 
-						          'Moeda', in_Moeda,
-						          'Descricao', in_Descricao,
-						          'ImpostoConsumo', in_ImpostoConsumo,
-						          'Amortizacao', in_Amortizacao		
-								  )
-								  ,CONCAT("{\"PeriodoFaturacao\":", in_PeriodoFaturacao,"}")
-							  )
-							,CONCAT("{\"Valor\":", in_Valor,"}")
-						)
-					)
+                'Moeda', in_Moeda,
+                'Descricao', in_Descricao,
+                'ImpostoConsumo', in_ImpostoConsumo,
+                'Amortizacao', in_Amortizacao        
+              ),
+              CONCAT("{\"PeriodoFaturacao\":", in_PeriodoFaturacao,"}")
+            ),
+            CONCAT("{\"Valor\":", in_Valor,"}")
+          )
+        )
       WHERE Id = in_FaturaId;
-      
-      -- Lançar dívida de fornecedor e custos gerais:
-      CALL LancamentosLancarCustoFornecedor (in_NumSerie, in_PeriodoFaturacao, in_FornecedorCodigo);
+
 
     -- 2. 'PorClassificarAnalitica' -> 'PorRegistarContabilidade'
     ELSEIF v_Estado = 'PorClassificarAnalitica' THEN
@@ -76,14 +74,16 @@ CREATE PROCEDURE DocumentoAprovar (
       SET Estado = 'PorRegistarContabilidade'
       WHERE Id = in_FaturaId;
       
-      -- Lançar custos específicos e anular custos gerais:
-      CALL LancamentosReclassificarCusto  (in_NumSerie, in_ClassificacaoAnalitica);
+      -- Lançar dívida de fornecedor e custos:
+      CALL LancamentosLancarCustoFornecedor  (in_NumSerie, in_ClassificacaoAnalitica);
+
 
     -- 3. 'PorRegistarContabilidade' -> 'PorAnexarCPagamento'
     ELSEIF v_Estado = 'PorRegistarContabilidade' THEN
       UPDATE <?=tableNameWithModule("Documentos")?> 
       SET Estado = 'PorAnexarCPagamento'
       WHERE Id = in_FaturaId;
+
 
     -- 4. 'PorAnexarCPagamento' -> 'PorRegistarPagamentoContab'
     ELSEIF v_Estado = 'PorAnexarCPagamento' THEN
@@ -92,6 +92,7 @@ CREATE PROCEDURE DocumentoAprovar (
         Estado = 'PorRegistarPagamentoContab',
         Extra = JSON_SET(Extra, '$.ComprovativoPagamentoId', in_ComprovativoPagamentoId)
       WHERE Id = in_FaturaId;
+
 
     -- 5. 'PorRegistarPagamentoContab' -> 'Concluido'
     ELSEIF v_Estado = 'PorRegistarPagamentoContab' THEN
