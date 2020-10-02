@@ -18,7 +18,7 @@ TMP_FILE=$(mktemp)
 #############################
 php apache_config.conf.php > apache_config.conf
 # @TODO: automate this part
-# ln -s $(pwd)/apache_config.conf /etc/apache2/sites-enabled/xxx_site.conf
+ln -s $(pwd)/apache_config.conf /etc/apache2/sites-enabled/020-intranet_v2_$(basename $(pwd)).conf
 sudo -n apachectl restart
 
 #############################
@@ -32,7 +32,11 @@ defaultDb="$(cat .db_credentials.json | jq -r .defaultDb)"
 
 MYSQL_CMD="mysql -u $USER -p$PASSWORD"
 
-git pull 2> /dev/null
+GIT_RESULT=$(git pull)
+if [[ "$GIT_RESULT" == "Already up to date."* ]]
+then
+	exit 0
+fi
 # 2. Destroy old runtime (i.e. delete the database, and all its structure and data)
 $MYSQL_CMD -e "DROP DATABASE IF EXISTS $defaultDb; CREATE DATABASE $defaultDb;"
 
