@@ -32,12 +32,13 @@ defaultDb="$(cat .db_credentials.json | jq -r .defaultDb)"
 
 MYSQL_CMD="mysql -u $USER -p$PASSWORD"
 
-git pull
-#GIT_RESULT=$(git pull)
-#if [[ "$GIT_RESULT" == "Already up to date."* ]]
-#then
-#	exit 0
-#fi
+GIT_RESULT=$(git pull)
+if [[ "$GIT_RESULT" == "Already up to date."* && "$FORCE_DEPLOY" == "" ]]
+then
+	echo "Not re-deploying since source code didn't change"
+	exit 0
+fi
+
 # 2. Destroy old runtime (i.e. delete the database, and all its structure and data)
 $MYSQL_CMD -e "DROP DATABASE IF EXISTS $defaultDb; CREATE DATABASE $defaultDb;"
 
