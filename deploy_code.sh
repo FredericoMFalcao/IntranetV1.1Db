@@ -5,12 +5,20 @@ LC_ALL=C.UTF-8
 # 0.1 Change to the dir of the current script
 cd "$( dirname "${BASH_SOURCE[0]}" )"
 
-#0.2 Redirect output to file
+# 0.2 Pulling the latest source code from Github
+GIT_RESULT=$(git pull)
+if [[ "$GIT_RESULT" == "Already up to date."* && "$FORCE_DEPLOY" == "" ]]
+then
+	echo "Not re-deploying since source code didn't change"
+	exit 0
+fi
+
+#0.3 Redirect output to file
 exec 1>public_html/last_update_error.txt
 exec 2>&1
 echo "["$(date)"]"
 
-#0.3 Get a temporary filename
+#0.4 Get a temporary filename
 TMP_FILE=$(mktemp)
 
 #############################
@@ -19,7 +27,7 @@ TMP_FILE=$(mktemp)
 php apache_config.conf.php > apache_config.conf
 # @TODO: automate this part
 #ln -f -s $(pwd)/apache_config.conf /etc/apache2/sites-enabled/020-intranet_v2_$(basename $(pwd)).conf
-sudo -n apachectl restart
+#sudo -n apachectl restart
 
 #############################
 # 1. Capture DB Credentials
@@ -32,12 +40,6 @@ defaultDb="$(cat .db_credentials.json | jq -r .defaultDb)"
 
 MYSQL_CMD="mysql -u $USER -p$PASSWORD"
 
-GIT_RESULT=$(git pull)
-if [[ "$GIT_RESULT" == "Already up to date."* && "$FORCE_DEPLOY" == "" ]]
-then
-	echo "Not re-deploying since source code didn't change"
-	exit 0
-fi
 
 # 2. Destroy old runtime (i.e. delete the database, and all its structure and data)
 $MYSQL_CMD -e "DROP DATABASE IF EXISTS $defaultDb; CREATE DATABASE $defaultDb;"
@@ -68,7 +70,8 @@ do
 done
 
 # 10. Deploy the code - run it at the sql server - after parsing through PHP template engine
-cat $TMP_FILE | php  | $MYSQL_CMD $defaultDb
+echo "Deployed in :"
+time ( cat $TMP_FILE | php  | $MYSQL_CMD $defaultDb )
 
 # 11. Run the unit tests
 #########################
@@ -79,3 +82,4 @@ do
 done
 
 rm $TMP_FILE > /dev/null 2> /dev/null
+

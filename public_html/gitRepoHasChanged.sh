@@ -6,9 +6,14 @@
 # GET:   $QUERY_STRING
 
 
-# 0. Init response
-echo "Content-type: text/plain"
-echo
+# 0.1 Init response
+echo "Content-Type: text/plain"
+echo ""
+echo "Will redeploy all branches..."
+
+# 0.2 Change to the dir of the current script
+cd "$( dirname "${BASH_SOURCE[0]}" )"
+
 
 #
 # Pass all the GET variables into local bash variables
@@ -18,4 +23,5 @@ echo
 #  done
 
 
-source ../../reDeployAllBranches.sh
+ ../../redeployAllBranches.sh
+echo "Success!"
