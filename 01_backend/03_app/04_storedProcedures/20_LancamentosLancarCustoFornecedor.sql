@@ -18,7 +18,7 @@ CREATE PROCEDURE LancamentosLancarCustoFornecedor (
            
     -- 1. Inserir lançamentos na conta do fornecedor
     CALL CriarLancamento (
-      JSON_EXTRACT((SELECT Extra FROM <?=tableNameWithModule("Documentos")?> WHERE NumSerie = in_NumSerie), '$.FornecedorCodigo'),
+      JSON_VALUE((SELECT Extra FROM <?=tableNameWithModule("Documentos")?> WHERE NumSerie = in_NumSerie), '$.FornecedorCodigo'),
       1,
       JSON_EXTRACT((SELECT Extra FROM <?=tableNameWithModule("Documentos")?> WHERE NumSerie = in_NumSerie), '$.PeriodoFaturacao'),
       in_NumSerie
