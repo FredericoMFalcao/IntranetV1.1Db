@@ -31,14 +31,6 @@ require_once __DIR__."/_tests_lib.php";
 )
 ->addTest(
 	(new UnitTest())
-	->describe("Classificar analítica com conta inexistente e receber erro")
-	->expectQuery('
-		CALL DocumentoAprovar (1,"FTAn12#123.pdf",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"[{\"CentroResultados\": \"CR0000\", \"Analitica\": \"AN0202\", \"Colaborador\": \"CO123\", \"Valor\": 1000}]",NULL);;
-	')
-	->toErrWithCode("23000")
-)
-->addTest(
-	(new UnitTest())
 	->describe("3. Classificar analítica")
 	->expectQuery('
 		CALL DocumentoAprovar (1,"FTAn12#123.pdf",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"[{\"CentroResultados\": \"CR0101\", \"Analitica\": \"AN0202\", \"Colaborador\": \"CO123\", \"Valor\": 800}, {\"CentroResultados\": \"CR0101\", \"Analitica\": \"AN0202\", \"Colaborador\": \"CO456\", \"Valor\": 200}]",NULL);
