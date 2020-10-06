@@ -94,7 +94,7 @@ CREATE PROCEDURE DocumentoAprovar (
       WHERE Id = in_FaturaId;
       
       -- Lançar pagamento e abater à conta de fornecedores:
-      CALL LancamentosPagarDividaFornecedor  (in_NumSerie, in_ComprovativoPagamentoId);
+      CALL LancamentosPagarDividaFornecedor  (in_FaturaId, in_ComprovativoPagamentoId);
 
 
     -- 5. 'PorRegistarPagamentoContab' -> 'Concluido'
