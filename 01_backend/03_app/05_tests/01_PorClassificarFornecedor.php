@@ -6,20 +6,20 @@ require_once __DIR__."/_tests_lib.php";
 (new TestSuite("Faturas Fornecedor"))
 ->addTest(
 	(new UnitTest())
+	->describe("Criar fatura de fornecedor, associar a um ficheiro inexistente e receber erro")
+	->expectQuery('
+		CALL DocumentosCriar ("FaturaFornecedor", "ficheironaoexistente.pdf", NULL);
+	')
+	->toErrWithCode("23000")
+)
+->addTest(
+	(new UnitTest())
 	->describe("1. Criar fatura de fornecedor e associar a um ficheiro existente")
 	->expectQuery('
 		INSERT INTO SYS_Files (Id) VALUES ("fatura123.pdf");
 		CALL DocumentosCriar ("FaturaFornecedor", "fatura123.pdf", NULL);
 	')
 	->toSucceed()
-)
-->addTest(
-	(new UnitTest())
-	->describe("Criar fatura de fornecedor, associar a um ficheiro inexistente e receber erro")
-	->expectQuery('
-		CALL DocumentosCriar ("FaturaFornecedor", "ficheironaoexistente.pdf", NULL);
-	')
-	->toErrWithCode("23000")
 )
 ->addTest(
 	(new UnitTest())
@@ -31,19 +31,19 @@ require_once __DIR__."/_tests_lib.php";
 )
 ->addTest(
 	(new UnitTest())
-	->describe("3. Classificar analítica")
-	->expectQuery('
-		CALL DocumentoAprovar (1,"FTAn12#123.pdf",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"[{\"CentroResultados\": \"CR0101\", \"Analitica\": \"AN0202\", \"Colaborador\": \"CO123\", \"Valor\": 800}, {\"CentroResultados\": \"CR0101\", \"Analitica\": \"AN0202\", \"Colaborador\": \"CO456\", \"Valor\": 200}]",NULL);
-	')
-	->toSucceed()
-)
-->addTest(
-	(new UnitTest())
 	->describe("Classificar analítica com conta inexistente e receber erro")
 	->expectQuery('
 		CALL DocumentoAprovar (1,"FTAn12#123.pdf",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"[{\"CentroResultados\": \"CR0000\", \"Analitica\": \"AN0202\", \"Colaborador\": \"CO123\", \"Valor\": 1000}]",NULL);;
 	')
 	->toErrWithCode("23000")
+)
+->addTest(
+	(new UnitTest())
+	->describe("3. Classificar analítica")
+	->expectQuery('
+		CALL DocumentoAprovar (1,"FTAn12#123.pdf",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"[{\"CentroResultados\": \"CR0101\", \"Analitica\": \"AN0202\", \"Colaborador\": \"CO123\", \"Valor\": 800}, {\"CentroResultados\": \"CR0101\", \"Analitica\": \"AN0202\", \"Colaborador\": \"CO456\", \"Valor\": 200}]",NULL);
+	')
+	->toSucceed()
 )
 ->addTest(
 	(new UnitTest())
