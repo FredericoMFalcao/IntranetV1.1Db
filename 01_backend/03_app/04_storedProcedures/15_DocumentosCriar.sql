@@ -24,20 +24,23 @@ CREATE PROCEDURE DocumentosCriar (
    
    
     -- 1. Inserir em Documentos
-	
-	-- 1.1. Inserir fatura de fornecedor
-	IF in_DocTipo = 'FaturaFornecedor' THEN
+    
+    -- 1.1. Inserir fatura de fornecedor
+    IF in_DocTipo = 'FaturaFornecedor' THEN
       INSERT INTO <?=tableNameWithModule("Documentos")?> (Tipo, Estado, FileId) 
       VALUES (in_DocTipo, 'PorClassificarFornecedor', in_FileId);
-	  
-	  
-	-- 1.2. Inserir comprovativo de pagamento
-	ELSEIF in_DocTipo = 'ComprovativoPagamento' THEN
-      INSERT INTO <?=tableNameWithModule("Documentos")?> (Tipo, Estado, FileId, Extra) 
-      VALUES (in_DocTipo, 'Concluido', in_FileId, JSON_SET(Extra, '$.ContaBancaria', in_ContaBancaria));
-	  
-	  
-	END IF;
+      
+      
+    -- 1.2. Inserir comprovativo de pagamento
+    ELSEIF in_DocTipo = 'ComprovativoPagamento' THEN
+      INSERT INTO <?=tableNameWithModule("Documentos")?> (Tipo, Estado, FileId) 
+      VALUES (in_DocTipo, 'Concluido', in_FileId);
+      UPDATE <?=tableNameWithModule("Documentos")?>
+      SET Extra = JSON_SET(Extra, '$.ContaBancaria', in_ContaBancaria)
+      WHERE FileId = in_FileId;
+      
+      
+    END IF;
   
   END;
   
