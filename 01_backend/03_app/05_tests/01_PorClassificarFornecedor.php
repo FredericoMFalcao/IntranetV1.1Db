@@ -35,7 +35,7 @@ require_once __DIR__."/_tests_lib.php";
 	->expectQuery('
 		CALL DocumentoAprovar (1,"FTAn12#123.pdf",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"[{\"CentroResultados\": \"CR0000\", \"Analitica\": \"AN0202\", \"Colaborador\": \"CO123\", \"Valor\": 1000}]",NULL);;
 	')
-	->toErrWithCode("00000")
+	->toErrWithCode("23000")
 )
 ->addTest(
 	(new UnitTest())
