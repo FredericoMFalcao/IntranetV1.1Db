@@ -56,7 +56,18 @@ BEGIN
                                                                
   -- 2.1.3 Call AFTER triggers
   -- ---------------------------
-                                                               
+  SET i = 0; -- set counter to zero
+  -- calculate total number of "listening functions"
+  SET j = (SELECT COUNT(AfterStoredProcedure) FROM SYS_EventHandlers WHERE EventName = "NewFile");
+  WHILE i != j DO
+    SELECT a.AfterStoredProcedure INTO funcName FROM SYS_EventHandlers a LIMIT i,1;
+
+    -- Call funcName()
+    SET sqlCode = CONCAT('CALL ',funcName,'()'); PREPARE stmt1 FROM sqlCode; EXECUTE stmt1;
+
+    SET i = i + 1;
+  END WHILE;
+                                                            
 
 END;
 //
