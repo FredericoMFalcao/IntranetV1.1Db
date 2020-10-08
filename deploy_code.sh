@@ -73,10 +73,11 @@ done
 echo "Deployed in :"
 time ( cat $TMP_FILE | php  | $MYSQL_CMD $defaultDb )
 
+#########################
 # 11. Run the unit tests
 #########################
 echo > public_html/last_unit_test_results.html
-for f in $(find 01_backend/03_app/05_tests/ -name "*.php")
+for f in $(find 01_backend/ -name "*/05_tests/*.php")
 do
 	HTML_MODE=1 php "$f" >> public_html/last_unit_test_results.html
 done
