@@ -18,7 +18,7 @@ SELECT
 	FF_ValorTotal(a.Extra) - 0 AS ValorLiquido,             -- provisório
 	JSON_EXTRACT (a.Extra, '$.Moeda') AS Moeda,
 	'CPagamento123.pdf' AS DocComprovativo                  -- provisório
-FROM <?=tableNameWithModule("Documentos")?> AS a
+FROM <?=tableNameWithModule("Documentos","DOC")?> AS a
 INNER JOIN <?=tableNameWithModule("Lancamentos")?> AS b ON a.NumSerie = b.DocNumSerie
 INNER JOIN <?=tableNameWithModule("Contas")?> AS c ON b.Conta = c.Conta
 WHERE a.Tipo = 'FaturaFornecedor'

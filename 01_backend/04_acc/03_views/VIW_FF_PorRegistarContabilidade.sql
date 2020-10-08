@@ -19,7 +19,7 @@ SELECT
 	'C. Geral' AS CGeral,                                             -- provisório
 	0 AS Acrescimo,                                                   -- provisório
 	0 AS Amortizacao                                                  -- provisório
-FROM <?=tableNameWithModule("Documentos")?> AS a
+FROM <?=tableNameWithModule("Documentos","DOC")?> AS a
 INNER JOIN <?=tableNameWithModule("Lancamentos")?> AS b ON a.NumSerie = b.DocNumSerie
 INNER JOIN <?=tableNameWithModule("Contas")?> AS c ON b.Conta = c.Conta
 WHERE a.Tipo = 'FaturaFornecedor'

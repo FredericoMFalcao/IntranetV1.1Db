@@ -12,7 +12,7 @@ RETURN
   '#',
   (
    SELECT MAX(SUBSTRING_INDEX(SUBSTRING_INDEX(NumSerie,".",1),"#",-1)) + 1
-   FROM <?=tableNameWithModule("Documentos")?>
+   FROM <?=tableNameWithModule("Documentos","DOC")?>
    WHERE Tipo = 'FaturaFornecedor'
     AND LEFT(NumSerie,6) = CONCAT('FT', Pais, Ano)
   ),

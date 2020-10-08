@@ -11,16 +11,16 @@ CREATE PROCEDURE LancamentosLancarCustoFornecedor (
     DECLARE v_ValorFatura DECIMAL(18,2);
     DECLARE v_PeriodoFaturacao TEXT;
     DECLARE i INT;
-    SET v_ValorFatura = FF_ValorTotal((SELECT Extra FROM <?=tableNameWithModule("Documentos")?> WHERE NumSerie = in_NumSerie));
-    SET v_PeriodoFaturacao = JSON_EXTRACT((SELECT Extra FROM <?=tableNameWithModule("Documentos")?> WHERE NumSerie = in_NumSerie), '$.PeriodoFaturacao');
+    SET v_ValorFatura = FF_ValorTotal((SELECT Extra FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE NumSerie = in_NumSerie));
+    SET v_PeriodoFaturacao = JSON_EXTRACT((SELECT Extra FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE NumSerie = in_NumSerie), '$.PeriodoFaturacao');
     SET i = 0;
     
            
     -- 1. Inserir lançamentos na conta do fornecedor
     CALL CriarLancamento (
-      JSON_VALUE((SELECT Extra FROM <?=tableNameWithModule("Documentos")?> WHERE NumSerie = in_NumSerie), '$.FornecedorCodigo'),
+      JSON_VALUE((SELECT Extra FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE NumSerie = in_NumSerie), '$.FornecedorCodigo'),
       1,
-      JSON_EXTRACT((SELECT Extra FROM <?=tableNameWithModule("Documentos")?> WHERE NumSerie = in_NumSerie), '$.PeriodoFaturacao'),
+      JSON_EXTRACT((SELECT Extra FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE NumSerie = in_NumSerie), '$.PeriodoFaturacao'),
       in_NumSerie
     );
     

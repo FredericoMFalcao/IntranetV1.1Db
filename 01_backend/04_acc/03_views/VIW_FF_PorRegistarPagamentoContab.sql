@@ -15,7 +15,7 @@ SELECT
 	FF_ValorTotal(a.Extra) - 0 AS ValorLiquido,                              -- provisório
 	FF_ValorTotal(a.Extra) AS ValorTotal,
 	FF_ValorTotal(a.Extra) * 1 AS ValorPagoAKZ                               -- provisório
-FROM <?=tableNameWithModule("Documentos")?> AS a
+FROM <?=tableNameWithModule("Documentos","DOC")?> AS a
 INNER JOIN <?=tableNameWithModule("Lancamentos")?> AS b ON a.NumSerie = b.DocNumSerie
 INNER JOIN <?=tableNameWithModule("Contas")?> AS c ON b.Conta = c.Conta
 WHERE a.Tipo = 'FaturaFornecedor'
