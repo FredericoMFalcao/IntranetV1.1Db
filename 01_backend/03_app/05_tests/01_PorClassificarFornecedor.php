@@ -8,7 +8,7 @@ require_once __DIR__."/_tests_lib.php";
 	(new UnitTest())
 	->describe("Criar fatura de fornecedor, associar a um ficheiro inexistente e receber erro")
 	->expectQuery('
-		CALL DocumentosCriar ("FaturaFornecedor", "ficheironaoexistente.pdf", NULL);
+		CALL DocumentosCriar ("{\"DocTipo\": \"FaturaFornecedor\", \"FileId\": \"ficheiroinexistente.pdf\"}");
 	')
 	->toErrWithCode("23000")
 )
@@ -17,7 +17,7 @@ require_once __DIR__."/_tests_lib.php";
 	->describe("1. Criar fatura de fornecedor e associar a um ficheiro existente")
 	->expectQuery('
 		INSERT INTO SYS_Files (Id) VALUES ("fatura123.pdf");
-		CALL DocumentosCriar ("FaturaFornecedor", "fatura123.pdf", NULL);
+		CALL DocumentosCriar ("{\"DocTipo\": \"FaturaFornecedor\", \"FileId\": \"fatura123.pdf\"}");
 	')
 	->toSucceed()
 )
@@ -25,7 +25,7 @@ require_once __DIR__."/_tests_lib.php";
 	(new UnitTest())
 	->describe("2. Classificar fornecedor")
 	->expectQuery('
-		CALL DocumentoAprovar (1,"FTAn12#123.pdf","123","01","2012-12-12","2012-12-12","{\"Inicio\": \"2011-11-01\", \"Fim\": \"2011-12-31\"}","2012-12-12","FO0000111","{\"Bens\": {\"ValorBase\": 0.00, \"Iva\": 0.00}, \"Servicos\": {\"ValorBase\":900,\"Iva\":100}}","AKZ","Fatura de teste",0,0,NULL,NULL);
+		CALL DocumentoAprovar (1, "{\"NumSerie\": \"FTAn12#123.pdf\", \"NumFatura\": \"123\", \"Projeto\": \"01\", \"DataFatura\": \"2012-12-12\", \"DataRecebida\": \"2012-12-12\", \"PeriodoFaturacao\": {\"Inicio\": \"2011-11-01\", \"Fim\": \"2011-12-31\"}, \"DataValidade\": \"2012-12-12\", \"FornecedorCodigo\": \"FO0000111\", \"Valor\": {\"Bens\": {\"ValorBase\": 0.00, \"Iva\": 0.00}, \"Servicos\": {\"ValorBase\":900,\"Iva\":100}}, \"Moeda\": \"AKZ\", \"Descricao\": \"Fatura de teste\", \"ImpostoConsumo\": 0, \"Amortizacao\": 0}");
 	')
 	->toSucceed()
 )
@@ -33,7 +33,7 @@ require_once __DIR__."/_tests_lib.php";
 	(new UnitTest())
 	->describe("3. Classificar analítica")
 	->expectQuery('
-		CALL DocumentoAprovar (1,"FTAn12#123.pdf",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"[{\"CentroResultados\": \"CR0101\", \"Analitica\": \"AN0202\", \"Colaborador\": \"CO123\", \"Valor\": 800}, {\"CentroResultados\": \"CR0101\", \"Analitica\": \"AN0202\", \"Colaborador\": \"CO456\", \"Valor\": 200}]",NULL);
+		CALL DocumentoAprovar (1, "{\"NumSerie\": \"FTAn12#123.pdf\", \"ClassificacaoAnalitica\": [{\"CentroResultados\": \"CR0101\", \"Analitica\": \"AN0202\", \"Colaborador\": \"CO123\", \"Valor\": 800}, {\"CentroResultados\": \"CR0101\", \"Analitica\": \"AN0202\", \"Colaborador\": \"CO456\", \"Valor\": 200}]}");
 	')
 	->toSucceed()
 )
@@ -41,7 +41,7 @@ require_once __DIR__."/_tests_lib.php";
 	(new UnitTest())
 	->describe("4. Registar na contabilidade")
 	->expectQuery('
-		CALL DocumentoAprovar (1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+		CALL DocumentoAprovar (1, NULL);
 	')
 	->toSucceed()
 )
@@ -50,8 +50,8 @@ require_once __DIR__."/_tests_lib.php";
 	->describe("5. Anexar comprovativo de pagamento")
 	->expectQuery('
 		INSERT INTO SYS_Files (Id) VALUES ("cpagamento123.pdf");
-		CALL DocumentosCriar ("ComprovativoPagamento", "cpagamento123.pdf", "CB01");
-		CALL DocumentoAprovar (1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,2);
+		CALL DocumentosCriar ("{\"DocTipo\": \"ComprovativoPagamento\", \"FileId\": \"cpagamento123.pdf\", \"ContaBancaria\": \"CB01\"}");
+		CALL DocumentoAprovar (1, "{\"ComprovativoPagamentoId\": 2}");
 	')
 	->toSucceed()
 )
@@ -59,7 +59,7 @@ require_once __DIR__."/_tests_lib.php";
 	(new UnitTest())
 	->describe("6. Registar pagamento na contabilidade")
 	->expectQuery('
-		CALL DocumentoAprovar (1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+		CALL DocumentoAprovar (1, NULL);
 	')
 	->toSucceed()
 )
