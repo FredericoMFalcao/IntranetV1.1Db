@@ -9,5 +9,4 @@ CREATE TABLE SYS_Events (
 );
 
 
-INSERT INTO SYS_Events (Name) VALUES ('willCreateNewFile');
-INSERT INTO SYS_Events (Name) VALUES ('didCreateNewFile');
+INSERT INTO SYS_Events (Name) VALUES ('NewFile');
