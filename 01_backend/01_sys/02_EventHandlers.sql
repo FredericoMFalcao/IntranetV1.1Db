@@ -1,5 +1,5 @@
 -- -------------
---  3. EVENT HANDLERS
+--  2. EVENT HANDLERS
 --
 --  A table that allows modules to "listen and react" to events exported by other modules
 -- -------------

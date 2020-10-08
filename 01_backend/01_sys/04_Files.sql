@@ -12,9 +12,18 @@ CREATE TABLE SYS_Files (
   PRIMARY KEY (Id)  
 );
 
+
+
+
 -- ----------------
---  2. C.U.D. Operations (with Events)
+--  2. Abstracted C.U.D. Operations
 --
+--  Description: instead of the normal "insert into" and "update", the other modules should call
+--               FilesNew(...), FileEdit(id, ...), FileDelete(id) to "insert", "update", "delete"
+--
+--               Why? In MySql/MariaDB it is not possible to run "dynamic sql" inside triggers.
+--                    Therefore the only way to implement an event triggering "insert"/"update"/"delete" operation
+--                    is to abstract these operations into custom "stored procedures"
 -- ----------------
 
 -- 2.1 Insert (with Events)
@@ -53,3 +62,10 @@ END;
 //
 
 DELIMITER ;
+
+
+-- ----------------
+--  3. Register Exported Events
+--	( events that are available for other modules to listen/react to)
+-- ----------------
+INSERT INTO SYS_Events (Name) VALUES ('NewFile');

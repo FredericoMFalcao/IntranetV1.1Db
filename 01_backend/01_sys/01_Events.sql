@@ -1,5 +1,5 @@
 -- -------------
---  2. EVENTS
+--  1. EVENTS
 --
 --  A table that allows modules to name the events they "export"
 -- -------------
@@ -9,4 +9,3 @@ CREATE TABLE SYS_Events (
 );
 
 
-INSERT INTO SYS_Events (Name) VALUES ('NewFile');
