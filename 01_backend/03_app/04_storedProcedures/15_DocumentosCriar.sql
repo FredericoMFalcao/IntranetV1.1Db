@@ -9,13 +9,20 @@ DELIMITER //
 --         (2) ficheiro Dropbox
 --
 
-CREATE PROCEDURE DocumentosCriar (
-  IN in_DocTipo TEXT,
-  IN in_FileId TEXT,
-  -- campo especifico de comprovativos de pagamento:
-  IN in_ContaBancaria TEXT
-)
+CREATE PROCEDURE DocumentosCriar (IN in_Extra JSON)
   BEGIN
+  
+    -- Inputs comuns a todos os tipos de documento:
+    DECLARE in_DocTipo TEXT;
+    DECLARE in_FileId TEXT;
+    
+    -- Inputs específicos para comprovativos de pagamento:
+    DECLARE in_ContaBancaria TEXT;
+    
+    SET in_DocTipo = JSON_VALUE(in_Extra, '$.DocTipo');
+    SET in_FileId = JSON_VALUE(in_Extra, '$.FileId');
+    SET in_ContaBancaria = JSON_VALUE(in_Extra, '$.ContaBancaria');
+ 
  
     -- 0. Verificar validade dos argumentos
     IF NOT EXISTS (SELECT Id FROM SYS_Files WHERE Id = in_FileId)
