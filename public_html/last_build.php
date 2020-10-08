@@ -18,9 +18,11 @@
 	</head>
 	<body class="container">
 		<h2>Links</h2>
-			<ul>
-				<li>	<a href="sql_explorer.php">sql explorer</a></li>
-				<li>	<a href="deploy_code.sh">force code deployment</a></li>
+			<ul class="list-group list-group-horizontal">
+				<li class="list-group-item">	<a class="btn btn-default" href="sql_explorer.php">sql explorer</a></li>
+				<li class="list-group-item">	<a class="btn btn-danger" href="deploy_code.sh">force code deployment</a></li>
+				<li class="list-group-item">	<button class="btn btn-primary" onclick="alert('not yet implemented');">Merge Branch Into Master</button></li>
+				<li class="list-group-item">	<button class="btn btn-primary" onclick="alert('not yet implemented');">Fork</button></li>
 			</ul>
 		<hr>
 		
