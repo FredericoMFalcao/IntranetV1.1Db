@@ -12,9 +12,9 @@ CREATE PROCEDURE ComprovativosPagamentoCriar (IN in_Extra JSON)
     SET in_ContaBancaria = JSON_VALUE(in_Extra, '$.ContaBancaria');
 
     IF in_DocTipo = 'ComprovativoPagamento' THEN
-      INSERT INTO <?=tableNameWithModule("Documentos")?> (Tipo, Estado, FileId) 
+      INSERT INTO <?=tableNameWithModule("Documentos","DOC")?> (Tipo, Estado, FileId) 
       VALUES (in_DocTipo, 'Concluido', in_FileId);
-      UPDATE <?=tableNameWithModule("Documentos")?>
+      UPDATE <?=tableNameWithModule("Documentos","DOC")?>
       SET Extra = JSON_SET(Extra, '$.ContaBancaria', in_ContaBancaria)
       WHERE FileId = in_FileId;
       

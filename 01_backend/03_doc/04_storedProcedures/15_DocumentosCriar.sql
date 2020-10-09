@@ -15,16 +15,16 @@ CREATE PROCEDURE DocumentosCriar (IN in_Extra JSON)
     DECLARE in_FileId TEXT;
     SET in_DocTipo = JSON_VALUE(in_Extra, '$.DocTipo');
     SET in_FileId = JSON_VALUE(in_Extra, '$.FileId');
-	
-	
+    
+    
     -- 0. Verificar validade dos argumentos
     IF NOT EXISTS (SELECT Id FROM <?=tableNameWithModule("Files","SYS")?> WHERE Id = in_FileId)
       THEN signal sqlstate '23000' set message_text = 'FileId inexistente.';
     END IF;
  
     
-	-- 1. Chamar procedimentos específicos
-	IF in_DocTipo = 'FaturaFornecedor' THEN
+    -- 1. Chamar procedimentos específicos
+    IF in_DocTipo = 'FaturaFornecedor' THEN
       CALL FaturasFornecedorCriar (in_Extra);
       
     ELSEIF in_DocTipo = 'ComprovativoPagamento' THEN

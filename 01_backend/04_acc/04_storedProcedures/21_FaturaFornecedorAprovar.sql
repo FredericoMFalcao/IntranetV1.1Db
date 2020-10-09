@@ -26,9 +26,9 @@ CREATE PROCEDURE FaturaFornecedorAprovar (IN in_Extra JSON)
     DECLARE in_ComprovativoPagamentoId    INT;
     -- Variável representativa do estado actual do documento
     DECLARE v_Estado TEXT;
-	
-	SET in_FaturaId = JSON_VALUE(in_Extra, '$.DocId');
-	SET in_NumSerie = JSON_VALUE(in_Extra, '$.NumSerie');
+    
+    SET in_FaturaId = JSON_VALUE(in_Extra, '$.DocId');
+    SET in_NumSerie = JSON_VALUE(in_Extra, '$.NumSerie');
     SET in_NumFatura = JSON_VALUE(in_Extra, '$.NumFatura');
     SET in_Projeto = JSON_VALUE(in_Extra, '$.Projeto');
     SET in_DataFatura = JSON_VALUE(in_Extra, '$.DataFatura');
@@ -41,20 +41,20 @@ CREATE PROCEDURE FaturaFornecedorAprovar (IN in_Extra JSON)
     SET in_Descricao = JSON_VALUE(in_Extra, '$.Descricao');
     SET in_ImpostoConsumo = JSON_VALUE(in_Extra, '$.ImpostoConsumo');
     SET in_Amortizacao = JSON_VALUE(in_Extra, '$.Amortizacao');
-	SET in_ClassificacaoAnalitica = JSON_EXTRACT(in_Extra, '$.ClassificacaoAnalitica');
-	SET in_ComprovativoPagamentoId = JSON_VALUE(in_Extra, '$.ComprovativoPagamentoId');
-    SET v_Estado = (SELECT Estado FROM <?=tableNameWithModule("Documentos")?> WHERE Id = in_FaturaId);
+    SET in_ClassificacaoAnalitica = JSON_EXTRACT(in_Extra, '$.ClassificacaoAnalitica');
+    SET in_ComprovativoPagamentoId = JSON_VALUE(in_Extra, '$.ComprovativoPagamentoId');
+    SET v_Estado = (SELECT Estado FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE Id = in_FaturaId);
 
 
     -- 0. Verificar validade dos argumentos
-    IF NOT EXISTS (SELECT Id FROM <?=tableNameWithModule("Documentos")?> WHERE Id = in_FaturaId AND Tipo = 'FaturaFornecedor')
+    IF NOT EXISTS (SELECT Id FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE Id = in_FaturaId AND Tipo = 'FaturaFornecedor')
       THEN signal sqlstate '20000' set message_text = 'Fatura de fornecedor inexistente.';
     END IF;
 
 
     -- 1. 'PorClassificarFornecedor' -> 'PorClassificarAnalitica'
     IF v_Estado = 'PorClassificarFornecedor' THEN
-      UPDATE <?=tableNameWithModule("Documentos")?> 
+      UPDATE <?=tableNameWithModule("Documentos","DOC")?> 
       SET
         NumSerie = in_NumSerie,
         Estado = 'PorClassificarAnalitica',
@@ -84,10 +84,10 @@ CREATE PROCEDURE FaturaFornecedorAprovar (IN in_Extra JSON)
 
     -- 2. 'PorClassificarAnalitica' -> 'PorRegistarContabilidade'
     ELSEIF v_Estado = 'PorClassificarAnalitica' THEN
-      UPDATE <?=tableNameWithModule("Documentos")?> 
+      UPDATE <?=tableNameWithModule("Documentos","DOC")?> 
       SET
-	    Estado = 'PorRegistarContabilidade',
-		Extra = JSON_MERGE(Extra, CONCAT("{\"ClassificacaoAnalitica\":", in_ClassificacaoAnalitica, "}"))
+        Estado = 'PorRegistarContabilidade',
+        Extra = JSON_MERGE(Extra, CONCAT("{\"ClassificacaoAnalitica\":", in_ClassificacaoAnalitica, "}"))
       WHERE Id = in_FaturaId;
       
       -- Lançar dívida de fornecedor e custos:
@@ -96,14 +96,14 @@ CREATE PROCEDURE FaturaFornecedorAprovar (IN in_Extra JSON)
 
     -- 3. 'PorRegistarContabilidade' -> 'PorAnexarCPagamento'
     ELSEIF v_Estado = 'PorRegistarContabilidade' THEN
-      UPDATE <?=tableNameWithModule("Documentos")?> 
+      UPDATE <?=tableNameWithModule("Documentos","DOC")?> 
       SET Estado = 'PorAnexarCPagamento'
       WHERE Id = in_FaturaId;
 
 
     -- 4. 'PorAnexarCPagamento' -> 'PorRegistarPagamentoContab'
     ELSEIF v_Estado = 'PorAnexarCPagamento' THEN
-      UPDATE <?=tableNameWithModule("Documentos")?> 
+      UPDATE <?=tableNameWithModule("Documentos","DOC")?> 
       SET
         Estado = 'PorRegistarPagamentoContab',
         Extra = JSON_SET(Extra, '$.ComprovativoPagamentoId', in_ComprovativoPagamentoId)
@@ -115,7 +115,7 @@ CREATE PROCEDURE FaturaFornecedorAprovar (IN in_Extra JSON)
 
     -- 5. 'PorRegistarPagamentoContab' -> 'Concluido'
     ELSEIF v_Estado = 'PorRegistarPagamentoContab' THEN
-      UPDATE <?=tableNameWithModule("Documentos")?> 
+      UPDATE <?=tableNameWithModule("Documentos","DOC")?> 
       SET Estado = 'Concluido'
       WHERE Id = in_FaturaId;
 

@@ -10,10 +10,10 @@ CREATE PROCEDURE FaturasFornecedorCriar (IN in_Extra JSON)
     SET in_FileId = JSON_VALUE(in_Extra, '$.FileId');
 
     IF in_DocTipo = 'FaturaFornecedor' THEN
-      INSERT INTO <?=tableNameWithModule("Documentos")?> (Tipo, Estado, FileId) 
+      INSERT INTO <?=tableNameWithModule("Documentos","DOC")?> (Tipo, Estado, FileId) 
       VALUES (in_DocTipo, 'PorClassificarFornecedor', in_FileId);
-	  
-	END IF;
+      
+    END IF;
   
   END;
   
