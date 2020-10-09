@@ -2,6 +2,13 @@ DROP PROCEDURE IF EXISTS FaturasFornecedorCriar;
 
 DELIMITER //
 
+-- ------------------------
+--  Tabela (virtual): FaturasFornecedor Funcao: Criar 
+--
+-- Descrição: cria um "documento" novo, i.e. entrada na tabela sql de documentos
+-- ------------------------
+
+
 CREATE PROCEDURE FaturasFornecedorCriar (IN in_Extra JSON)
   BEGIN
     DECLARE in_DocTipo TEXT;
