@@ -3,7 +3,7 @@ DROP PROCEDURE IF EXISTS DocumentosCriar;
 DELIMITER //
 
 -- ------------------------
---  Tabela (virtual): Documentos Funcao: Criar 
+--  Tabela (sql): Documentos Funcao: Criar 
 --
 -- Descrição: transforma um ficheiro no disco num documento (entrada/linha na base de dados)
 --        será chamada pelo sistema quando:
