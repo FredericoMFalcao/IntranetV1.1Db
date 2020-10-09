@@ -3,7 +3,7 @@ DROP PROCEDURE IF EXISTS DocumentoAprovar;
 DELIMITER //
 
 -- ------------------------
---  Tabela (virtual): Documentos Funcao: Aprovar
+--  Tabela (sql): Documentos Funcao: Aprovar
 --
 --  Descrição: Mover um "documento" específico um estado para a frente no "workflow" programado
 -- ------------------------
