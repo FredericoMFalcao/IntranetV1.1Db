@@ -1,7 +1,11 @@
 DROP PROCEDURE IF EXISTS FaturaFornecedorRejeitar;
 
 DELIMITER //
-
+-- ------------------------
+--  Tabela (virtual): FaturasFornecedor Funcao: Rejeitar
+--
+--  Descrição: Mover um "documento" específico um estado para trás, acrescentado um descritivo da rejeição
+-- ------------------------
 CREATE PROCEDURE FaturaFornecedorRejeitar (IN in_Extra JSON)
 
   BEGIN
@@ -17,7 +21,7 @@ CREATE PROCEDURE FaturaFornecedorRejeitar (IN in_Extra JSON)
     END IF;
 
 
-    -- 1. Alterar documento com a rejeição e respectivo motivo
+    -- 1. Alterar dados do documento acrescentando a rejeição e respectivo motivo    
     UPDATE <?=tableNameWithModule("Documentos","DOC")?> 
     SET Extra = JSON_SET(Extra,
       '$.Rejeitada', 1,
@@ -64,7 +68,7 @@ CREATE PROCEDURE FaturaFornecedorRejeitar (IN in_Extra JSON)
 	  DELETE FROM <?=tableNameWithModule("Lancamentos")?>
 	  WHERE DocNumSerie = (SELECT NumSerie FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE Id = in_FaturaId);
 	  
-	  -- Voltar a ~lançar dívida de fornecedor e custos:
+	  -- Voltar a lançar dívida de fornecedor e custos:
       CALL LancamentosLancarCustoFornecedor  (
 	    (SELECT NumSerie FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE Id = in_FaturaId),
 		(SELECT JSON_VALUE(Extra, '$.ClassificacaoAnalitica') FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE Id = in_FaturaId)
