@@ -2,6 +2,16 @@ DROP PROCEDURE IF EXISTS FaturaFornecedorAprovar;
 
 DELIMITER //
 
+-- ------------------------
+--  Tabela (virtual): FaturaFornecedor Funcao: Aprovar
+--
+-- Descrição: move o estado de uma fatura (de fornecedor) para a frente no "workflow" previamente definido
+--        Faz também:
+--         (1) anexa informação extra que lhe é dada em cada passo
+--         (2) chama o procedimento que faz os lançamentos contabílisticos relevantes em cada passo
+-- ------------------------
+
+
 CREATE PROCEDURE FaturaFornecedorAprovar (IN in_Extra JSON)
 
   BEGIN
@@ -53,6 +63,10 @@ CREATE PROCEDURE FaturaFornecedorAprovar (IN in_Extra JSON)
 
 
     -- 1. 'PorClassificarFornecedor' -> 'PorClassificarAnalitica'
+    --
+    -- Descrição: atualiza o estado do documento e
+    --             dá ao "sistema" os dados da fatura contidos no documento em papel,
+    --             acrescentando pequenos dados implícitos
     IF v_Estado = 'PorClassificarFornecedor' THEN
       UPDATE <?=tableNameWithModule("Documentos","DOC")?> 
       SET
@@ -83,6 +97,9 @@ CREATE PROCEDURE FaturaFornecedorAprovar (IN in_Extra JSON)
 
 
     -- 2. 'PorClassificarAnalitica' -> 'PorRegistarContabilidade'
+    -- Descrição: atualiza o estado do documento e
+    --            lança na contabilidade analítica os movimentos que o custo/proveito desta fatura implicam
+
     ELSEIF v_Estado = 'PorClassificarAnalitica' THEN
       UPDATE <?=tableNameWithModule("Documentos","DOC")?> 
       SET
@@ -95,6 +112,9 @@ CREATE PROCEDURE FaturaFornecedorAprovar (IN in_Extra JSON)
 
 
     -- 3. 'PorRegistarContabilidade' -> 'PorAnexarCPagamento'
+    -- Descrição: atualiza o estado do documento e
+    --            (no futuro) lança o custo/proveito desta fatura num software externo de contabilidade financeira
+
     ELSEIF v_Estado = 'PorRegistarContabilidade' THEN
       UPDATE <?=tableNameWithModule("Documentos","DOC")?> 
       SET Estado = 'PorAnexarCPagamento'
@@ -102,6 +122,10 @@ CREATE PROCEDURE FaturaFornecedorAprovar (IN in_Extra JSON)
 
 
     -- 4. 'PorAnexarCPagamento' -> 'PorRegistarPagamentoContab'
+    -- Descrição: atualiza o estado do documento e
+    --            lança o pagamento por contrapartida da dívida existente (criada aquando da recepção da fatura) a fornecedor
+    --            e associa o documento do tipo comprovativo de pagamento ao documento do tipo fatura
+
     ELSEIF v_Estado = 'PorAnexarCPagamento' THEN
       UPDATE <?=tableNameWithModule("Documentos","DOC")?> 
       SET
@@ -114,6 +138,9 @@ CREATE PROCEDURE FaturaFornecedorAprovar (IN in_Extra JSON)
 
 
     -- 5. 'PorRegistarPagamentoContab' -> 'Concluido'
+    -- Descrição: atualiza o estado do documento e
+    --            envia os dados do pagamento para o software externo de contabilidade financeira
+
     ELSEIF v_Estado = 'PorRegistarPagamentoContab' THEN
       UPDATE <?=tableNameWithModule("Documentos","DOC")?> 
       SET Estado = 'Concluido'
