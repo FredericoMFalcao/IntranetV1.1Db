@@ -2,6 +2,11 @@ DROP PROCEDURE IF EXISTS ComprovativosPagamentoCriar;
 
 DELIMITER //
 
+-- ------------------------
+--  Tabela (virtual): ComprovativosPagamento Funcao: Criar 
+--
+-- Descrição: cria um "documento" novo, i.e. entrada na tabela sql de documentos
+-- ------------------------
 CREATE PROCEDURE ComprovativosPagamentoCriar (IN in_Extra JSON)
   BEGIN
     DECLARE in_DocTipo TEXT;

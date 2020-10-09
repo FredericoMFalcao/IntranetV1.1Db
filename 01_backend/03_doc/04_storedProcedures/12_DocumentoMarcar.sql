@@ -2,6 +2,12 @@ DROP PROCEDURE IF EXISTS DocumentoMarcar;
 
 DELIMITER //
 
+-- ------------------------
+--  Tabela (virtual): Documento Funcao: Marcar
+--
+-- Descrição: marca um documento para se destacar em listas/tabelas com muitos documentos
+-- ------------------------
+
 CREATE PROCEDURE DocumentoMarcar (IN DocId INT, IN in_Marcado BOOLEAN)
 
   BEGIN
