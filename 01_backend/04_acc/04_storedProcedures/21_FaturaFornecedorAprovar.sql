@@ -147,6 +147,12 @@ CREATE PROCEDURE FaturaFornecedorAprovar (IN in_Extra JSON)
       WHERE Id = in_FaturaId;
 
     END IF;
+    
+    
+    -- 6. Se a fatura tinha sido rejeitada, reverter essa condição
+    UPDATE <?=tableNameWithModule("Documentos","DOC")?> 
+    SET Extra = JSON_SET(Extra, '$.Rejeitada', 0, '$.MotivoRejeicao', NULL)
+    WHERE Id = in_FaturaId; 
 
   END;
   
