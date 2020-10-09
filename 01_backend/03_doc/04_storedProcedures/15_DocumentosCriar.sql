@@ -2,12 +2,14 @@ DROP PROCEDURE IF EXISTS DocumentosCriar;
 
 DELIMITER //
 
--- Descrição: transforma um ficheiro no disco num documento
+-- ------------------------
+--  Tabela (virtual): Documentos Funcao: Criar 
 --
+-- Descrição: transforma um ficheiro no disco num documento (entrada/linha na base de dados)
 --        será chamada pelo sistema quando:
 --         (1) recebe um email com anexo PDF
---         (2) ficheiro Dropbox
---
+--         (2) ficheiro Dropbox é adicionado a uma pasta partilhada
+-- ------------------------
 
 CREATE PROCEDURE DocumentosCriar (IN in_Extra JSON)
   BEGIN
