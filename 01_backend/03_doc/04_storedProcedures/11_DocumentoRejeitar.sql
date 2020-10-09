@@ -1,7 +1,13 @@
 DROP PROCEDURE IF EXISTS DocumentoRejeitar;
 
 DELIMITER //
-
+-- ------------------------
+--  Tabela (sql): Documento Funcao: Rejeitar
+--
+-- Descrição: Move um "documento" específico um estado para trás no "workflow" programado 
+--            Extra:
+--                (1) Chama a função correspondente para o tipo de documento em questão
+-- ------------------------
 CREATE PROCEDURE DocumentoRejeitar (IN in_Extra JSON)
 
   BEGIN
