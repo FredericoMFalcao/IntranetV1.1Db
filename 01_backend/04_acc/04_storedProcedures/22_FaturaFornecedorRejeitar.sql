@@ -6,13 +6,11 @@ DELIMITER //
 --
 --  Descrição: Mover um "documento" específico um estado para trás, acrescentado um descritivo da rejeição
 -- ------------------------
-CREATE PROCEDURE FaturaFornecedorRejeitar (IN in_Extra JSON)
+CREATE PROCEDURE FaturaFornecedorRejeitar (IN in_FaturaId INT, IN in_Extra JSON)
 
   BEGIN
-    DECLARE in_FaturaId INT;
-	DECLARE in_MotivoRejeicao TEXT;
-    SET in_FaturaId = JSON_VALUE(in_Extra, '$.DocId');
-	SET in_MotivoRejeicao = JSON_VALUE(in_Extra, '$.MotivoRejeicao');
+    DECLARE in_MotivoRejeicao TEXT;
+    SET in_MotivoRejeicao = JSON_VALUE(in_Extra, '$.MotivoRejeicao');
 
 
     -- 0. Verificar validade dos argumentos
@@ -25,13 +23,13 @@ CREATE PROCEDURE FaturaFornecedorRejeitar (IN in_Extra JSON)
     UPDATE <?=tableNameWithModule("Documentos","DOC")?> 
     SET Extra = JSON_SET(Extra,
       '$.Rejeitada', 1,
-	  '$.MotivoRejeicao', in_MotivoRejeicao
-	)
+      '$.MotivoRejeicao', in_MotivoRejeicao
+    )
     WHERE Id = in_FaturaId;
-	
+    
 
     -- 2. Alterar estado da fatura (e outras alterações necessárias)
-	
+    
     -- 2.1. 'PorClassificarAnalitica' -> 'PorClassificarFornecedor'
     IF v_Estado = 'PorClassificarAnalitica' THEN
       UPDATE <?=tableNameWithModule("Documentos","DOC")?> 
@@ -41,14 +39,14 @@ CREATE PROCEDURE FaturaFornecedorRejeitar (IN in_Extra JSON)
 
     -- 2.2. 'PorRegistarContabilidade' -> 'PorClassificarAnalitica'
     ELSEIF v_Estado = 'PorRegistarContabilidade' THEN
-	
+    
       UPDATE <?=tableNameWithModule("Documentos","DOC")?> 
       SET Estado = 'PorClassificarAnalitica',
       WHERE Id = in_FaturaId;
-	  
-	  -- Apagar lançamentos
-	  DELETE FROM <?=tableNameWithModule("Lancamentos")?>
-	  WHERE DocNumSerie = (SELECT NumSerie FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE Id = in_FaturaId);
+      
+      -- Apagar lançamentos
+      DELETE FROM <?=tableNameWithModule("Lancamentos")?>
+      WHERE DocNumSerie = (SELECT NumSerie FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE Id = in_FaturaId);
 
 
     -- 2.3. 'PorAnexarCPagamento' -> 'PorRegistarContabilidade'
@@ -63,15 +61,15 @@ CREATE PROCEDURE FaturaFornecedorRejeitar (IN in_Extra JSON)
       UPDATE <?=tableNameWithModule("Documentos","DOC")?> 
       SET Estado = 'PorAnexarCPagamento',
       WHERE Id = in_FaturaId;
-	  
-	  -- Apagar lançamentos
-	  DELETE FROM <?=tableNameWithModule("Lancamentos")?>
-	  WHERE DocNumSerie = (SELECT NumSerie FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE Id = in_FaturaId);
-	  
-	  -- Voltar a lançar dívida de fornecedor e custos:
+      
+      -- Apagar lançamentos
+      DELETE FROM <?=tableNameWithModule("Lancamentos")?>
+      WHERE DocNumSerie = (SELECT NumSerie FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE Id = in_FaturaId);
+      
+      -- Voltar a lançar dívida de fornecedor e custos:
       CALL LancamentosLancarCustoFornecedor  (
-	    (SELECT NumSerie FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE Id = in_FaturaId),
-		(SELECT JSON_VALUE(Extra, '$.ClassificacaoAnalitica') FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE Id = in_FaturaId)
+        (SELECT NumSerie FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE Id = in_FaturaId),
+        (SELECT JSON_VALUE(Extra, '$.ClassificacaoAnalitica') FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE Id = in_FaturaId)
       );
 
 

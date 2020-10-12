@@ -12,10 +12,9 @@ DELIMITER //
 -- ------------------------
 
 
-CREATE PROCEDURE FaturaFornecedorAprovar (IN in_Extra JSON)
+CREATE PROCEDURE FaturaFornecedorAprovar (IN in_FaturaId INT, IN in_Extra JSON)
 
   BEGIN
-    DECLARE in_FaturaId                   INT;
     -- Inputs para classificar fornecedor:
     DECLARE in_NumSerie                   TEXT;
     DECLARE in_NumFatura                  TEXT;
@@ -37,7 +36,6 @@ CREATE PROCEDURE FaturaFornecedorAprovar (IN in_Extra JSON)
     -- Variável representativa do estado actual do documento
     DECLARE v_Estado TEXT;
     
-    SET in_FaturaId = JSON_VALUE(in_Extra, '$.DocId');
     SET in_NumSerie = JSON_VALUE(in_Extra, '$.NumSerie');
     SET in_NumFatura = JSON_VALUE(in_Extra, '$.NumFatura');
     SET in_Projeto = JSON_VALUE(in_Extra, '$.Projeto');
