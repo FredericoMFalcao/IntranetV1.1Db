@@ -10,7 +10,9 @@ CREATE PROCEDURE FaturaFornecedorRejeitar (IN in_FaturaId INT, IN in_Extra JSON)
 
   BEGIN
     DECLARE in_MotivoRejeicao TEXT;
+    DECLARE v_Estado TEXT;
     SET in_MotivoRejeicao = JSON_VALUE(in_Extra, '$.MotivoRejeicao');
+    SET v_Estado = (SELECT Estado FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE Id = in_FaturaId);
 
 
     -- 0. Verificar validade dos argumentos
