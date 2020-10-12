@@ -35,15 +35,14 @@ CREATE PROCEDURE FaturaFornecedorRejeitar (IN in_FaturaId INT, IN in_Extra JSON)
     -- 2.1. 'PorClassificarAnalitica' -> 'PorClassificarFornecedor'
     IF v_Estado = 'PorClassificarAnalitica' THEN
       UPDATE <?=tableNameWithModule("Documentos","DOC")?> 
-      SET Estado = 'PorClassificarFornecedor',
+      SET Estado = 'PorClassificarFornecedor'
       WHERE Id = in_FaturaId;
 
 
     -- 2.2. 'PorRegistarContabilidade' -> 'PorClassificarAnalitica'
     ELSEIF v_Estado = 'PorRegistarContabilidade' THEN
-    
       UPDATE <?=tableNameWithModule("Documentos","DOC")?> 
-      SET Estado = 'PorClassificarAnalitica',
+      SET Estado = 'PorClassificarAnalitica'
       WHERE Id = in_FaturaId;
       
       -- Apagar lançamentos
@@ -54,14 +53,14 @@ CREATE PROCEDURE FaturaFornecedorRejeitar (IN in_FaturaId INT, IN in_Extra JSON)
     -- 2.3. 'PorAnexarCPagamento' -> 'PorRegistarContabilidade'
     ELSEIF v_Estado = 'PorAnexarCPagamento' THEN
       UPDATE <?=tableNameWithModule("Documentos","DOC")?> 
-      SET Estado = 'PorRegistarContabilidade',
+      SET Estado = 'PorRegistarContabilidade'
       WHERE Id = in_FaturaId;
 
 
     -- 2.4. 'PorRegistarPagamentoContab' -> 'PorAnexarCPagamento'
     ELSEIF v_Estado = 'PorRegistarPagamentoContab' THEN 
       UPDATE <?=tableNameWithModule("Documentos","DOC")?> 
-      SET Estado = 'PorAnexarCPagamento',
+      SET Estado = 'PorAnexarCPagamento'
       WHERE Id = in_FaturaId;
       
       -- Apagar lançamentos
