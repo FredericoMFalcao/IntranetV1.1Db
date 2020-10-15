@@ -10,3 +10,4 @@ public_html/last_unit_test_results.html
 *.swp
 *compiledCode*
 apache_config.conf
+02_frontend/gui_js_funcs.dml.sql
