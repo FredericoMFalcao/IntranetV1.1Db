@@ -57,17 +57,18 @@ do
 	cat "$f" >> $TMP_FILE
 done 
 
-# 4. Write out the code about to be deployed with line number (easier for debugging)
-cat -n $TMP_FILE > public_html/last_compiled_code_0.txt
-cat $TMP_FILE | php | cat -n > public_html/last_compiled_code.txt
 
-# 9. Generate SQL instructions to populate GUI javascript table
+# 4. Generate SQL instructions to populate GUI javascript table
 echo > 02_frontend/gui_js_funcs.dml.sql 
 for i in $(ls 02_frontend/*.js)
 do
 	FUNC_NAME=${i##*/}
 	cat "$i" | 02_frontend/js2sql "${FUNC_NAME%.js}" >> 02_frontend/gui_js_funcs.dml.sql
 done
+
+# 9. Write out the code about to be deployed with line number (easier for debugging)
+cat -n $TMP_FILE > public_html/last_compiled_code_0.txt
+cat $TMP_FILE | php | cat -n > public_html/last_compiled_code.txt
 
 # 10. Deploy the code - run it at the sql server - after parsing through PHP template engine
 echo "Deployed in :"
