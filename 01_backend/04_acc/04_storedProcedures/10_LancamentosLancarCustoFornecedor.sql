@@ -8,24 +8,35 @@ CREATE PROCEDURE LancamentosLancarCustoFornecedor (
   -- e.g. [{"CentroResultados": "CR0101", "Analitica": "AN0202", "Colaborador": "COabc", "Valor": 1000}, {...}]
 )
   BEGIN
-    DECLARE v_ValorFatura DECIMAL(18,2);
     DECLARE v_PeriodoFaturacao TEXT;
+    DECLARE v_ValorFatura DECIMAL(18,2);
+    DECLARE v_Retencao FLOAT;
     DECLARE i INT;
-    SET v_ValorFatura = FF_ValorTotal((SELECT Extra FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE NumSerie = in_NumSerie));
     SET v_PeriodoFaturacao = JSON_EXTRACT((SELECT Extra FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE NumSerie = in_NumSerie), '$.PeriodoFaturacao');
+    SET v_ValorFatura = FF_ValorTotal((SELECT Extra FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE NumSerie = in_NumSerie));
+    SET v_Retencao = FF_Retencao(in_NumSerie);
     SET i = 0;
     
            
     -- 1. Inserir lançamentos na conta do fornecedor
     CALL CriarLancamento (
       JSON_VALUE((SELECT Extra FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE NumSerie = in_NumSerie), '$.FornecedorCodigo'),
-      1,
-      JSON_EXTRACT((SELECT Extra FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE NumSerie = in_NumSerie), '$.PeriodoFaturacao'),
+      1 - (v_Retencao / v_ValorFatura),
+      v_PeriodoFaturacao,
       in_NumSerie
     );
     
     
-    -- 2. Inserir lançamentos em custos específicos
+    -- 2. Inserir lançamentos na conta de impostos
+    CALL CriarLancamento (
+      'IM01',
+      v_Retencao / v_ValorFatura,
+      v_PeriodoFaturacao,
+      in_NumSerie
+    );
+    
+    
+    -- 3. Inserir lançamentos em custos específicos
     WHILE i != JSON_LENGTH(in_ClassificacaoAnalitica) DO
 
       CALL CriarLancamento (

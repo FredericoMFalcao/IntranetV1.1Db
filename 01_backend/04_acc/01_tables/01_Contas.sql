@@ -11,11 +11,12 @@ CREATE TABLE <?=tableNameWithModule()?> (
 
 -- - Dados Iniciais -- -
 INSERT INTO <?=tableNameWithModule()?> (Conta, Nome) VALUES ('CR0101',"Teste01"); -- centro de resultados
-INSERT INTO <?=tableNameWithModule()?> (Conta, Nome) VALUES ('AN0202',"Teste02"); -- analítica
-INSERT INTO <?=tableNameWithModule()?> (Conta, Nome) VALUES ('FO0000111',"Teste03"); -- fornecedor
-INSERT INTO <?=tableNameWithModule()?> (Conta, Nome) VALUES ('CO123',"Teste04"); -- colaborador
-INSERT INTO <?=tableNameWithModule()?> (Conta, Nome) VALUES ('CO456',"Teste05"); -- colaborador
-INSERT INTO <?=tableNameWithModule()?> (Conta, Nome) VALUES ('CB01',"Teste06"); -- conta bancária
+INSERT INTO <?=tableNameWithModule()?> (Conta, Nome) VALUES ('AN0202',"Teste01"); -- analítica
+INSERT INTO <?=tableNameWithModule()?> (Conta, Nome, Extra) VALUES ('FO0000111',"Teste01",'{"ImpostoIndustrial": 1}'); -- fornecedor
+INSERT INTO <?=tableNameWithModule()?> (Conta, Nome) VALUES ('CO123',"Teste01"); -- colaborador
+INSERT INTO <?=tableNameWithModule()?> (Conta, Nome) VALUES ('CO456',"Teste02"); -- colaborador
+INSERT INTO <?=tableNameWithModule()?> (Conta, Nome) VALUES ('CB01',"Teste01"); -- conta bancária
+INSERT INTO <?=tableNameWithModule()?> (Conta, Nome) VALUES ('IM01',"ImpostosRetencao"); -- impostos
 
 
 -- vim: syntax=sql
