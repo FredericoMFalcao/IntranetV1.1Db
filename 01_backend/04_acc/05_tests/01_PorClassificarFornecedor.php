@@ -50,7 +50,7 @@ require_once __DIR__."/_tests_lib.php";
 	->describe("5. Anexar comprovativo de pagamento")
 	->expectQuery('
 		INSERT INTO SYS_Files (Id) VALUES ("cpagamento123.pdf");
-		CALL DocumentosCriar ("{\"DocTipo\": \"ComprovativoPagamento\", \"FileId\": \"cpagamento123.pdf\", \"ContaBancaria\": \"CB01\"}");
+		CALL DocumentosCriar ("{\"DocTipo\": \"ComprovativoPagamento\", \"FileId\": \"cpagamento123.pdf\", \"NumSerie\": \"FTAn12#456.pdf\", \"ContaBancaria\": \"CB01\"}");
 		CALL DocumentoAprovar (1, "{\"ComprovativoPagamentoId\": 2}");
 	')
 	->toSucceed()
