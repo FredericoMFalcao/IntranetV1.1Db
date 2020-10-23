@@ -27,7 +27,6 @@ CREATE PROCEDURE FaturaFornecedorAprovar (IN in_FaturaId INT, IN in_Extra JSON)
     DECLARE in_Valor                      JSON;  -- e.g. {"Bens": {"ValorBase": 0.00, "Iva": 0.00}, "Servicos": {"ValorBase":0.00,"Iva":0.00}}
     DECLARE in_Moeda                      TEXT;
     DECLARE in_Descricao                  TEXT;
-    DECLARE in_ImpostoConsumo             DECIMAL(18,2);
     DECLARE in_Amortizacao                BOOLEAN;
     -- Inputs para classificar analítica:
     DECLARE in_ClassificacaoAnalitica     JSON;  -- e.g. [{"CentroResultados": "CR0101", "Analitica": "AN0202", "Colaborador": "CO123", "Valor": 1000}, {...}]
@@ -47,7 +46,6 @@ CREATE PROCEDURE FaturaFornecedorAprovar (IN in_FaturaId INT, IN in_Extra JSON)
     SET in_Valor = JSON_EXTRACT(in_Extra, '$.Valor');
     SET in_Moeda = JSON_VALUE(in_Extra, '$.Moeda');
     SET in_Descricao = JSON_VALUE(in_Extra, '$.Descricao');
-    SET in_ImpostoConsumo = JSON_VALUE(in_Extra, '$.ImpostoConsumo');
     SET in_Amortizacao = JSON_VALUE(in_Extra, '$.Amortizacao');
     SET in_ClassificacaoAnalitica = JSON_EXTRACT(in_Extra, '$.ClassificacaoAnalitica');
     SET in_ComprovativoPagamentoId = JSON_VALUE(in_Extra, '$.ComprovativoPagamentoId');
@@ -83,7 +81,6 @@ CREATE PROCEDURE FaturaFornecedorAprovar (IN in_FaturaId INT, IN in_Extra JSON)
                 'FornecedorCodigo', in_FornecedorCodigo,
                 'Moeda', in_Moeda,
                 'Descricao', in_Descricao,
-                'ImpostoConsumo', in_ImpostoConsumo,
                 'Amortizacao', in_Amortizacao        
               ),
               CONCAT("{\"PeriodoFaturacao\":", in_PeriodoFaturacao, "}")
