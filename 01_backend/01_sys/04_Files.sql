@@ -29,24 +29,28 @@ CREATE TABLE SYS_Files (
 
 -- 2.1 Insert (with Events)
 DELIMITER //
-CREATE PROCEDURE FilesNew(Id CHAR(32), MimeType VARCHAR(255))
+CREATE PROCEDURE FilesNew(Id CHAR(32), MimeType VARCHAR(255), DateCreated TIMESTAMP, Extra JSON)
 BEGIN
   
   DECLARE i, j INT;
   DECLARE funcName, sqlCode TEXT;
+  
+  IF MimeType IS NULL; THEN SET MimeType = "text/plain"; END IF;
+  IF DateCreated IS NULL; THEN SET DateCreated = NOW(); END IF;
+
                                                                
   -- 2.1.1 Call BEFORE triggers
   -- ---------------------------                                                               
-  CALL SYS_TriggerBeforeEvent("FileCreated", JSON_OBJECT("FileId", Id, "MimeType", MimeType));
+  CALL SYS_TriggerBeforeEvent("FileCreated", JSON_OBJECT("Id",Id, "MimeType",MimeType, "DateCreated", DateCreated, "Extra", Extra));
                                                                
                                                                
   -- 2.1.2 Perform operation
   -- ---------------------------
-  INSERT INTO SYS_Files (Id, MimeType) VALUES (Id, MimeType);
+  INSERT INTO SYS_Files (Id, MimeType,DateCreated,Extra) VALUES (Id, MimeType,DateCreated,Extra);
                                                                
   -- 2.1.3 Call AFTER triggers
   -- ---------------------------
-  CALL SYS_TriggerAfterEvent("FileCreated", JSON_OBJECT("FileId", Id, "MimeType", MimeType));                                                            
+  CALL SYS_TriggerAfterEvent("FileCreated", JSON_OBJECT("Id",Id, "MimeType",MimeType, "DateCreated", DateCreated, "Extra", Extra));
 
 END;
 //
