@@ -26,7 +26,7 @@ BEGIN
 	  SET j = (SELECT COUNT(<?=$Priority?>StoredProcedure) FROM SYS_EventHandlers WHERE EventName = in_EventName AND <?=$Priority?>StoredProcedure IS NOT NULL);
 	  WHILE i != j DO
       -- store current procedure name into variable: funcName
-	    SELECT a.<?=$Priority?>StoredProcedure INTO funcName FROM SYS_EventHandlers a AND a.<?=$Priority?>StoredProcedure IS NOT NULL LIMIT i,1;
+	    SELECT a.<?=$Priority?>StoredProcedure INTO funcName FROM SYS_EventHandlers a WHERE a.<?=$Priority?>StoredProcedure IS NOT NULL LIMIT i,1;
 
 	    -- Call funcName()
 	    SET sqlCode = CONCAT('CALL ',funcName,'(?)'); PREPARE stmt1 FROM sqlCode; EXECUTE stmt1 USING in_Options; DEALLOCATE PREPARE stmt1; 
