@@ -23,19 +23,23 @@ CREATE PROCEDURE DocumentosCriar (IN in_Extra JSON)
     IF NOT EXISTS (SELECT Id FROM <?=tableNameWithModule("Files","SYS")?> WHERE Id = in_FileId)
       THEN signal sqlstate '23000' set message_text = 'FileId inexistente.';
     END IF;
- 
+
+    -- 1. Criar linha na tabela
+    -- --------------------------
     
-    -- 1. Chamar procedimentos específicos
-    IF in_DocTipo = 'FaturaFornecedor' THEN
-      CALL FaturasFornecedorCriar (in_Extra);
+    -- 1.1 Despoletar evento BEFORE
+    CALL SYS_TriggerBeforeEvent("DocumentoCriado",in_Extra);
+    
+    -- 1.2 Executar acção
+    INSERT INTO <?=tableNameWithModule("Documentos","DOC")?> (FileId) VALUES (in_FileId);
       
-    ELSEIF in_DocTipo = 'ComprovativoPagamento' THEN
-      CALL ComprovativosPagamentoCriar (in_Extra);
+    -- 1.3 Despoletar evento AFTER
+    CALL SYS_TriggerAfterEvent("DocumentoCriado",in_Extra);
       
-    END IF;
-  
   END;
   
 //
 
 DELIMITER ;
+
+INSERT INTO SYS_Events (Name, Description) VALUES ('DocumentoCriado', 'Quando é criado um documento contabilístico novo (e.g. quando é recebido um anexo PDF numa caixa de email)');
