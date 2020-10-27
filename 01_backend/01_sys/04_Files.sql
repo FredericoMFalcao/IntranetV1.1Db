@@ -36,7 +36,7 @@ BEGIN
                                                                
   -- 2.1.1 Call BEFORE triggers
   -- ---------------------------                                                               
-  CALL SYS_TriggerBeforeEvent("NewFile", JSON_OBJECT("FileId", Id, "MimeType", MimeType));
+  CALL SYS_TriggerBeforeEvent("FileCreated", JSON_OBJECT("FileId", Id, "MimeType", MimeType));
                                                                
                                                                
   -- 2.1.2 Perform operation
@@ -45,7 +45,7 @@ BEGIN
                                                                
   -- 2.1.3 Call AFTER triggers
   -- ---------------------------
-  CALL SYS_TriggerAfterEvent("NewFile", JSON_OBJECT("FileId", Id, "MimeType", MimeType));                                                            
+  CALL SYS_TriggerAfterEvent("FileCreated", JSON_OBJECT("FileId", Id, "MimeType", MimeType));                                                            
 
 END;
 //
@@ -56,4 +56,4 @@ DELIMITER ;
 --  3. Register Exported Events
 --	( events that are available for other modules to listen/react to)
 -- ----------------
-INSERT INTO SYS_Events (Name) VALUES ('NewFile');
+INSERT INTO SYS_Events (Name) VALUES ('FileCreated');
