@@ -5,6 +5,8 @@
 -- -------------
 CREATE TABLE SYS_Events (
   Name VARCHAR(255),
+  Description TEXT,
+  OptionsSchema JSON,
   PRIMARY KEY (Name)  
 );
 
