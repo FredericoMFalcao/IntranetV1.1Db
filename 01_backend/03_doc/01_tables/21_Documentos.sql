@@ -5,7 +5,7 @@ CREATE TABLE <?=tableNameWithModule()?> (
   Id INT PRIMARY KEY AUTO_INCREMENT,
   NumSerie VARCHAR(25), -- unique key
   
-  Tipo VARCHAR(50) NOT NULL, -- foreign key
+  Tipo VARCHAR(50) NOT NULL DEFAULT 'GenericType', -- foreign key
   Estado VARCHAR(50) NOT NULL, -- foreign key
   
   FileId VARCHAR(255) NOT NULL, -- foreign key
