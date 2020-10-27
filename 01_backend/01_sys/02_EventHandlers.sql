@@ -19,6 +19,7 @@ CREATE PROCEDURE SYS_Trigger<?=$Priority?>Event (
   )
 BEGIN
     DECLARE i,j INT; -- counter needed to trigger MANY (not single) events
+    DECLARE funcName, sqlCode TEXT; -- variables for the dynamic query code
 	  SET i = 0; -- set counter to zero
 
     -- calculate total number of "listening functions"
