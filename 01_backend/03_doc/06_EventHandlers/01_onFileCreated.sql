@@ -13,7 +13,7 @@ CREATE PROCEDURE DOC_onFileCreated (
  )
  BEGIN
   DECLARE MimeType TEXT;
-  SET MimeType = JSON_VALUE('$.MimeType', in_Options);
+  SET MimeType = JSON_VALUE(in_Options, '$.MimeType');
   
   IF MimeType = "application/pdf"
   THEN
