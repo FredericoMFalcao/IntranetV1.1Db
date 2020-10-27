@@ -11,30 +11,36 @@ DELIMITER //
 --         (2) ficheiro Dropbox é adicionado a uma pasta partilhada
 -- ------------------------
 
-CREATE PROCEDURE DocumentosCriar (IN in_Extra JSON)
+CREATE PROCEDURE DocumentosCriar (IN in_Arguments JSON)
   BEGIN
-    DECLARE in_DocTipo TEXT;
-    DECLARE in_FileId TEXT;
-    SET in_DocTipo = JSON_VALUE(in_Extra, '$.DocTipo');
-    SET in_FileId = JSON_VALUE(in_Extra, '$.FileId');
+    DECLARE in_FileId, v_Extra TEXT;
+    SET in_FileId = JSON_VALUE(in_Arguments, '$.Id');
     
-    
+    SET v_Extra = JSON_OBJECT("FileExtra", JSON_EXTRACT(in_Arguments,'$.Extra'));
+                                                        
     -- 0. Verificar validade dos argumentos
-    IF NOT EXISTS (SELECT Id FROM <?=tableNameWithModule("Files","SYS")?> WHERE Id = in_FileId)
-      THEN signal sqlstate '23000' set message_text = 'FileId inexistente.';
-    END IF;
 
     -- 1. Criar linha na tabela
     -- --------------------------
     
     -- 1.1 Despoletar evento BEFORE
-    CALL SYS_TriggerBeforeEvent("DocumentoCriado",in_Extra);
+    CALL SYS_TriggerBeforeEvent("DocumentoCriado",JSON_OBJECT("FileId", in_FileId, "Extra", v_Extra));
     
     -- 1.2 Executar acção
-    INSERT INTO <?=tableNameWithModule("Documentos","DOC")?> (FileId) VALUES (in_FileId);
+    INSERT INTO <?=tableNameWithModule("Documentos","DOC")?> (FileId, Extra) VALUES (in_FileId, v_Extra);
       
     -- 1.3 Despoletar evento AFTER
-    CALL SYS_TriggerAfterEvent("DocumentoCriado",in_Extra);
+    CALL SYS_TriggerAfterEvent("DocumentoCriado",
+                               (SELECT CONCAT("{", 
+                                             CONCAT_WS(",", 
+                                                       CONCAT_WS(":", '"Id"',Id),
+                                                       CONCAT_WS(":", '"Tipo"', Tipo), 
+                                                       CONCAT_WS(":", '"FileId"', FileId), 
+                                                       CONCAT_WS(":", '"Extra"', Extra)
+                                                     )
+                                             ,"}") 
+                               FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE Id = LAST_INSERT_ID())
+                               );
       
   END;
   
