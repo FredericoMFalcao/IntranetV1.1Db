@@ -6,7 +6,7 @@ CREATE TABLE <?=tableNameWithModule()?> (
   NumSerie VARCHAR(25), -- unique key
   
   Tipo VARCHAR(50) NOT NULL DEFAULT 'GenericType', -- foreign key
-  Estado VARCHAR(50) NOT NULL, -- foreign key
+  Estado VARCHAR(50), -- foreign key
   
   FileId VARCHAR(255) NOT NULL, -- foreign key
   Extra JSON DEFAULT '{}',
