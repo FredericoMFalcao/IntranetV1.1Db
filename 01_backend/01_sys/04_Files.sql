@@ -9,6 +9,7 @@ CREATE TABLE SYS_Files (
   Id CHAR(32),
   MimeType VARCHAR(255) DEFAULT ("text/plain"),
   DateCreated TIMESTAMP,
+  Extra JSON,
   PRIMARY KEY (Id)  
 );
 
