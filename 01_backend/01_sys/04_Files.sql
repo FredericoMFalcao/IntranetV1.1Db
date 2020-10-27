@@ -35,8 +35,8 @@ BEGIN
   DECLARE i, j INT;
   DECLARE funcName, sqlCode TEXT;
   
-  IF MimeType IS NULL; THEN SET MimeType = "text/plain"; END IF;
-  IF DateCreated IS NULL; THEN SET DateCreated = NOW(); END IF;
+  IF MimeType IS NULL THEN SET MimeType = "text/plain"; END IF;
+  IF DateCreated IS NULL THEN SET DateCreated = NOW(); END IF;
 
                                                                
   -- 2.1.1 Call BEFORE triggers
