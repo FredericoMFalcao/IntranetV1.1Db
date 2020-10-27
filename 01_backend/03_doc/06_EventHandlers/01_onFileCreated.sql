@@ -1,3 +1,10 @@
+-- --------------------
+--  Module: Documentos EventListner: onFileCreated 
+--
+--  Descrição: se o FICHEIRO novo criado no sistema é do tipo PDF,
+--             então cria um DOCUMENTO novo
+-- --------------------
+
 
 DROP PROCEDURE IF EXISTS DOC_onFileCreated;
 DELIMITER //
