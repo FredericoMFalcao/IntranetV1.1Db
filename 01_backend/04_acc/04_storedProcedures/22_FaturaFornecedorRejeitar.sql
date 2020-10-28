@@ -1,4 +1,4 @@
-DROP PROCEDURE IF EXISTS FaturaFornecedorRejeitar;
+DROP PROCEDURE IF EXISTS <?=tableNameWithModule()?>;
 
 DELIMITER //
 -- ------------------------
@@ -6,7 +6,7 @@ DELIMITER //
 --
 --  Descrição: Mover um "documento" específico um estado para trás, acrescentado um descritivo da rejeição
 -- ------------------------
-CREATE PROCEDURE FaturaFornecedorRejeitar (IN in_FaturaId INT, IN in_Extra JSON)
+CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_FaturaId INT, IN in_Extra JSON)
 
   BEGIN
     DECLARE in_MotivoRejeicao TEXT;
@@ -68,7 +68,7 @@ CREATE PROCEDURE FaturaFornecedorRejeitar (IN in_FaturaId INT, IN in_Extra JSON)
       WHERE DocNumSerie = (SELECT NumSerie FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE Id = in_FaturaId);
       
       -- Voltar a lançar dívida de fornecedor e custos:
-      CALL LancamentosLancarCustoFornecedor  (
+      CALL <?=tableNameWithModule("LancamentosLancarCustoFornecedor")?>  (
         (SELECT NumSerie FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE Id = in_FaturaId),
         (SELECT JSON_VALUE(Extra, '$.ClassificacaoAnalitica') FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE Id = in_FaturaId)
       );

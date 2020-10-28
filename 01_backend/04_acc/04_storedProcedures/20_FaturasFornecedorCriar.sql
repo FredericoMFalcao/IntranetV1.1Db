@@ -1,4 +1,4 @@
-DROP PROCEDURE IF EXISTS FaturasFornecedorCriar;
+DROP PROCEDURE IF EXISTS <?=tableNameWithModule()?>;
 
 DELIMITER //
 
@@ -9,7 +9,7 @@ DELIMITER //
 -- ------------------------
 
 
-CREATE PROCEDURE FaturasFornecedorCriar (IN in_Extra JSON)
+CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_Extra JSON)
   BEGIN
     DECLARE in_DocTipo TEXT;
     DECLARE in_FileId TEXT;

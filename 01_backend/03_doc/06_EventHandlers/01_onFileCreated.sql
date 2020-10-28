@@ -6,9 +6,9 @@
 -- --------------------
 
 
-DROP PROCEDURE IF EXISTS DOC_onFileCreated;
+DROP PROCEDURE IF EXISTS <?=tableNameWithModule()?>;
 DELIMITER //
-CREATE PROCEDURE DOC_onFileCreated (
+CREATE PROCEDURE <?=tableNameWithModule()?> (
  IN in_Options JSON
  )
  BEGIN
@@ -17,11 +17,11 @@ CREATE PROCEDURE DOC_onFileCreated (
   
   IF MimeType = "application/pdf"
   THEN
-    CALL DocumentosCriar(in_Options);
+    CALL <?=tableNameWithModule("DocumentosCriar")?> (in_Options);
   END IF;
  
  END;
  //
  DELIMITER ;
  
- INSERT INTO SYS_EventHandlers (EventName, AfterStoredProcedure) VALUES ('FileCreated','DOC_onFileCreated');
+ INSERT INTO <?=tableNameWithModule("EventHandlers","SYS")?> (EventName, AfterStoredProcedure) VALUES ('FileCreated','DOC_onFileCreated');

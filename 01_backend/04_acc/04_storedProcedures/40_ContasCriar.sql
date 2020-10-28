@@ -1,4 +1,4 @@
-DROP PROCEDURE IF EXISTS ContasCriar;
+DROP PROCEDURE IF EXISTS <?=tableNameWithModule()?>;
 
 DELIMITER //
 -- ------------------------
@@ -7,7 +7,7 @@ DELIMITER //
 --  Descrição: Cria uma nova conta contabilística 
 --    (e.g. Fornecedor, Centro de Resultados, Analítica, Colaorador, Conta Bancária, etc)
 -- ------------------------
-CREATE PROCEDURE ContasCriar (IN in_Extra JSON)
+CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_Extra JSON)
 
   BEGIN
     

@@ -1,4 +1,4 @@
-DROP PROCEDURE IF EXISTS DocumentoEditar;
+DROP PROCEDURE IF EXISTS <?=tableNameWithModule()?>;
 
 DELIMITER //
 
@@ -8,7 +8,7 @@ DELIMITER //
 --  Descrição: Editar um ou mais campos de um documento já existente
 -- ------------------------
 
-CREATE PROCEDURE DocumentoEditar (IN in_DocId INT, IN in_Extra JSON)
+CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_DocId INT, IN in_Extra JSON)
 
   BEGIN
   

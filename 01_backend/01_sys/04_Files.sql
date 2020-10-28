@@ -28,8 +28,9 @@ CREATE TABLE SYS_Files (
 -- ----------------
 
 -- 2.1 Insert (with Events)
+DROP PROCEDURE IF EXISTS SYS_FilesNew;
 DELIMITER //
-CREATE PROCEDURE FilesNew(Id CHAR(32), MimeType VARCHAR(255), DateCreated TIMESTAMP, Extra JSON)
+CREATE PROCEDURE SYS_FilesNew (Id CHAR(32), MimeType VARCHAR(255), DateCreated TIMESTAMP, Extra JSON)
 BEGIN
   
   DECLARE i, j INT;

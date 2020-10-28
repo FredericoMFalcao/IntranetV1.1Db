@@ -1,4 +1,4 @@
-DROP PROCEDURE IF EXISTS DocumentoMarcar;
+DROP PROCEDURE IF EXISTS <?=tableNameWithModule()?>;
 
 DELIMITER //
 
@@ -8,7 +8,7 @@ DELIMITER //
 -- Descrição: marca um documento para se destacar em listas/tabelas com muitos documentos
 -- ------------------------
 
-CREATE PROCEDURE DocumentoMarcar (IN DocId INT, IN in_Marcado BOOLEAN)
+CREATE PROCEDURE <?=tableNameWithModule()?> (IN DocId INT, IN in_Marcado BOOLEAN)
 
   BEGIN
 

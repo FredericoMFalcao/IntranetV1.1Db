@@ -1,4 +1,4 @@
-DROP PROCEDURE IF EXISTS DocumentoApagar;
+DROP PROCEDURE IF EXISTS <?=tableNameWithModule()?>;
 
 DELIMITER //
 
@@ -9,7 +9,7 @@ DELIMITER //
 --            Por consequência:
 --                (1) Chama o processo apropriado para cada tipo de documento (antes de apagar)
 -- ------------------------
-CREATE PROCEDURE DocumentoApagar (IN in_DocId INT)
+CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_DocId INT)
 
   BEGIN
     DECLARE v_TipoDoc TEXT;
@@ -17,7 +17,7 @@ CREATE PROCEDURE DocumentoApagar (IN in_DocId INT)
   
     -- Chamar processo apropriado:
     IF v_TipoDoc = 'ComprovativoPagamento' THEN
-      CALL ComprovativoPagamentoApagar (in_DocId);
+      CALL <?=tableNameWithModule("ComprovativoPagamentoApagar","ACC")?> (in_DocId);
     END IF;
     
     -- Apagar o documento:

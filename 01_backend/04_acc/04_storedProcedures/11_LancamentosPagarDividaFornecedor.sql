@@ -1,8 +1,8 @@
-DROP PROCEDURE IF EXISTS LancamentosPagarDividaFornecedor;
+DROP PROCEDURE IF EXISTS <?=tableNameWithModule()?>;
 
 DELIMITER //
 
-CREATE PROCEDURE LancamentosPagarDividaFornecedor (IN in_FaturaId INT, IN in_ComprovativoPagamentoId INT)
+CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_FaturaId INT, IN in_ComprovativoPagamentoId INT)
  
   BEGIN
     DECLARE v_NumSerie TEXT;
@@ -16,7 +16,7 @@ CREATE PROCEDURE LancamentosPagarDividaFornecedor (IN in_FaturaId INT, IN in_Com
     
            
     -- 1. Inserir lançamentos na conta do fornecedor
-    CALL CriarLancamento (
+    CALL <?=tableNameWithModule("CriarLancamento")?> (
       JSON_VALUE((SELECT Extra FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE Id = in_FaturaId), '$.FornecedorCodigo'),
       (v_Retencao / v_ValorFatura) - 1,
       v_PeriodoFaturacao,
@@ -25,7 +25,7 @@ CREATE PROCEDURE LancamentosPagarDividaFornecedor (IN in_FaturaId INT, IN in_Com
     
     
     -- 2. Inserir lançamentos na conta bancária
-    CALL CriarLancamento (
+    CALL <?=tableNameWithModule("CriarLancamento")?> (
       JSON_VALUE((SELECT Extra FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE Id = in_ComprovativoPagamentoId), '$.ContaBancaria'),
       1 - (v_Retencao / v_ValorFatura),
       v_PeriodoFaturacao,

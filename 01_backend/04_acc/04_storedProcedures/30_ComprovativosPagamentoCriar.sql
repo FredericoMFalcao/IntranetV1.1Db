@@ -1,4 +1,4 @@
-DROP PROCEDURE IF EXISTS ComprovativosPagamentoCriar;
+DROP PROCEDURE IF EXISTS <?=tableNameWithModule()?>;
 
 DELIMITER //
 
@@ -7,7 +7,7 @@ DELIMITER //
 --
 -- Descrição: cria um "documento" novo, i.e. entrada na tabela sql de documentos
 -- ------------------------
-CREATE PROCEDURE ComprovativosPagamentoCriar (IN in_Extra JSON)
+CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_Extra JSON)
   BEGIN
     DECLARE in_NumSerie TEXT;
     DECLARE in_DocTipo TEXT;

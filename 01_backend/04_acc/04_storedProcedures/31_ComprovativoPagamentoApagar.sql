@@ -1,4 +1,4 @@
-DROP PROCEDURE IF EXISTS ComprovativoPagamentoApagar;
+DROP PROCEDURE IF EXISTS <?=tableNameWithModule()?>;
 
 DELIMITER //
 -- ------------------------
@@ -8,7 +8,7 @@ DELIMITER //
 --                (1) Elimina os lançamentos contabilísticos associados a este comprovativo de pagamento
 --                (2) Elimina a associação das faturas que referenciavam este comprovativo de pagamento (i.e. set null)
 -- ------------------------
-CREATE PROCEDURE ComprovativoPagamentoApagar (IN in_ComprovativoPagamentoId INT)
+CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_ComprovativoPagamentoId INT)
 
   BEGIN
   
@@ -21,7 +21,7 @@ CREATE PROCEDURE ComprovativoPagamentoApagar (IN in_ComprovativoPagamentoId INT)
       );
       
       -- Voltar a lançar dívida de fornecedor e custos
-      CALL LancamentosLancarCustoFornecedor (
+      CALL <?=tableNameWithModule("LancamentosLancarCustoFornecedor")?> (
         (SELECT NumSerie
         FROM <?=tableNameWithModule("Documentos","DOC")?>
         WHERE JSON_VALUE(Extra, '$.ComprovativoPagamentoId') = in_ComprovativoPagamentoId

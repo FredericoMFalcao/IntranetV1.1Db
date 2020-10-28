@@ -1,4 +1,4 @@
-DROP PROCEDURE IF EXISTS FaturaFornecedorAprovar;
+DROP PROCEDURE IF EXISTS <?=tableNameWithModule()?>;
 
 DELIMITER //
 
@@ -12,7 +12,7 @@ DELIMITER //
 -- ------------------------
 
 
-CREATE PROCEDURE FaturaFornecedorAprovar (IN in_FaturaId INT, IN in_Extra JSON)
+CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_FaturaId INT, IN in_Extra JSON)
 
   BEGIN
     -- Inputs para classificar fornecedor:
@@ -100,7 +100,7 @@ CREATE PROCEDURE FaturaFornecedorAprovar (IN in_FaturaId INT, IN in_Extra JSON)
       WHERE Id = in_FaturaId;
       
       -- Lançar dívida de fornecedor e custos:
-      CALL LancamentosLancarCustoFornecedor  (in_NumSerie, in_ClassificacaoAnalitica);
+      CALL <?=tableNameWithModule("LancamentosLancarCustoFornecedor")?>  (in_NumSerie, in_ClassificacaoAnalitica);
 
 
     -- 3. 'PorRegistarContabilidade' -> 'PorAnexarCPagamento'
@@ -126,7 +126,7 @@ CREATE PROCEDURE FaturaFornecedorAprovar (IN in_FaturaId INT, IN in_Extra JSON)
       WHERE Id = in_FaturaId;
       
       -- Lançar pagamento e abater à conta de fornecedores:
-      CALL LancamentosPagarDividaFornecedor  (in_FaturaId, in_ComprovativoPagamentoId);
+      CALL <?=tableNameWithModule("LancamentosPagarDividaFornecedor")?>  (in_FaturaId, in_ComprovativoPagamentoId);
 
 
     -- 5. 'PorRegistarPagamentoContab' -> 'Concluido'

@@ -1,8 +1,8 @@
-DROP PROCEDURE IF EXISTS LancamentosLancarCustoFornecedor;
+DROP PROCEDURE IF EXISTS <?=tableNameWithModule()?>;
 
 DELIMITER //
 
-CREATE PROCEDURE LancamentosLancarCustoFornecedor (
+CREATE PROCEDURE <?=tableNameWithModule()?> (
   IN in_NumSerie                    TEXT,
   IN in_ClassificacaoAnalitica      TEXT
   -- e.g. [{"CentroResultados": "CR0101", "Analitica": "AN0202", "Colaborador": "COabc", "Valor": 1000}, {...}]
@@ -19,7 +19,7 @@ CREATE PROCEDURE LancamentosLancarCustoFornecedor (
     
            
     -- 1. Inserir lançamentos na conta do fornecedor
-    CALL CriarLancamento (
+    CALL <?=tableNameWithModule("CriarLancamento")?> (
       JSON_VALUE((SELECT Extra FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE NumSerie = in_NumSerie), '$.FornecedorCodigo'),
       1 - (v_Retencao / v_ValorFatura),
       v_PeriodoFaturacao,
@@ -28,7 +28,7 @@ CREATE PROCEDURE LancamentosLancarCustoFornecedor (
     
     
     -- 2. Inserir lançamentos na conta de impostos
-    CALL CriarLancamento (
+    CALL <?=tableNameWithModule("CriarLancamento")?> (
       'IM01',
       v_Retencao / v_ValorFatura,
       v_PeriodoFaturacao,
@@ -39,7 +39,7 @@ CREATE PROCEDURE LancamentosLancarCustoFornecedor (
     -- 3. Inserir lançamentos em custos específicos
     WHILE i != JSON_LENGTH(in_ClassificacaoAnalitica) DO
 
-      CALL CriarLancamento (
+      CALL <?=tableNameWithModule("CriarLancamento")?> (
         CONCAT_WS(":",
           JSON_VALUE(JSON_EXTRACT(in_ClassificacaoAnalitica, CONCAT("$[", i, "]")), '$.CentroResultados'),
           JSON_VALUE(JSON_EXTRACT(in_ClassificacaoAnalitica, CONCAT("$[", i, "]")), '$.Analitica'),

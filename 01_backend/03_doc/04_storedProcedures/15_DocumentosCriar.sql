@@ -1,4 +1,4 @@
-DROP PROCEDURE IF EXISTS DocumentosCriar;
+DROP PROCEDURE IF EXISTS <?=tableNameWithModule()?>;
 
 DELIMITER //
 
@@ -11,7 +11,7 @@ DELIMITER //
 --         (2) ficheiro Dropbox é adicionado a uma pasta partilhada
 -- ------------------------
 
-CREATE PROCEDURE DocumentosCriar (IN in_Arguments JSON)
+CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_Arguments JSON)
   BEGIN
     DECLARE in_FileId, v_Extra TEXT;
     SET in_FileId = JSON_VALUE(in_Arguments, '$.Id');
@@ -24,23 +24,23 @@ CREATE PROCEDURE DocumentosCriar (IN in_Arguments JSON)
     -- --------------------------
     
     -- 1.1 Despoletar evento BEFORE
-    CALL SYS_TriggerBeforeEvent("DocumentoCriado",JSON_OBJECT("FileId", in_FileId, "Extra", v_Extra));
+    CALL <?=tableNameWithModule("TriggerBeforeEvent","SYS")?> ("DocumentoCriado",JSON_OBJECT("FileId", in_FileId, "Extra", v_Extra));
     
     -- 1.2 Executar acção
     INSERT INTO <?=tableNameWithModule("Documentos","DOC")?> (FileId, Extra) VALUES (in_FileId, v_Extra);
       
     -- 1.3 Despoletar evento AFTER
-    CALL SYS_TriggerAfterEvent("DocumentoCriado",
-                               (SELECT CONCAT("{", 
-                                             CONCAT_WS(",", 
-                                                       CONCAT_WS(":", '"Id"',Id),
-                                                       CONCAT_WS(":", '"Tipo"', Tipo), 
-                                                       CONCAT_WS(":", '"FileId"', FileId), 
-                                                       CONCAT_WS(":", '"Extra"', Extra)
-                                                     )
-                                             ,"}") 
-                               FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE Id = LAST_INSERT_ID())
-                               );
+    CALL <?=tableNameWithModule("TriggerAfterEvent","SYS")?> ("DocumentoCriado",
+                                                              (SELECT CONCAT("{", 
+                                                                            CONCAT_WS(",", 
+                                                                                      CONCAT_WS(":", '"Id"',Id),
+                                                                                      CONCAT_WS(":", '"Tipo"', Tipo), 
+                                                                                      CONCAT_WS(":", '"FileId"', FileId), 
+                                                                                      CONCAT_WS(":", '"Extra"', Extra)
+                                                                                    )
+                                                                            ,"}") 
+                                                              FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE Id = LAST_INSERT_ID())
+                                                              );
       
   END;
   
@@ -48,4 +48,4 @@ CREATE PROCEDURE DocumentosCriar (IN in_Arguments JSON)
 
 DELIMITER ;
 
-INSERT INTO SYS_Events (Name, Description) VALUES ('DocumentoCriado', 'Quando é criado um documento contabilístico novo (e.g. quando é recebido um anexo PDF numa caixa de email)');
+INSERT INTO <?=tableNameWithModule("Events","SYS")?> (Name, Description) VALUES ('DocumentoCriado', 'Quando é criado um documento contabilístico novo (e.g. quando é recebido um anexo PDF numa caixa de email)');

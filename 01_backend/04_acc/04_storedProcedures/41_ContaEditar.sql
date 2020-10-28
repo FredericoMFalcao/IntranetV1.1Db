@@ -1,4 +1,4 @@
-DROP PROCEDURE IF EXISTS ContaEditar;
+DROP PROCEDURE IF EXISTS <?=tableNameWithModule()?>;
 
 DELIMITER //
 -- ------------------------
@@ -7,7 +7,7 @@ DELIMITER //
 --  Descrição: Altera um ou mais campos de uma conta contabilística já existente
 --          No caso de o código da conta se alterar e esta ter lançamentos associados, altera também a tabela de Lançamentos
 -- ------------------------
-CREATE PROCEDURE ContaEditar (IN in_Conta TEXT, IN in_Extra JSON)
+CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_Conta TEXT, IN in_Extra JSON)
 
   BEGIN
   

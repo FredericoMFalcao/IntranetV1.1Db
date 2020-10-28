@@ -1,4 +1,4 @@
-DROP PROCEDURE IF EXISTS ContaApagar;
+DROP PROCEDURE IF EXISTS <?=tableNameWithModule()?>;
 
 DELIMITER //
 -- ------------------------
@@ -7,7 +7,7 @@ DELIMITER //
 --  Descrição: Apaga uma conta contabilística
 --          No caso da conta ter lançamentos associados, FALTA DEFINIR O QUE ACONTECE
 -- ------------------------
-CREATE PROCEDURE ContaApagar (IN in_Conta TEXT)
+CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_Conta TEXT)
 
   BEGIN
   
