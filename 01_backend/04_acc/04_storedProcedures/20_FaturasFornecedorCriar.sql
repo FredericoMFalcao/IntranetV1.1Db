@@ -5,22 +5,17 @@ DELIMITER //
 -- ------------------------
 --  Tabela (virtual): FaturasFornecedor Funcao: Criar 
 --
--- Descrição: cria um "documento" novo, i.e. entrada na tabela sql de documentos
+-- Descrição: faz update de um documento da tabela DOC_Documentos com os campos específicos de faturas de fornecedor
 -- ------------------------
 
-
-CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_Extra JSON)
+CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_Arguments JSON)
   BEGIN
-    DECLARE in_DocTipo TEXT;
-    DECLARE in_FileId TEXT;
-    SET in_DocTipo = JSON_VALUE(in_Extra, '$.DocTipo');
-    SET in_FileId = JSON_VALUE(in_Extra, '$.FileId');
+    DECLARE in_DocId TEXT;
+    SET in_DocId = JSON_VALUE(in_Arguments, '$.Id');
 
-    IF in_DocTipo = 'FaturaFornecedor' THEN
-      INSERT INTO <?=tableNameWithModule("Documentos","DOC")?> (Tipo, Estado, FileId) 
-      VALUES (in_DocTipo, 'PorClassificarFornecedor', in_FileId);
-      
-    END IF;
+    UPDATE <?=tableNameWithModule("Documentos","DOC")?>
+    SET Tipo = 'FaturaFornecedor', Estado = 'PorClassificarFornecedor'
+    WHERE Id = in_DocId;
   
   END;
   

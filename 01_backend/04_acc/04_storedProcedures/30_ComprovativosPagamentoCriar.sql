@@ -5,27 +5,24 @@ DELIMITER //
 -- ------------------------
 --  Tabela (virtual): ComprovativosPagamento Funcao: Criar 
 --
--- Descrição: cria um "documento" novo, i.e. entrada na tabela sql de documentos
+-- Descrição: faz update de um documento da tabela DOC_Documentos com os campos específicos de comprovativos de pagamento
 -- ------------------------
-CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_Extra JSON)
-  BEGIN
-    DECLARE in_NumSerie TEXT;
-    DECLARE in_DocTipo TEXT;
-    DECLARE in_FileId TEXT;
-    DECLARE in_ContaBancaria TEXT;
-    SET in_NumSerie = JSON_VALUE(in_Extra, '$.NumSerie');
-    SET in_DocTipo = JSON_VALUE(in_Extra, '$.DocTipo');
-    SET in_FileId = JSON_VALUE(in_Extra, '$.FileId');
-    SET in_ContaBancaria = JSON_VALUE(in_Extra, '$.ContaBancaria');
 
-    IF in_DocTipo = 'ComprovativoPagamento' THEN
-      INSERT INTO <?=tableNameWithModule("Documentos","DOC")?> (NumSerie, Tipo, Estado, FileId) 
-      VALUES (in_NumSerie, in_DocTipo, 'Concluido', in_FileId);
-      UPDATE <?=tableNameWithModule("Documentos","DOC")?>
-      SET Extra = JSON_SET(Extra, '$.ContaBancaria', in_ContaBancaria)
-      WHERE FileId = in_FileId;
-      
-    END IF;
+CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_Arguments JSON)
+  BEGIN
+    DECLARE in_DocId TEXT;
+    DECLARE in_NumSerie TEXT; -- TEMPORÁRIO: falta definir em que fase é atribuído um 'NumSerie' ao comprovativo de pagamento
+    DECLARE in_ContaBancaria TEXT;
+    SET in_DocId = JSON_VALUE(in_Arguments, '$.Id');
+    SET in_NumSerie = JSON_VALUE(JSON_EXTRACT(in_Arguments, '$.Extra'), '$.NumSerie');
+    SET in_ContaBancaria = JSON_VALUE(JSON_EXTRACT(in_Arguments, '$.Extra'), '$.ContaBancaria');
+
+    UPDATE <?=tableNameWithModule("Documentos","DOC")?>
+    SET 
+      Tipo = 'ComprovativoPagamento', 
+      Estado = 'Concluido',
+      Extra = JSON_SET(Extra, '$.ContaBancaria', in_ContaBancaria)
+    WHERE Id = in_DocId;
   
   END;
   

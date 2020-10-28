@@ -23,24 +23,29 @@ CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_Arguments JSON)
     -- 1. Criar linha na tabela
     -- --------------------------
     
-    -- 1.1 Despoletar evento BEFORE
+    -- 1.1 Espoletar evento BEFORE
     CALL <?=tableNameWithModule("TriggerBeforeEvent","SYS")?> ("DocumentoCriado",JSON_OBJECT("FileId", in_FileId, "Extra", v_Extra));
     
     -- 1.2 Executar acção
     INSERT INTO <?=tableNameWithModule("Documentos","DOC")?> (FileId, Extra) VALUES (in_FileId, v_Extra);
       
-    -- 1.3 Despoletar evento AFTER
-    CALL <?=tableNameWithModule("TriggerAfterEvent","SYS")?> ("DocumentoCriado",
-                                                              (SELECT CONCAT("{", 
-                                                                            CONCAT_WS(",", 
-                                                                                      CONCAT_WS(":", '"Id"',Id),
-                                                                                      CONCAT_WS(":", '"Tipo"', Tipo), 
-                                                                                      CONCAT_WS(":", '"FileId"', FileId), 
-                                                                                      CONCAT_WS(":", '"Extra"', Extra)
-                                                                                    )
-                                                                            ,"}") 
-                                                              FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE Id = LAST_INSERT_ID())
-                                                              );
+    -- 1.3 Espoletar evento AFTER
+    CALL <?=tableNameWithModule("TriggerAfterEvent","SYS")?> (
+      "DocumentoCriado",
+      (SELECT
+        CONCAT(
+          "{", 
+          CONCAT_WS(
+            ",", 
+            CONCAT_WS(":", '"Id"', Id),
+            CONCAT_WS(":", '"Tipo"', Tipo), 
+            CONCAT_WS(":", '"FileId"', FileId), 
+            CONCAT_WS(":", '"Extra"', Extra)
+          ),
+          "}"
+        )  
+      FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE Id = LAST_INSERT_ID())
+    );
       
   END;
   
