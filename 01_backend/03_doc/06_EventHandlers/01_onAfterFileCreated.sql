@@ -1,5 +1,5 @@
 -- --------------------
---  Module: Documentos EventListner: onFileCreated 
+--  Module: Documentos EventListner: onAfterFileCreated 
 --
 --  Descrição: se o FICHEIRO novo criado no sistema é do tipo PDF,
 --             então cria um DOCUMENTO novo
@@ -24,4 +24,4 @@ CREATE PROCEDURE <?=tableNameWithModule()?> (
  //
  DELIMITER ;
  
- INSERT INTO <?=tableNameWithModule("EventHandlers","SYS")?> (EventName, AfterStoredProcedure) VALUES ('FileCreated','DOC_onFileCreated');
+ INSERT INTO <?=tableNameWithModule("EventHandlers","SYS")?> (EventName, AfterStoredProcedure) VALUES ('FileCreated','DOC_onAfterFileCreated');
