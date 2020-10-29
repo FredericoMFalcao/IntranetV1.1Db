@@ -5,10 +5,11 @@ DELIMITER //
 -- ------------------------
 --  Tabela (virtual): FaturaFornecedor Funcao: Aprovar
 --
--- Descrição: move o estado de uma fatura (de fornecedor) para a frente no "workflow" previamente definido
---        Faz também:
---         (1) anexa informação extra que lhe é dada em cada passo
+-- Descrição: antes do estado de uma fatura (de fornecedor) passar para a frente no "workflow" previamente definido, faz:
+--         (1) anexa informação extra que é dada em cada passo
 --         (2) chama o procedimento que faz os lançamentos contabílisticos relevantes em cada passo
+--         (3) passa informação relevante para o software externo de contabilidade financeira
+--         (4) se a fatura tinha sido rejeitada, reverte essa condição
 -- ------------------------
 
 
@@ -51,21 +52,16 @@ CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_FaturaId INT, IN in_Extra JSO
 
 
     -- 0. Verificar validade dos argumentos
-    IF NOT EXISTS (SELECT Id FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE Id = in_FaturaId AND Tipo = 'FaturaFornecedor')
-      THEN signal sqlstate '20000' set message_text = 'Fatura de fornecedor inexistente.';
-    END IF;
 
 
     -- 1. 'PorClassificarFornecedor' -> 'PorClassificarAnalitica'
     --
-    -- Descrição: atualiza o estado do documento e
-    --             dá ao "sistema" os dados da fatura contidos no documento em papel,
+    -- Descrição: dá ao "sistema" os dados da fatura contidos no documento em papel,
     --             acrescentando pequenos dados implícitos
     IF v_Estado = 'PorClassificarFornecedor' THEN
       UPDATE <?=tableNameWithModule("Documentos","DOC")?> 
       SET
         NumSerie = in_NumSerie,
-        Estado = 'PorClassificarAnalitica',
         Extra = JSON_MERGE (
           Extra,
           JSON_MERGE(
@@ -89,14 +85,10 @@ CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_FaturaId INT, IN in_Extra JSO
 
 
     -- 2. 'PorClassificarAnalitica' -> 'PorRegistarContabilidade'
-    -- Descrição: atualiza o estado do documento e
-    --            lança na contabilidade analítica os movimentos que o custo/proveito desta fatura implicam
-
+    -- Descrição: lança na contabilidade analítica os movimentos que o custo/proveito desta fatura implicam
     ELSEIF v_Estado = 'PorClassificarAnalitica' THEN
       UPDATE <?=tableNameWithModule("Documentos","DOC")?> 
-      SET
-        Estado = 'PorRegistarContabilidade',
-        Extra = JSON_MERGE(Extra, CONCAT("{\"ClassificacaoAnalitica\":", in_ClassificacaoAnalitica, "}"))
+      SET Extra = JSON_MERGE(Extra, CONCAT("{\"ClassificacaoAnalitica\":", in_ClassificacaoAnalitica, "}"))
       WHERE Id = in_FaturaId;
       
       -- Lançar dívida de fornecedor e custos:
@@ -104,25 +96,15 @@ CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_FaturaId INT, IN in_Extra JSO
 
 
     -- 3. 'PorRegistarContabilidade' -> 'PorAnexarCPagamento'
-    -- Descrição: atualiza o estado do documento e
-    --            (no futuro) lança o custo/proveito desta fatura num software externo de contabilidade financeira
-
-    ELSEIF v_Estado = 'PorRegistarContabilidade' THEN
-      UPDATE <?=tableNameWithModule("Documentos","DOC")?> 
-      SET Estado = 'PorAnexarCPagamento'
-      WHERE Id = in_FaturaId;
+    -- Descrição: (no futuro) lança o custo/proveito desta fatura num software externo de contabilidade financeira
 
 
     -- 4. 'PorAnexarCPagamento' -> 'PorRegistarPagamentoContab'
-    -- Descrição: atualiza o estado do documento e
-    --            lança o pagamento por contrapartida da dívida existente (criada aquando da recepção da fatura) a fornecedor
+    -- Descrição: lança o pagamento por contrapartida da dívida existente (criada aquando da recepção da fatura) a fornecedor
     --            e associa o documento do tipo comprovativo de pagamento ao documento do tipo fatura
-
     ELSEIF v_Estado = 'PorAnexarCPagamento' THEN
       UPDATE <?=tableNameWithModule("Documentos","DOC")?> 
-      SET
-        Estado = 'PorRegistarPagamentoContab',
-        Extra = JSON_SET(Extra, '$.ComprovativoPagamentoId', in_ComprovativoPagamentoId)
+      SET Extra = JSON_SET(Extra, '$.ComprovativoPagamentoId', in_ComprovativoPagamentoId)
       WHERE Id = in_FaturaId;
       
       -- Lançar pagamento e abater à conta de fornecedores:
@@ -130,13 +112,7 @@ CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_FaturaId INT, IN in_Extra JSO
 
 
     -- 5. 'PorRegistarPagamentoContab' -> 'Concluido'
-    -- Descrição: atualiza o estado do documento e
-    --            envia os dados do pagamento para o software externo de contabilidade financeira
-
-    ELSEIF v_Estado = 'PorRegistarPagamentoContab' THEN
-      UPDATE <?=tableNameWithModule("Documentos","DOC")?> 
-      SET Estado = 'Concluido'
-      WHERE Id = in_FaturaId;
+    -- Descrição: (no futuro) envia os dados do pagamento para o software externo de contabilidade financeira
 
     END IF;
     
