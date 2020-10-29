@@ -11,7 +11,7 @@ DELIMITER //
 CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_Options JSON)
   BEGIN
     DECLARE in_DocTipo TEXT;
-    SET in_DocTipo = JSON_VALUE(in_Options, '$.Tipo'), 
+    SET in_DocTipo = JSON_VALUE(in_Options, '$.Tipo'); 
    
     IF in_DocTipo = "FaturaFornecedor" THEN
       CALL <?=tableNameWithModule("FaturasForncedorCriar")?> (in_Options);
