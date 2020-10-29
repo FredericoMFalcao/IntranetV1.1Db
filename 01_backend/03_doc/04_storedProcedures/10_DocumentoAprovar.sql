@@ -57,4 +57,4 @@ CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_DocId INT, IN in_Arguments JS
 
 DELIMITER ;
 
-INSERT INTO <?=tableNameWithModule("Events","SYS")?> (Name, Description) VALUES ('DocumentoAprovado', 'Quando é um documento é aprovado (i.e. passa um estado para a frente no "workflow" programado)');
+INSERT INTO <?=tableNameWithModule("Events","SYS")?> (Name, Description) VALUES ('DocumentoAprovado', 'Quando um documento é aprovado (i.e. passa um estado para a frente no "workflow" programado)');
