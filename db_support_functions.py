@@ -6,26 +6,32 @@ import sys, os
 #
 #	0. CONNECT to database
 #
+isConnected = False
 
 # 0. Get the credentials to connect to database
-db_cred = json.loads(''.join(open('./project_root/.db_credentials.json', 'r').readlines()))
+#    ( not default MariaDB user. Each script will have to connect with its own MariaDB user, i.e. with its own set of permissions)
+# db_cred = json.loads(''.join(open('./project_root/.db_credentials.json', 'r').readlines()))
+
 # 1. Attempt to connect
 # 1.1 Create global database object 
-try:
-	cnx = mysql.connector.connect(
-		host=db_cred['server'], 
-		user=db_cred['user'], 
-		password=db_cred['password'], 
-		database=db_cred['defaultDb']
-	)
-except mysql.connector.Error as err:
-    print(err)
-    sys.exit(1)
+def connectToMariaDBServer ( host, user, password, defaultDb ) :
+        global cnx, isConnected, cursor
+        try:
+           cnx = mysql.connector.connect(
+              host=host, 
+              user=user, 
+              password=password, 
+              database=defaultDb
+           )
+           cursor = cnx.cursor(dictionary=True)
+           # 1.2 Set the default database
+           cursor.execute("USE "+defaultDb)
+           isConnected = True
+        except mysql.connector.Error as err:
+            print(err)
+            sys.exit(1)
 
 
-cursor = cnx.cursor(dictionary=True)
-# 1.2 Set the default database
-cursor.execute("USE "+db_cred['defaultDb'])
 
 # 
 #	1. SQL - raw sql query
@@ -43,6 +49,9 @@ cursor.execute("USE "+db_cred['defaultDb'])
 
 MARIADB_ERRORINFO_CODE_FOR_SUCCESS="00000"
 def sql(query, errorInfo = []):
+   if not isConnected:
+      errorInfo.extend([0,0,"Not connected to any database server."])
+      return False
    try:
       cursor.execute(query)
       return cursor.fetchall()
