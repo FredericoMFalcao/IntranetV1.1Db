@@ -2,6 +2,7 @@
 --  Module: Accounting EventListner: onAfterDocumentoCriado 
 --
 --  Descrição: chama o stored procedure adequado ao tipo do documento que foi criado
+--               baseado na caixa de correio onde o ficheiro foi recebido
 -- --------------------
 
 DROP PROCEDURE IF EXISTS <?=tableNameWithModule()?>;
@@ -10,13 +11,12 @@ DELIMITER //
 
 CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_Options JSON)
   BEGIN
-    DECLARE in_DocTipo TEXT;
-    SET in_DocTipo = JSON_VALUE(in_Options, '$.Tipo'); 
+    DECLARE in_ReceivedAtEmailInbox TEXT DEFAULT JSON_VALUE(in_Options, '$.ReceivedAtEmailInbox');
    
-    IF in_DocTipo = "FaturaFornecedor" THEN
+    IF LOWER(SUBSTRING_INDEX(in_ReceivedAtEmailInbox, '@', 1)) = "faturasfornecedor" THEN
       CALL <?=tableNameWithModule("FaturasForncedorCriar")?> (in_Options);
       
-    ELSEIF in_DocTipo = "ComprovativoPagamento" THEN
+    ELSEIF LOWER(SUBSTRING_INDEX(in_ReceivedAtEmailInbox, '@', 1)) = "comprovativospagamento" THEN
       CALL <?=tableNameWithModule("ComprovativosPagamentoCriar")?> (in_Options);
       
     END IF;
