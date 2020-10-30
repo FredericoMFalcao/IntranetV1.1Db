@@ -18,6 +18,16 @@ DECLARE v_Data JSON;
 DECLARE v_funcName, v_sqlCode TEXT;
 DECLARE v_Id INT;
 
+-- 3.1 Setup Sandbox (catch errors/exceptions )
+--   (n.b. MariaDB needs this handler to be declared HERE)
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION 
+    BEGIN 
+        GET DIAGNOSTICS CONDITION 1 @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+        UPDATE SYS_EventBacklog SET Status = 'Failed', Log = @p2 WHERE Id = v_Id;
+    END;
+
+
+
 -- 1. Load Event to be executed
 SELECT 
 Id, ListenerName, Data INTO v_Id, v_funcName, v_Data
@@ -30,10 +40,12 @@ UPDATE SYS_EventBacklog SET Status = 'Running' WHERE Id = v_Id;
 
 
 -- 3. Execute Event
+
+-- 3.2 TRY to execute
 SET v_sqlCode = CONCAT('CALL ',v_funcName,'(?)'); PREPARE stmt1 FROM v_sqlCode; EXECUTE stmt1 USING v_Data; DEALLOCATE PREPARE stmt1;
 
 -- 4. Update status of Event to DONE
-UPDATE SYS_EventBacklog SET Status = 'Done' WHERE Id = v_Id;
+UPDATE SYS_EventBacklog SET Status = 'Done' WHERE Id = v_Id AND Status = 'Running';
 
 
 END;
