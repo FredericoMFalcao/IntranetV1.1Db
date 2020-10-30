@@ -32,9 +32,6 @@ BEGIN
 --	    SET sqlCode = CONCAT('CALL ',funcName,'(?)'); PREPARE stmt1 FROM sqlCode; EXECUTE stmt1 USING in_Options; DEALLOCATE PREPARE stmt1; 
 	    INSERT INTO SYS_EventBacklog (EventName, ListenerName,Type, Data) VALUES (in_EventName,funcName,'<?=$Priority?>',in_Options);
 	    
-	    -- Log the Call funcName()
-	    INSERT INTO SYS_EventLog (EventName, Type) VALUES (in_EventName, '<?=$Priority?>');
-
 	    SET i = i + 1; -- increment counter
 	  END WHILE;
     
