@@ -15,7 +15,7 @@ CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_Options JSON)
     DECLARE v_DocTipo TEXT;
     
     SET in_DocId = JSON_VALUE(in_Options, '$.DocId');
-    SET in_Extra = JSON_EXTRACT(in_Options, '$.Arguments');
+    SET in_Extra = JSON_EXTRACT(in_Options, '$.Extra');
     SET v_DocTipo = (SELECT Tipo FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE Id = in_DocId);
    
     IF v_DocTipo = "FaturaFornecedor" THEN
