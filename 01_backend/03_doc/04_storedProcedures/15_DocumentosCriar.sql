@@ -39,8 +39,8 @@ CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_Arguments JSON)
           CONCAT_WS(
             ",", 
             CONCAT_WS(":", '"Id"', Id),
-            CONCAT_WS(":", '"Tipo"', Tipo), 
-            CONCAT_WS(":", '"FileId"', FileId), 
+            CONCAT_WS(":", '"Tipo"', CONCAT('"',Tipo,'"')),
+            CONCAT_WS(":", '"FileId"', CONCAT('"',FileId,'"')),
             CONCAT_WS(":", '"Extra"', Extra)
           ),
           "}"
