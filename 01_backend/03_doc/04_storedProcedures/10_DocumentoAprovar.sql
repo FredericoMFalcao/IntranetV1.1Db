@@ -1,12 +1,12 @@
-DROP PROCEDURE IF EXISTS <?=tableNameWithModule()?>;
-
-DELIMITER //
-
 -- ------------------------
 --  Tabela (sql): Documentos Funcao: Aprovar
 --
 --  Descrição: Mover um "documento" específico um estado para a frente no "workflow" programado
 -- ------------------------
+
+DROP PROCEDURE IF EXISTS <?=tableNameWithModule()?>;
+
+DELIMITER //
 
 CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_DocId INT, IN in_Arguments JSON)
 
@@ -49,7 +49,7 @@ CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_DocId INT, IN in_Arguments JS
     END IF;
     
     -- 1.3 Espoletar evento AFTER
-    CALL <?=tableNameWithModule("TriggerAfterEvent","SYS")?> ("DocumentoAprovado",JSON_OBJECT("DocId", in_DocId, "Arguments", in_Arguments));
+    CALL <?=tableNameWithModule("TriggerAfterEvent","SYS")?> ("DocumentoAprovado",JSON_OBJECT("DocId", in_DocId, "Extra", in_Arguments));
 
   END;
   

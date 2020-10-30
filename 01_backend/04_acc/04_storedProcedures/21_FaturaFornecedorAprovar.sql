@@ -1,7 +1,3 @@
-DROP PROCEDURE IF EXISTS <?=tableNameWithModule()?>;
-
-DELIMITER //
-
 -- ------------------------
 --  Tabela (virtual): FaturaFornecedor Funcao: Aprovar
 --
@@ -12,6 +8,9 @@ DELIMITER //
 --         (4) se a fatura tinha sido rejeitada, reverte essa condição
 -- ------------------------
 
+DROP PROCEDURE IF EXISTS <?=tableNameWithModule()?>;
+
+DELIMITER //
 
 CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_FaturaId INT, IN in_Extra JSON)
 
@@ -33,7 +32,7 @@ CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_FaturaId INT, IN in_Extra JSO
     -- Inputs para anexar comprovativo de pagamento:
     DECLARE in_ComprovativoPagamentoId    INT;
     -- Variável representativa do estado actual do documento
-    DECLARE v_Estado TEXT;
+    DECLARE v_Estado                      TEXT;
     
     SET in_NumSerie = JSON_VALUE(in_Extra, '$.NumSerie');
     SET in_NumFatura = JSON_VALUE(in_Extra, '$.NumFatura');
@@ -49,9 +48,6 @@ CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_FaturaId INT, IN in_Extra JSO
     SET in_ClassificacaoAnalitica = JSON_EXTRACT(in_Extra, '$.ClassificacaoAnalitica');
     SET in_ComprovativoPagamentoId = JSON_VALUE(in_Extra, '$.ComprovativoPagamentoId');
     SET v_Estado = (SELECT Estado FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE Id = in_FaturaId);
-
-
-    -- 0. Verificar validade dos argumentos
 
 
     -- 1. 'PorClassificarFornecedor' -> 'PorClassificarAnalitica'
