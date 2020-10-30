@@ -11,7 +11,7 @@ DELIMITER //
 
 CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_Options JSON)
   BEGIN
-    DECLARE in_ReceivedAtEmailInbox TEXT DEFAULT JSON_VALUE(in_Options, '$.ReceivedAtEmailInbox');
+    DECLARE in_ReceivedAtEmailInbox TEXT DEFAULT JSON_VALUE(in_Options, '$.Extra.FileExtra.receivedAtEmailInbox');
    
     IF LOWER(SUBSTRING_INDEX(in_ReceivedAtEmailInbox, '@', 1)) = "faturasfornecedor" THEN
       CALL <?=tableNameWithModule("FaturasForncedorCriar")?> (in_Options);
