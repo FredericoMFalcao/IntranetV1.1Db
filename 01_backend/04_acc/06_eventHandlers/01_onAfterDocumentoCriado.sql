@@ -14,7 +14,7 @@ CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_Options JSON)
     DECLARE in_ReceivedAtEmailInbox TEXT DEFAULT JSON_VALUE(in_Options, '$.Extra.FileExtra.receivedAtEmailInbox');
    
     IF LOWER(SUBSTRING_INDEX(in_ReceivedAtEmailInbox, '@', 1)) = "faturasfornecedor" THEN
-      CALL <?=tableNameWithModule("FaturasForncedorCriar")?> (in_Options);
+      CALL <?=tableNameWithModule("FaturasFornecedorCriar")?> (in_Options);
       
     ELSEIF LOWER(SUBSTRING_INDEX(in_ReceivedAtEmailInbox, '@', 1)) = "comprovativospagamento" THEN
       CALL <?=tableNameWithModule("ComprovativosPagamentoCriar")?> (in_Options);
