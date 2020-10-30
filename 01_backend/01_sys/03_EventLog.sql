@@ -6,6 +6,7 @@
 -- -------------
 CREATE TABLE SYS_EventBacklog (
   EventName VARCHAR(255) NOT NULL,
+  ListenerName VARCHAR(255) NOT NULL,
   Type ENUM('Before','After') NOT NULL,
   Data JSON,
   DateTime TIMESTAMP,
