@@ -42,7 +42,13 @@ BEGIN
                                                                
   -- 2.1.1 Call BEFORE triggers
   -- ---------------------------                                                               
-  CALL SYS_TriggerBeforeEvent("FileCreated", JSON_OBJECT("Id",Id, "MimeType",MimeType, "DateCreated", DateCreated, "Extra", Extra));
+  CALL SYS_TriggerBeforeEvent("FileCreated", CONCAT("{",
+                                                    CONCAT_WS(":",'"Id"',Id), 
+                                                    CONCAT_WS(":",'"MimeType"',MimeType), 
+                                                    CONCAT_WS(":",'"DateCreated"', DateCreated), 
+                                                    CONCAT_WS(":",'"Extra"', Extra),
+                                              "}")
+                             );
                                                                
                                                                
   -- 2.1.2 Perform operation
@@ -51,7 +57,13 @@ BEGIN
                                                                
   -- 2.1.3 Call AFTER triggers
   -- ---------------------------
-  CALL SYS_TriggerAfterEvent("FileCreated", JSON_OBJECT("Id",Id, "MimeType",MimeType, "DateCreated", DateCreated, "Extra", Extra));
+  CALL SYS_TriggerAfterEvent("FileCreated", CONCAT("{",
+                                                    CONCAT_WS(":",'"Id"',Id), 
+                                                    CONCAT_WS(":",'"MimeType"',MimeType), 
+                                                    CONCAT_WS(":",'"DateCreated"', DateCreated), 
+                                                    CONCAT_WS(":",'"Extra"', Extra),
+                                              "}")
+                             );
 
 END;
 //
