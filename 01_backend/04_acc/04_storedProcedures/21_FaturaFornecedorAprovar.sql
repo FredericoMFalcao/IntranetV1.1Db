@@ -1,11 +1,10 @@
 -- ------------------------
---  Tabela (virtual): FaturaFornecedor Funcao: Aprovar
+-- Tabela (virtual): FaturaFornecedor Funcao: Aprovar
 --
 -- Descrição: antes do estado de uma fatura (de fornecedor) passar para a frente no "workflow" previamente definido, faz:
 --         (1) anexa informação extra que é dada em cada passo
 --         (2) chama o procedimento que faz os lançamentos contabílisticos relevantes em cada passo
 --         (3) passa informação relevante para o software externo de contabilidade financeira
---         (4) se a fatura tinha sido rejeitada, reverte essa condição
 -- ------------------------
 
 DROP PROCEDURE IF EXISTS <?=tableNameWithModule()?>;
@@ -111,12 +110,6 @@ CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_FaturaId INT, IN in_Extra JSO
     -- Descrição: (no futuro) envia os dados do pagamento para o software externo de contabilidade financeira
 
     END IF;
-    
-    
-    -- 6. Se a fatura tinha sido rejeitada, reverter essa condição
-    UPDATE <?=tableNameWithModule("Documentos","DOC")?> 
-    SET Extra = JSON_SET(Extra, '$.Rejeitada', 0, '$.MotivoRejeicao', NULL)
-    WHERE Id = in_FaturaId; 
 
   END;
   
