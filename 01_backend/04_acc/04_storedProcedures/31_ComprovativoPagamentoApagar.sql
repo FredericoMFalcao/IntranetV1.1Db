@@ -1,6 +1,3 @@
-DROP PROCEDURE IF EXISTS <?=tableNameWithModule()?>;
-
-DELIMITER //
 -- ------------------------
 --  Tabela (virtual): ComprovativoPagamento Funcao: Apagar
 --
@@ -8,6 +5,11 @@ DELIMITER //
 --                (1) Elimina os lançamentos contabilísticos associados a este comprovativo de pagamento
 --                (2) Elimina a associação das faturas que referenciavam este comprovativo de pagamento (i.e. set null)
 -- ------------------------
+
+DROP PROCEDURE IF EXISTS <?=tableNameWithModule()?>;
+
+DELIMITER //
+
 CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_ComprovativoPagamentoId INT)
 
   BEGIN
