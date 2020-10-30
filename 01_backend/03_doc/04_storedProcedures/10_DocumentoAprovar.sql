@@ -18,7 +18,7 @@ CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_DocId INT, IN in_Arguments JS
     -- --------------------------
     
     -- 1.1 Espoletar evento BEFORE
-    CALL <?=tableNameWithModule("TriggerBeforeEvent","SYS")?> ("DocumentoAprovado",JSON_OBJECT("DocId", in_DocId, "Extra", in_Arguments));
+    CALL <?=tableNameWithModule("TriggerBeforeEvent","SYS")?> ("DocumentoAprovado",JSON_OBJECT("DocId", in_DocId, "Arguments", in_Arguments));
     
     -- 1.2 Executar acção
     IF v_Estado = 'PorClassificarFornecedor' THEN
@@ -49,7 +49,7 @@ CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_DocId INT, IN in_Arguments JS
     END IF;
     
     -- 1.3 Espoletar evento AFTER
-    CALL <?=tableNameWithModule("TriggerAfterEvent","SYS")?> ("DocumentoAprovado",JSON_OBJECT("DocId", in_DocId, "Extra", in_Arguments));
+    CALL <?=tableNameWithModule("TriggerAfterEvent","SYS")?> ("DocumentoAprovado",JSON_OBJECT("DocId", in_DocId, "Arguments", in_Arguments));
 
   END;
   
