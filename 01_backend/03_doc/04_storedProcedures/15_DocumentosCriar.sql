@@ -16,7 +16,7 @@ CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_Arguments JSON)
     SET in_FileId = JSON_VALUE(in_Arguments, '$.Id');
     
     SET v_Extra = CONCAT("{", 
-                    CONCAT_WS(":",'"FileExtra"', JSON_EXTRACT(in_Arguments,'$.Extra')
+                    CONCAT_WS(":",'"FileExtra"', JSON_EXTRACT(in_Arguments,'$.Extra'))
                   ,"}");
                                                         
     -- 0. Verificar validade dos argumentos
