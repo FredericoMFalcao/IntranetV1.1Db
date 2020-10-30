@@ -29,7 +29,8 @@ BEGIN
 	    SELECT a.<?=$Priority?>StoredProcedure INTO funcName FROM SYS_EventHandlers a WHERE a.<?=$Priority?>StoredProcedure IS NOT NULL LIMIT i,1;
 
 	    -- Call funcName()
-	    SET sqlCode = CONCAT('CALL ',funcName,'(?)'); PREPARE stmt1 FROM sqlCode; EXECUTE stmt1 USING in_Options; DEALLOCATE PREPARE stmt1; 
+--	    SET sqlCode = CONCAT('CALL ',funcName,'(?)'); PREPARE stmt1 FROM sqlCode; EXECUTE stmt1 USING in_Options; DEALLOCATE PREPARE stmt1; 
+	    INSERT INTO SYS_EventBacklog (EventName, ListenerName,Type, Data) VALUES (in_EventName,funcName,'<?=$Priority?>',in_Options);
 	    
 	    -- Log the Call funcName()
 	    INSERT INTO SYS_EventLog (EventName, Type) VALUES (in_EventName, '<?=$Priority?>');
