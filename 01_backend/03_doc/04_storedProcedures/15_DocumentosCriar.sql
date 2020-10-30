@@ -1,6 +1,3 @@
-DROP PROCEDURE IF EXISTS <?=tableNameWithModule()?>;
-
-DELIMITER //
 
 -- ------------------------
 --  Tabela (sql): Documentos Funcao: Criar 
@@ -11,6 +8,8 @@ DELIMITER //
 --         (2) ficheiro Dropbox é adicionado a uma pasta partilhada
 -- ------------------------
 
+DROP PROCEDURE IF EXISTS <?=tableNameWithModule()?>;
+DELIMITER //
 CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_Arguments JSON)
   BEGIN
     DECLARE in_FileId, v_Extra TEXT;
