@@ -29,7 +29,7 @@ CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_DocId INT, IN in_Arguments JS
       UPDATE <?=tableNameWithModule("Documentos")?>
       SET Extra = JSON_SET(Extra, '$.Rejeitado', 1, '$.MotivoRejeicao', in_MotivoRejeicao);
       
-      -- 1.2.2 Alterar o estado do cocumento
+      -- 1.2.2 Alterar o estado do documento
       IF v_Estado = 'PorClassificarAnalitica' THEN
         UPDATE <?=tableNameWithModule("Documentos")?>
         SET Estado = 'PorClassificarFornecedor'
