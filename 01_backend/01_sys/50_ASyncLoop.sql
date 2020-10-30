@@ -40,4 +40,7 @@ END;
 //
 DELIMITER ;
 
-SET GLOBAL event_scheduler = ON;
+
+-- @TODO: build sys needs permission to run this
+--        error: ... at line 227: Access denied; you need (at least one of) the SUPER privilege(s) for this operation
+-- SET GLOBAL event_scheduler = ON;
