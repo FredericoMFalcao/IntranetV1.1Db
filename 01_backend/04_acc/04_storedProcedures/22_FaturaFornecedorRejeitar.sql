@@ -1,75 +1,48 @@
+-- ------------------------
+-- Tabela (virtual): FaturasFornecedor Funcao: Rejeitar
+--
+-- Descrição: antes do estado de uma fatura (de fornecedor) passar para trás no "workflow" previamente definido,
+--                apaga (se necessário) os lançamentos contabílisticos referentes à última aprovação
+-- ------------------------
+
 DROP PROCEDURE IF EXISTS <?=tableNameWithModule()?>;
 
 DELIMITER //
--- ------------------------
---  Tabela (virtual): FaturasFornecedor Funcao: Rejeitar
---
---  Descrição: Mover um "documento" específico um estado para trás, acrescentado um descritivo da rejeição
--- ------------------------
+
 CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_FaturaId INT, IN in_Extra JSON)
 
   BEGIN
     DECLARE in_MotivoRejeicao TEXT;
     DECLARE v_Estado TEXT;
+    DECLARE v_NumSerie TEXT;
     SET in_MotivoRejeicao = JSON_VALUE(in_Extra, '$.MotivoRejeicao');
     SET v_Estado = (SELECT Estado FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE Id = in_FaturaId);
+    SET v_NumSerie = (SELECT NumSerie FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE Id = in_FaturaId);
 
-
-    -- 0. Verificar validade dos argumentos
-    IF NOT EXISTS (SELECT Id FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE Id = in_FaturaId AND Tipo = 'FaturaFornecedor')
-      THEN signal sqlstate '20000' set message_text = 'Fatura de fornecedor inexistente.';
-    END IF;
-
-
-    -- 1. Alterar dados do documento acrescentando a rejeição e respectivo motivo    
-    UPDATE <?=tableNameWithModule("Documentos","DOC")?> 
-    SET Extra = JSON_SET(Extra,
-      '$.Rejeitada', 1,
-      '$.MotivoRejeicao', in_MotivoRejeicao
-    )
-    WHERE Id = in_FaturaId;
     
+    -- 1. 'PorClassificarAnalitica' -> 'PorClassificarFornecedor'
 
-    -- 2. Alterar estado da fatura (e outras alterações necessárias)
+
+    -- 2. 'PorRegistarContabilidade' -> 'PorClassificarAnalitica'
+    IF v_Estado = 'PorRegistarContabilidade' THEN
     
-    -- 2.1. 'PorClassificarAnalitica' -> 'PorClassificarFornecedor'
-    IF v_Estado = 'PorClassificarAnalitica' THEN
-      UPDATE <?=tableNameWithModule("Documentos","DOC")?> 
-      SET Estado = 'PorClassificarFornecedor'
-      WHERE Id = in_FaturaId;
-
-
-    -- 2.2. 'PorRegistarContabilidade' -> 'PorClassificarAnalitica'
-    ELSEIF v_Estado = 'PorRegistarContabilidade' THEN
-      UPDATE <?=tableNameWithModule("Documentos","DOC")?> 
-      SET Estado = 'PorClassificarAnalitica'
-      WHERE Id = in_FaturaId;
-      
       -- Apagar lançamentos
       DELETE FROM <?=tableNameWithModule("Lancamentos")?>
-      WHERE DocNumSerie = (SELECT NumSerie FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE Id = in_FaturaId);
+      WHERE DocNumSerie = v_NumSerie;
+
+    -- 3. 'PorAnexarCPagamento' -> 'PorRegistarContabilidade'
 
 
-    -- 2.3. 'PorAnexarCPagamento' -> 'PorRegistarContabilidade'
-    ELSEIF v_Estado = 'PorAnexarCPagamento' THEN
-      UPDATE <?=tableNameWithModule("Documentos","DOC")?> 
-      SET Estado = 'PorRegistarContabilidade'
-      WHERE Id = in_FaturaId;
-
-
-    -- 2.4. 'PorRegistarPagamentoContab' -> 'PorAnexarCPagamento'
+    -- 4. 'PorRegistarPagamentoContab' -> 'PorAnexarCPagamento'
     ELSEIF v_Estado = 'PorRegistarPagamentoContab' THEN 
-      UPDATE <?=tableNameWithModule("Documentos","DOC")?> 
-      SET Estado = 'PorAnexarCPagamento'
-      WHERE Id = in_FaturaId;
-      
+    
       -- Apagar lançamentos
       DELETE FROM <?=tableNameWithModule("Lancamentos")?>
-      WHERE DocNumSerie = (SELECT NumSerie FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE Id = in_FaturaId);
+      WHERE DocNumSerie = v_NumSerie;
       
       -- Voltar a lançar dívida de fornecedor e custos:
       CALL <?=tableNameWithModule("LancamentosLancarCustoFornecedor")?>  (
-        (SELECT NumSerie FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE Id = in_FaturaId),
+        v_NumSerie,
         (SELECT JSON_VALUE(Extra, '$.ClassificacaoAnalitica') FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE Id = in_FaturaId)
       );
 
