@@ -44,9 +44,9 @@ BEGIN
   -- ---------------------------                                                               
   CALL SYS_TriggerBeforeEvent("FileCreated", CONCAT("{",
                                                 CONCAT_WS(",",
-                                                    CONCAT_WS(":",'"Id"','"',Id,'"'), 
-                                                    CONCAT_WS(":",'"MimeType"','"',MimeType,'"'), 
-                                                    CONCAT_WS(":",'"DateCreated"', '"',DateCreated,'"'), 
+                                                    CONCAT_WS(":",'"Id"',CONCAT('"',Id,'"')),
+                                                    CONCAT_WS(":",'"MimeType"',CONCAT('"',MimeType,'"')),
+                                                    CONCAT_WS(":",'"DateCreated"', CONCAT('"',DateCreated,'"')),
                                                     CONCAT_WS(":",'"Extra"', Extra)
                                                 ),
                                               "}")
@@ -61,9 +61,9 @@ BEGIN
   -- ---------------------------
   CALL SYS_TriggerAfterEvent("FileCreated", CONCAT("{",
                                                 CONCAT_WS(",",
-                                                    CONCAT_WS(":",'"Id"','"',Id,'"'), 
-                                                    CONCAT_WS(":",'"MimeType"','"',MimeType,'"'), 
-                                                    CONCAT_WS(":",'"DateCreated"', '"',DateCreated,'"'), 
+                                                    CONCAT_WS(":",'"Id"',CONCAT('"',Id,'"')),
+                                                    CONCAT_WS(":",'"MimeType"',CONCAT('"',MimeType,'"')),
+                                                    CONCAT_WS(":",'"DateCreated"', CONCAT('"',DateCreated,'"')),
                                                     CONCAT_WS(":",'"Extra"', Extra)
                                                 ),
                                               "}")
