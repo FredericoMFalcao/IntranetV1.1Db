@@ -12,10 +12,8 @@ DELIMITER //
 CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_FaturaId INT, IN in_Extra JSON)
 
   BEGIN
-    DECLARE in_MotivoRejeicao TEXT;
     DECLARE v_Estado TEXT;
     DECLARE v_NumSerie TEXT;
-    SET in_MotivoRejeicao = JSON_VALUE(in_Extra, '$.MotivoRejeicao');
     SET v_Estado = (SELECT Estado FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE Id = in_FaturaId);
     SET v_NumSerie = (SELECT NumSerie FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE Id = in_FaturaId);
 
