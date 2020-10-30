@@ -1,12 +1,15 @@
 -- -------------
---  3. EVENT HANDLERS
+--  3. EVENT BACKLOG
 --
---  A table that contains the log of all events triggered
+--  A table that contains the events pending (before they are executed) AND 
+--  the events DONE (after they are executed) with a log message useful when they fail
 -- -------------
-CREATE TABLE SYS_EventLog (
+CREATE TABLE SYS_EventBacklog (
   EventName VARCHAR(255) NOT NULL,
   Type ENUM('Before','After') NOT NULL,
+  Data JSON,
   DateTime TIMESTAMP,
-  Status TEXT,
+  Status ENUM('Pending', 'Running', 'Done') DEFAULT('Pending'),
+  Log TEXT,
   FOREIGN KEY (EventName) REFERENCES SYS_Events(Name)
 );
