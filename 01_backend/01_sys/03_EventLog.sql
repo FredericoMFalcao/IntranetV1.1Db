@@ -11,7 +11,7 @@ CREATE TABLE SYS_EventBacklog (
   Type ENUM('Before','After') NOT NULL,
   Data JSON,
   DateTime TIMESTAMP,
-  Status ENUM('Pending', 'Running', 'Done') DEFAULT('Pending'),
+  Status ENUM('Pending', 'Running', 'Done','Failed') DEFAULT('Pending'),
   Log TEXT,
   FOREIGN KEY (EventName) REFERENCES SYS_Events(Name)
 );
