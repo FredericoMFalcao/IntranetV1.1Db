@@ -13,9 +13,9 @@ SELECT
 	c.Nome AS FornecedorNome,
 	JSON_EXTRACT (c.Extra, '$.FornecedorNIF') AS FornecedorNIF,
 	JSON_EXTRACT (a.Extra, '$.NumFatura') AS NumFatura,
-	FF_ValorTotal(a.Extra) AS ValorTotal,
+	ACC_FFValorTotal(a.Extra) AS ValorTotal,
 	0 AS Retencao,                                          -- provisório
-	FF_ValorTotal(a.Extra) - 0 AS ValorLiquido,             -- provisório
+	ACC_FFValorTotal(a.Extra) - 0 AS ValorLiquido,             -- provisório
 	JSON_EXTRACT (a.Extra, '$.Moeda') AS Moeda,
 	'CPagamento123.pdf' AS DocComprovativo                  -- provisório
 FROM <?=tableNameWithModule("Documentos","DOC")?> AS a

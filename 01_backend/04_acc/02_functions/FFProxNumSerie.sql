@@ -1,8 +1,8 @@
 -- Descrição: devolve o próximo número de série disponível para uma nova fatura de fornecedor
 
-DROP FUNCTION IF EXISTS FF_ProxNumSerie;
+DROP FUNCTION IF EXISTS <?=tableNameWithModule()?>;
 
-CREATE FUNCTION FF_ProxNumSerie (Pais TEXT, Ano TEXT) -- e.g. Pais = 'An', Ano = '20'
+CREATE FUNCTION <?=tableNameWithModule()?> (Pais TEXT, Ano TEXT) -- e.g. Pais = 'An', Ano = '20'
 RETURNS TEXT
 RETURN
  CONCAT(
