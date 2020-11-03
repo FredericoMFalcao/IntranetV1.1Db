@@ -1,11 +1,11 @@
 -- Devolve o valor de imposto que deve ser retido ao fornecedor da fatura em causa
 --     (se não for aplicável, devolve zero)
 
-DROP FUNCTION IF EXISTS <?=tableNameWithModule()?>;
+DROP FUNCTION IF EXISTS ACC_FFRetencao;
 
 DELIMITER //
 
-CREATE FUNCTION <?=tableNameWithModule()?> (in_NumSerie TEXT)
+CREATE FUNCTION ACC_FFRetencao (in_NumSerie TEXT)
 RETURNS FLOAT
   BEGIN
     DECLARE v_ValorBase DECIMAL(18,2);
