@@ -8,6 +8,7 @@
 
 /* 0. Get the credentials to connect to database */
 extract(json_decode(file_get_contents(__DIR__."/.db_credentials.json"),1));
+$defaultDb = "IntranetV2".(basename(__DIR__) == "master"?"":"_".basename(__DIR__));
 $dsn = "mysql:host=$server;dbname=$defaultDb;";
 
 /* 1. Attempt to connect */

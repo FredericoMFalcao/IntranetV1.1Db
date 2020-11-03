@@ -22,20 +22,22 @@ echo "["$(date)"]"
 TMP_FILE=$(mktemp)
 
 #############################
-# 1. Create a new subdomain
+# 1. Parse the ApacheConfig file with the current parentFolder
 #############################
 php apache_config.conf.php > apache_config.conf
-# @TODO: automate this part
-#ln -f -s $(pwd)/apache_config.conf /etc/apache2/sites-enabled/020-intranet_v2_$(basename $(pwd)).conf
-#sudo -n apachectl restart
 
 #############################
-# 1. Capture DB Credentials
+# 2. Capture DB Credentials
 #############################
+BRANCH_NAME=$(basename $(pwd))
+if [ "$BRANCH_NAME" != "master" ]
+then defaultDb="IntranetV2_$BRANCH_NAME"
+else defaultDb="IntranetV2"
+ fi
+
 SERVER="$(cat .db_credentials.json | jq -r .server)"
 USER="$(cat .db_credentials.json | jq -r .user)"
 PASSWORD="$(cat .db_credentials.json | jq -r .password)"
-defaultDb="$(cat .db_credentials.json | jq -r .defaultDb)"
 
 
 MYSQL_CMD="mysql -u $USER -p$PASSWORD"
@@ -85,3 +87,10 @@ done
 
 rm $TMP_FILE > /dev/null 2> /dev/null
 
+
+
+
+# Since apache can't be restarted from within an apache script
+# write a "flag" file for an async script to perform an apache restart
+# CANNOT SIMPLY DO THIS: apachectl restart
+echo "" > ../do_restart_apache
