@@ -2,7 +2,8 @@
 --  Module: Accounting EventListner: onAfterDocumentoCriado 
 --
 --  Descrição: chama o stored procedure adequado ao tipo do documento que foi criado
---               baseado na caixa de correio onde o ficheiro foi recebido
+--               1. baseado na caixa de correio onde o ficheiro foi recebido
+--               2. o stored procedure chamado reclassifica o documento para o tipo adequado
 -- --------------------
 
 DROP PROCEDURE IF EXISTS <?=tableNameWithModule()?>;
