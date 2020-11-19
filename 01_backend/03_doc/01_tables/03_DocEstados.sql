@@ -15,7 +15,7 @@ CREATE TABLE <?=tableNameWithModule()?> (
 
 -- Dados Iniciais
 INSERT INTO <?=tableNameWithModule()?> (TipoDoc, Estado, Descricao, `Schema`) VALUES ('FaturaFornecedor', 'PorClassificarFornecedor', 'Existe no sistema apenas com um PDF.','{"Fornecedor":"string","Descricao":"string?"}');
-INSERT INTO <?=tableNameWithModule()?> (TipoDoc, Estado, Descricao, `Schema`) VALUES ('FaturaFornecedor', 'PorClassificarAnalitica', 'À espera de ser classificada em termos de contabilidade analítica.','{"CentroResultado":"string","Analitica":"string","Colaborador":"string"}');
+INSERT INTO <?=tableNameWithModule()?> (TipoDoc, Estado, Descricao, `Schema`) VALUES ('FaturaFornecedor', 'PorClassificarAnalitica', 'À espera de ser classificada em termos de contabilidade analítica.','{"CentroResultados":"string","Analitica":"string","Colaborador":"string"}');
 INSERT INTO <?=tableNameWithModule()?> (TipoDoc, Estado, Descricao) VALUES ('FaturaFornecedor', 'PorRegistarContabilidade', 'À espera de integrar custo no software de contabilidade fiscal.');
 INSERT INTO <?=tableNameWithModule()?> (TipoDoc, Estado, Descricao, `Schema`) VALUES ('FaturaFornecedor', 'PorAnexarCPagamento', 'À espera de ser anexado comprovativo de pagamento.','{"FileId":"string"}');
 INSERT INTO <?=tableNameWithModule()?> (TipoDoc, Estado, Descricao) VALUES ('FaturaFornecedor', 'PorRegistarPagamentoContab', 'À espera de integrar pagamento no software de contabilidade fiscal.');
