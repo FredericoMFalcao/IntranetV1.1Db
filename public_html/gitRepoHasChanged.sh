@@ -23,5 +23,5 @@ cd "$( dirname "${BASH_SOURCE[0]}" )"
 #  done
 
 
- ../../redeployAllBranches.sh
+ ../../redeployAllBranches.sh &
 echo "Success!"
