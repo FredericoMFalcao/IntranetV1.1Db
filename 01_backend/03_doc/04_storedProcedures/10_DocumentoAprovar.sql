@@ -56,7 +56,7 @@ CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_DocId INT, IN in_Arguments JS
             
           END IF;
           
-        -- 1.2.1.1 Comprovativo de pagamento
+        -- 1.2.1.2 Comprovativo de pagamento
         ELSEIF v_DocTipo = 'ComprovativoPagamento' THEN
           UPDATE <?=tableNameWithModule("Documentos")?>  
           SET Estado = 'Concluido'
