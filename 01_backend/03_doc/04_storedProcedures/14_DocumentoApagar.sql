@@ -16,14 +16,30 @@ CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_DocId INT, IN in_Arguments JS
     -- --------------------------
     
     -- 1.1 Espoletar evento BEFORE
-    CALL <?=tableNameWithModule("TriggerBeforeEvent","SYS")?> ("DocumentoApagado",JSON_OBJECT("DocId", in_DocId, "Extra", in_Arguments));
+    CALL <?=tableNameWithModule("TriggerBeforeEvent","SYS")?> (
+      "DocumentoApagado",
+      CONCAT("{",
+        CONCAT_WS(",",
+          CONCAT_WS(":", CONCAT('"', "DocId", '"'), in_DocId),
+          CONCAT_WS(":", CONCAT('"', "Extra", '"'), in_Arguments)
+        ),
+      "}");
+    );
     
     -- 1.2 Executar acção
     DELETE FROM <?=tableNameWithModule("Documentos")?>
     WHERE Id = in_DocId;
     
     -- 1.3 Espoletar evento AFTER
-    CALL <?=tableNameWithModule("TriggerAfterEvent","SYS")?> ("DocumentoApagado",JSON_OBJECT("DocId", in_DocId, "Extra", in_Arguments));
+    CALL <?=tableNameWithModule("TriggerAfterEvent","SYS")?> (
+      "DocumentoApagado",
+      CONCAT("{",
+        CONCAT_WS(",",
+          CONCAT_WS(":", CONCAT('"', "DocId", '"'), in_DocId),
+          CONCAT_WS(":", CONCAT('"', "Extra", '"'), in_Arguments)
+        ),
+      "}");
+    );
 
   END;
   

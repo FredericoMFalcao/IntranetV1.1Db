@@ -25,7 +25,15 @@ CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_Arguments JSON)
     -- --------------------------
     
     -- 1.1 Espoletar evento BEFORE
-    CALL <?=tableNameWithModule("TriggerBeforeEvent","SYS")?> ("DocumentoCriado",JSON_OBJECT("FileId", in_FileId, "Extra", v_Extra));
+    CALL <?=tableNameWithModule("TriggerBeforeEvent","SYS")?> (
+      "DocumentoCriado",
+      CONCAT("{",
+        CONCAT_WS(",",
+          CONCAT_WS(":", CONCAT('"', "FileId", '"'), in_FileId),
+          CONCAT_WS(":", CONCAT('"', "Extra", '"'), v_Extra)
+        ),
+      "}");
+    );
     
     -- 1.2 Executar acção
     INSERT INTO <?=tableNameWithModule("Documentos","DOC")?> (FileId, Extra) VALUES (in_FileId, v_Extra);
