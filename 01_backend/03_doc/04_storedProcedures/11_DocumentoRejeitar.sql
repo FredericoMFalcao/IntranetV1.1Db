@@ -28,7 +28,7 @@ CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_DocId INT, IN in_Arguments JS
           CONCAT_WS(":", CONCAT('"', "DocId", '"'), in_DocId),
           CONCAT_WS(":", CONCAT('"', "Extra", '"'), in_Arguments)
         ),
-      "}");
+      "}")
     );
     
     -- 1.2 Executar acção
@@ -68,7 +68,7 @@ CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_DocId INT, IN in_Arguments JS
           CONCAT_WS(":", CONCAT('"', "DocId", '"'), in_DocId),
           CONCAT_WS(":", CONCAT('"', "Extra", '"'), in_Arguments)
         ),
-      "}");
+      "}")
     );
 
   END;
