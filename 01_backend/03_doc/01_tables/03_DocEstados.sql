@@ -21,4 +21,5 @@ INSERT INTO <?=tableNameWithModule()?> (TipoDoc, Estado, Descricao, `Schema`) VA
 INSERT INTO <?=tableNameWithModule()?> (TipoDoc, Estado, Descricao) VALUES ('FaturaFornecedor', 'PorRegistarPagamentoContab', 'À espera de integrar pagamento no software de contabilidade fiscal.');
 INSERT INTO <?=tableNameWithModule()?> (TipoDoc, Estado, Descricao) VALUES ('FaturaFornecedor', 'Concluido', 'Todos os procedimentos foram realizados.');
 
+INSERT INTO <?=tableNameWithModule()?> (TipoDoc, Estado) VALUES ('ComprovativoPagamento', 'PorAprovar');
 INSERT INTO <?=tableNameWithModule()?> (TipoDoc, Estado) VALUES ('ComprovativoPagamento', 'Concluido');

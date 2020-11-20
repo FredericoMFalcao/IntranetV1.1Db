@@ -21,6 +21,9 @@ CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_Options JSON)
     IF v_DocTipo = "FaturaFornecedor" THEN
       CALL <?=tableNameWithModule("FaturaFornecedorAprovar")?> (in_DocId, in_Extra);
       
+    ELSEIF v_DocTipo = "ComprovativoPagamento" THEN
+      CALL <?=tableNameWithModule("ComprovativoPagamentoAprovar")?> (in_DocId, in_Extra);
+      
     END IF;
     
   END;
