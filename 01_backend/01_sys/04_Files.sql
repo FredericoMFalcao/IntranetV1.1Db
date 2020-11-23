@@ -31,7 +31,7 @@ CREATE TABLE SYS_Files (
 
 -- 2.1.1 PROCESS: the core code executed by SYS_FilesNew
 --		(required for async operations to be executed in correct order )
-DROP PROCEDURE IF EXISTS SYS_FilesNew;
+DROP PROCEDURE IF EXISTS SYS_onProcessingFileCreated;
 CREATE PROCEDURE SYS_onProcessingFileCreated (IN in_Json JSON )
   INSERT INTO SYS_Files (Id, MimeType,DateCreated,Extra) VALUES (
 -- WARNING - Must use: JSON_VALUE   - for scalars (string, int or boolea
