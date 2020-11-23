@@ -6,11 +6,12 @@
 CREATE TABLE SYS_EventHandlers (
   EventName VARCHAR(255) NOT NULL,
   BeforeStoredProcedure VARCHAR(255),
+  ProcessingStoredProcedure VARCHAR(255),
   AfterStoredProcedure VARCHAR(255),
   FOREIGN KEY (EventName) REFERENCES SYS_Events(Name)
 );
 
-<?php foreach(["Before", "After"] as $Priority) : ?>
+<?php foreach(["Before", "Processing", "After"] as $Priority) : ?>
 DROP PROCEDURE IF EXISTS SYS_Trigger<?=$Priority?>Event;
 DELIMITER //
 CREATE PROCEDURE SYS_Trigger<?=$Priority?>Event (

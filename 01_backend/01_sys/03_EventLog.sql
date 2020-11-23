@@ -8,7 +8,7 @@ CREATE TABLE SYS_EventBacklog (
   Id INT PRIMARY KEY AUTO_INCREMENT,
   EventName VARCHAR(255) NOT NULL,
   ListenerName VARCHAR(255) NOT NULL,
-  Type ENUM('Before','After') NOT NULL,
+  Type ENUM('Before','Processing','After') NOT NULL,
   Data JSON,
   DateTime TIMESTAMP,
   Status ENUM('Pending', 'Running', 'Done','Failed') DEFAULT('Pending'),
