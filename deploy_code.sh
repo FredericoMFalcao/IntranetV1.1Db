@@ -50,7 +50,7 @@ $MYSQL_CMD -e "DROP DATABASE IF EXISTS $defaultDb; CREATE DATABASE $defaultDb;"
 for i in $(find . -name "_prebuild" -executable); do $i; done
 
 #############################
-# 3. Write all the source code as text
+# 3. Write all the SQL source code as text
 #############################
 echo > $TMP_FILE # Clear the contents
 for f in $(find . -name "*.sql" | sort)
