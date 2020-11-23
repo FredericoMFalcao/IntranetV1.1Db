@@ -28,6 +28,22 @@ CREATE TABLE SYS_Files (
 -- ----------------
 
 -- 2.1 Insert (with Events)
+
+-- 2.1.1 PROCESS: the core code executed by SYS_FilesNew
+--		(required for async operations to be executed in correct order )
+DROP PROCEDURE IF EXISTS SYS_FilesNew;
+CREATE PROCEDURE SYS_onProcessingFileCreated (IN in_Json JSON )
+  INSERT INTO SYS_Files (Id, MimeType,DateCreated,Extra) VALUES (
+-- WARNING - Must use: JSON_VALUE   - for scalars (string, int or boolea
+--                     JSON_EXTRACT - for nested objects (JSON)
+	JSON_VALUE(in_Json, '$.Id'), 
+	JSON_VALUE(in_Json, '$.MimeType'), 
+	JSON_VALUE(in_Json, '$.DateCreated'), 
+	JSON_EXTRACT(in_Json, '$.Extra')
+  );
+
+
+-- 2.1.2 WRAPPER: a standard events function that calls events BEFORE, PROCESSING, AFTER, in order
 DROP PROCEDURE IF EXISTS SYS_FilesNew;
 DELIMITER //
 CREATE PROCEDURE SYS_FilesNew (Id CHAR(32), MimeType VARCHAR(255), DateCreated TIMESTAMP, Extra JSON)
@@ -55,7 +71,15 @@ BEGIN
                                                                
   -- 2.1.2 Perform operation
   -- ---------------------------
-  INSERT INTO SYS_Files (Id, MimeType,DateCreated,Extra) VALUES (Id, MimeType,DateCreated,Extra);
+  CALL SYS_TriggerProcessingEvent("FileCreated", CONCAT("{",
+                                                CONCAT_WS(",",
+                                                    CONCAT_WS(":",'"Id"',CONCAT('"',Id,'"')),
+                                                    CONCAT_WS(":",'"MimeType"',CONCAT('"',MimeType,'"')),
+                                                    CONCAT_WS(":",'"DateCreated"', CONCAT('"',DateCreated,'"')),
+                                                    CONCAT_WS(":",'"Extra"', Extra)
+                                                ),
+                                              "}")
+                             );
                                                                
   -- 2.1.3 Call AFTER triggers
   -- ---------------------------
@@ -79,3 +103,8 @@ DELIMITER ;
 --	( events that are available for other modules to listen/react to)
 -- ----------------
 INSERT INTO SYS_Events (Name) VALUES ('FileCreated');
+
+
+
+-- register PROCESSING function
+INSERT INTO SYS_EventHandlers (EventName, ProcessingStoredProcedure) VALUES ('FileCreated', 'SYS_onProcessingFileCreated');
