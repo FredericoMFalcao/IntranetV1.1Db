@@ -29,10 +29,14 @@ DECLARE v_Id INT;
 
 
 -- 1. Load Event to be executed
+--
+--  execute the BEFOREs first, then the PROCESSINGs, then the AFTERs
+--  so that everything is execute in a correct tree-like depth first fashion
 SELECT 
 Id, ListenerName, Data INTO v_Id, v_funcName, v_Data
 FROM SYS_EventBacklog AS a
 WHERE Status = 'Pending'
+ORDER BY (CASE WHEN Type = "Before" THEN 1 WHEN Type = "Processing" THEN 2 WHEN Type = "After" THEN 3 END) ASC
 LIMIT 1;
 
 -- 2. Update status of Event to DONE
