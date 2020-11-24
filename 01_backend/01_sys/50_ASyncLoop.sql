@@ -35,7 +35,11 @@ DECLARE v_Id INT;
 SELECT 
 Id, ListenerName, Data INTO v_Id, v_funcName, v_Data
 FROM SYS_EventBacklog AS a
-WHERE Status = 'Pending'
+WHERE 
+Status = 'Pending' 
+AND 
+-- Run ONLY IF there is no other event processing running
+NOT EXISTS (SELECT * FROM SYS_EventBacklog WHERE Status = 'Running')
 ORDER BY (CASE WHEN Type = "Before" THEN 1 WHEN Type = "Processing" THEN 2 WHEN Type = "After" THEN 3 END) ASC
 LIMIT 1;
 
