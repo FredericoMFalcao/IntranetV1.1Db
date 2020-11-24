@@ -4,18 +4,16 @@
 -- Descrição: apaga um "documento", i.e. uma entrada na tabela sql de documentos
 -- ------------------------
 
-DROP PROCEDURE IF EXISTS <?=tableNameWithModule()?>;
-
 DELIMITER //
 
-CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_DocId INT, IN in_Arguments JSON)
+CREATE OR REPLACE PROCEDURE <?=tableNameWithModule()?> (IN in_DocId INT, IN in_Arguments JSON)
 
   BEGIN
   
     -- 1. Apagar o documento
     -- --------------------------
     
-    -- 1.1 Espoletar evento BEFORE
+    -- 1. Espoletar procedimentos BEFORE
     CALL <?=tableNameWithModule("TriggerBeforeEvent","SYS")?> (
       "DocumentoApagado",
       CONCAT("{",
@@ -26,11 +24,10 @@ CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_DocId INT, IN in_Arguments JS
       "}")
     );
     
-    -- 1.2 Executar acção
-    DELETE FROM <?=tableNameWithModule("Documentos")?>
-    WHERE Id = in_DocId;
+    -- 2. Executar a acção (espoletar procedimentos PROCESSING)
+    CALL <?=tableNameWithModule("TriggerProcessingEvent","SYS")?> (in_DocId)
     
-    -- 1.3 Espoletar evento AFTER
+    -- 3. Espoletar procedimentos AFTER
     CALL <?=tableNameWithModule("TriggerAfterEvent","SYS")?> (
       "DocumentoApagado",
       CONCAT("{",
@@ -47,4 +44,5 @@ CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_DocId INT, IN in_Arguments JS
 
 DELIMITER ;
 
+-- Inserir evento:
 INSERT INTO <?=tableNameWithModule("Events","SYS")?> (Name, Description) VALUES ('DocumentoApagado', 'Quando um documento contabilístico é apagado');
