@@ -15,22 +15,27 @@ CREATE OR REPLACE PROCEDURE <?=tableNameWithModule()?> (IN in_DocId INT, IN in_A
       "DocumentoAprovado",
       CONCAT("{",
         CONCAT_WS(",",
-          CONCAT_WS(":", CONCAT('"', "DocId", '"'), in_DocId),
-          CONCAT_WS(":", CONCAT('"', "Extra", '"'), in_Arguments)
+          CONCAT_WS(":", '"DocId"', in_DocId),
+          CONCAT_WS(":", '"Extra"', in_Arguments)
         ),
       "}")
     );
     
     -- 2. Executar a acção (espoletar procedimentos PROCESSING)
-    CALL <?=tableNameWithModule("TriggerProcessingEvent","SYS")?> (in_DocId);
+    CALL <?=tableNameWithModule("TriggerProcessingEvent","SYS")?> (
+      "DocumentoAprovado",
+      CONCAT("{",
+        CONCAT_WS(":", '"DocId"', in_DocId),
+      "}")
+    );
     
     -- 3. Espoletar procedimentos AFTER
     CALL <?=tableNameWithModule("TriggerAfterEvent","SYS")?> (
       "DocumentoAprovado",
       CONCAT("{",
         CONCAT_WS(",",
-          CONCAT_WS(":", CONCAT('"', "DocId", '"'), in_DocId),
-          CONCAT_WS(":", CONCAT('"', "Extra", '"'), in_Arguments)
+          CONCAT_WS(":", '"DocId"', in_DocId),
+          CONCAT_WS(":", '"Extra"', in_Arguments)
         ),
       "}")
     );

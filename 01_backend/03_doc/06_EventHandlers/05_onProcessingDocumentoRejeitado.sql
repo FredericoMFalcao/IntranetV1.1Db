@@ -6,10 +6,14 @@
 
 DELIMITER //
 
-CREATE OR REPLACE PROCEDURE <?=tableNameWithModule()?> (IN in_DocId INT, in_MotivoRejeicao TEXT)
+CREATE OR REPLACE PROCEDURE <?=tableNameWithModule()?> (IN in_Options TEXT)
 
   BEGIN
+    DECLARE in_DocId INT;
+    DECLARE in_MotivoRejeicao INT;
     DECLARE v_Estado TEXT;
+    SET in_DocId = JSON_VALUE(in_Options, '$.DocId');
+    SET in_MotivoRejeicao = JSON_VALUE(in_Options, '$.Extra.MotivoRejeicao');
     SET v_Estado = (SELECT Estado FROM <?=tableNameWithModule("Documentos")?> WHERE Id = in_DocId); 
 
     -- 1. Acrescentar a rejeição (e respectivo motivo) aos dados do documento

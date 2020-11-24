@@ -6,11 +6,13 @@
 
 DELIMITER //
 
-CREATE OR REPLACE PROCEDURE <?=tableNameWithModule()?> (IN in_DocId INT)
+CREATE OR REPLACE PROCEDURE <?=tableNameWithModule()?> (IN in_Options TEXT)
 
   BEGIN
+    DECLARE in_DocId INT;
     DECLARE v_DocTipo TEXT;
     DECLARE v_Estado TEXT;
+    SET in_DocId = JSON_VALUE(in_Options, '$.DocId');
     SET v_DocTipo = (SELECT Tipo FROM <?=tableNameWithModule("Documentos")?> WHERE Id = in_DocId);
     SET v_Estado = (SELECT Estado FROM <?=tableNameWithModule("Documentos")?> WHERE Id = in_DocId);
 

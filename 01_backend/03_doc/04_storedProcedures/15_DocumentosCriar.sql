@@ -14,7 +14,6 @@ CREATE OR REPLACE PROCEDURE <?=tableNameWithModule()?> (IN in_Arguments JSON)
   BEGIN
     DECLARE in_FileId, v_Extra TEXT;
     SET in_FileId = JSON_VALUE(in_Arguments, '$.Id');
-    
     SET v_Extra = CONCAT("{", 
                     CONCAT_WS(":",'"FileExtra"', JSON_EXTRACT(in_Arguments,'$.Extra'))
                   ,"}");
@@ -49,7 +48,7 @@ CREATE OR REPLACE PROCEDURE <?=tableNameWithModule()?> (IN in_Arguments JSON)
           "{", 
           CONCAT_WS(
             ",", 
-            CONCAT_WS(":", '"Id"', Id),
+            CONCAT_WS(":", '"DocId"', Id),
             CONCAT_WS(":", '"Tipo"', CONCAT('"',Tipo,'"')),
             CONCAT_WS(":", '"FileId"', CONCAT('"',FileId,'"')),
             CONCAT_WS(":", '"Extra"', Extra)

@@ -11,7 +11,7 @@ DELIMITER //
 CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_Arguments JSON)
   BEGIN
     DECLARE in_DocId TEXT;
-    SET in_DocId = JSON_VALUE(in_Arguments, '$.Id');
+    SET in_DocId = JSON_VALUE(in_Arguments, '$.DocId');
 
     UPDATE <?=tableNameWithModule("Documentos","DOC")?>
     SET Tipo = 'FaturaFornecedor', Estado = 'PorClassificarFornecedor'
