@@ -43,23 +43,12 @@ CREATE OR REPLACE PROCEDURE <?=tableNameWithModule()?> (IN in_Arguments JSON)
     -- 3. Espoletar procedimentos AFTER
     CALL <?=tableNameWithModule("TriggerAfterEvent","SYS")?> (
       "DocumentoCriado",
-      (SELECT
-        CONCAT(
-          "{", 
-          CONCAT_WS(
-            ",", 
-            CONCAT_WS(":", '"DocId"', Id),
-            CONCAT_WS(":", '"Tipo"', CONCAT('"',Tipo,'"')),
-            CONCAT_WS(":", '"FileId"', CONCAT('"',FileId,'"')),
-            CONCAT_WS(":", '"Extra"', Extra)
-          ),
-          "}"
-        )  
-      FROM <?=tableNameWithModule("Documentos","DOC")?>
-      -- faria mais sentido usar 'MAX(Id)' em vez de 'Id' no primeiro SELECT
-      --   em vez de ter mais uma query, mas só assim o resultado é interpretado
-      --   como um JSON válido para ser depois inserido na tabela 'EventBackLog'
-      WHERE Id =(SELECT MAX(Id) FROM <?=tableNameWithModule("Documentos","DOC")?>))
+      CONCAT("{",
+        CONCAT_WS(",",
+          CONCAT_WS(":", '"FileId"', CONCAT('"',in_FileId,'"')),
+          CONCAT_WS(":", '"Extra"', v_Extra)
+        ),
+      "}")
     );
       
   END;
