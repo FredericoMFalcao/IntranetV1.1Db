@@ -9,6 +9,8 @@ DELIMITER //
 CREATE OR REPLACE PROCEDURE <?=tableNameWithModule()?> (IN in_DocId INT, in_MotivoRejeicao TEXT)
 
   BEGIN
+    DECLARE v_Estado TEXT;
+    SET v_Estado = (SELECT Estado FROM <?=tableNameWithModule("Documentos")?> WHERE Id = in_DocId); 
 
     -- 1. Acrescentar a rejeição (e respectivo motivo) aos dados do documento
       UPDATE <?=tableNameWithModule("Documentos")?>

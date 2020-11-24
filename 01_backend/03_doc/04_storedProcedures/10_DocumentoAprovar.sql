@@ -9,11 +9,6 @@ DELIMITER //
 CREATE OR REPLACE PROCEDURE <?=tableNameWithModule()?> (IN in_DocId INT, IN in_Arguments JSON)
 
   BEGIN
-    DECLARE v_DocTipo TEXT;
-    DECLARE v_Estado TEXT;
-    SET v_DocTipo = (SELECT Tipo FROM <?=tableNameWithModule("Documentos")?> WHERE Id = in_DocId);
-    SET v_Estado = (SELECT Estado FROM <?=tableNameWithModule("Documentos")?> WHERE Id = in_DocId);
-
     
     -- 1. Espoletar procedimentos BEFORE
     CALL <?=tableNameWithModule("TriggerBeforeEvent","SYS")?> (

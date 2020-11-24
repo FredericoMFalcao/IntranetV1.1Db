@@ -10,9 +10,7 @@ CREATE OR REPLACE PROCEDURE <?=tableNameWithModule()?> (IN in_DocId INT, IN in_A
 
   BEGIN
     DECLARE in_MotivoRejeicao TEXT;
-    DECLARE v_Estado TEXT;
     SET in_MotivoRejeicao = JSON_VALUE(in_Arguments, '$.MotivoRejeicao');
-    SET v_Estado = (SELECT Estado FROM <?=tableNameWithModule("Documentos")?> WHERE Id = in_DocId); 
     
     -- 1. Espoletar procedimentos BEFORE
     CALL <?=tableNameWithModule("TriggerBeforeEvent","SYS")?> (
