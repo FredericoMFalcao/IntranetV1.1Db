@@ -24,8 +24,8 @@ CREATE OR REPLACE PROCEDURE <?=tableNameWithModule()?> (IN in_Arguments JSON)
       "DocumentoCriado",
       CONCAT("{",
         CONCAT_WS(",",
-          CONCAT_WS(":", CONCAT('"', "FileId", '"'), in_FileId),
-          CONCAT_WS(":", CONCAT('"', "Extra", '"'), v_Extra)
+          CONCAT_WS(":", '"FileId"', CONCAT('"',in_FileId,'"')),
+          CONCAT_WS(":", '"Extra"', v_Extra)
         ),
       "}")
     );
@@ -35,8 +35,8 @@ CREATE OR REPLACE PROCEDURE <?=tableNameWithModule()?> (IN in_Arguments JSON)
       "DocumentoCriado",
       CONCAT("{",
         CONCAT_WS(",",
-          CONCAT_WS(":", CONCAT('"', "FileId", '"'), in_FileId),
-          CONCAT_WS(":", CONCAT('"', "Extra", '"'), v_Extra)
+          CONCAT_WS(":", '"FileId"', CONCAT('"',in_FileId,'"')),
+          CONCAT_WS(":", '"Extra"', v_Extra)
         ),
       "}")
     );
