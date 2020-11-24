@@ -13,9 +13,9 @@ CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_ComprovativoPagamentoId INT, 
     DECLARE in_NumSerie TEXT;
     DECLARE in_ContaBancaria TEXT;
     DECLARE in_DataPagamento DATE;
-    SET in_NumSerie = JSON_VALUE(JSON_EXTRACT(in_Extra, '$.Extra'), '$.NumSerie');
-    SET in_ContaBancaria = JSON_VALUE(JSON_EXTRACT(in_Extra, '$.Extra'), '$.ContaBancaria');
-    SET in_DataPagamento = JSON_VALUE(JSON_EXTRACT(in_Extra, '$.Extra'), '$.DataPagamento');
+    SET in_NumSerie = JSON_VALUE(in_Extra, '$.NumSerie');
+    SET in_ContaBancaria = JSON_VALUE(in_Extra, '$.ContaBancaria');
+    SET in_DataPagamento = JSON_VALUE(in_Extra, '$.DataPagamento');
 
     UPDATE <?=tableNameWithModule("Documentos","DOC")?>
     SET 
