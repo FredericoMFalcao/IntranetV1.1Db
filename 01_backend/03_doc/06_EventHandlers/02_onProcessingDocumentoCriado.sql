@@ -19,4 +19,4 @@ CREATE OR REPLACE PROCEDURE <?=tableNameWithModule()?> (IN in_FileId TEXT, IN in
 DELIMITER ;
 
 -- Inserir Event Handler:
-INSERT INTO <?=tableNameWithModule("EventHandlers","SYS")?> (EventName, ProcessingStoredProcedure) VALUES ('DocumentoCriado', <?=tableNameWithModule()?>);
+INSERT INTO <?=tableNameWithModule("EventHandlers","SYS")?> (EventName, ProcessingStoredProcedure) VALUES ('DocumentoCriado', 'DOC_onProcessingDocumentoCriado');

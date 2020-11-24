@@ -44,4 +44,4 @@ CREATE OR REPLACE PROCEDURE <?=tableNameWithModule()?> (IN in_DocId INT, in_Moti
 DELIMITER ;
 
 -- Inserir Event Handler:
-INSERT INTO <?=tableNameWithModule("EventHandlers","SYS")?> (EventName, ProcessingStoredProcedure) VALUES ('DocumentoRejeitado', <?=tableNameWithModule()?>);
+INSERT INTO <?=tableNameWithModule("EventHandlers","SYS")?> (EventName, ProcessingStoredProcedure) VALUES ('DocumentoRejeitado', 'DOC_onProcessingDocumentoRejeitado');
