@@ -48,14 +48,14 @@ CREATE OR REPLACE PROCEDURE <?=tableNameWithModule()?> (IN in_Arguments JSON)
           "{", 
           CONCAT_WS(
             ",", 
-            CONCAT_WS(":", '"DocId"', Id),
+            CONCAT_WS(":", '"DocId"', MAX(Id)),
             CONCAT_WS(":", '"Tipo"', CONCAT('"',Tipo,'"')),
             CONCAT_WS(":", '"FileId"', CONCAT('"',FileId,'"')),
             CONCAT_WS(":", '"Extra"', Extra)
           ),
           "}"
         )  
-      FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE Id = LAST_INSERT_ID())
+      FROM <?=tableNameWithModule("Documentos","DOC")?>)
     );
       
   END;
