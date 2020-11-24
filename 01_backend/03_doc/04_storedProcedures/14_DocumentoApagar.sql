@@ -25,7 +25,7 @@ CREATE OR REPLACE PROCEDURE <?=tableNameWithModule()?> (IN in_DocId INT, IN in_A
     );
     
     -- 2. Executar a acção (espoletar procedimentos PROCESSING)
-    CALL <?=tableNameWithModule("TriggerProcessingEvent","SYS")?> (in_DocId)
+    CALL <?=tableNameWithModule("TriggerProcessingEvent","SYS")?> (in_DocId);
     
     -- 3. Espoletar procedimentos AFTER
     CALL <?=tableNameWithModule("TriggerAfterEvent","SYS")?> (
