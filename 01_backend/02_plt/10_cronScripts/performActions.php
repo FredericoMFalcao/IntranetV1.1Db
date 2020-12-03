@@ -6,7 +6,7 @@ $sqlQuery  = "SELECT ";
 $sqlQuery .= "id, SqlCode, PhpCode, RepeatEveryNSeconds ";
 $sqlQuery .= "FROM PLT_CalendarActions ";
 $sqlQuery .= "WHERE Active = 1 AND ";
-$sqlQuery .= "NextActiveDate - NOW() > 0  ";
+$sqlQuery .= "NextActionDate - NOW() < 0  ";
 
 /*
 *	MAIN LOOP: execute each actions
@@ -14,8 +14,9 @@ $sqlQuery .= "NextActiveDate - NOW() > 0  ";
 foreach(sql($sqlQuery) as $row) {
 	extract($row);
 
-	// Update the NextActiveDate (if RepeatEveryNSeconds exists)
-	sql("UPDATE PLT_CalendarActions SET NextActiveDate = FROM_UNIXTIME(UNIX_TIMESTAMP(NOW()+RepeatEveryNSeconds)) WHERE id = $id");
+
+	// Update the NextActionDate (if RepeatEveryNSeconds exists)
+	sql("UPDATE PLT_CalendarActions SET NextActionDate = FROM_UNIXTIME(UNIX_TIMESTAMP(NOW()+RepeatEveryNSeconds)) WHERE id = $id");
 
 	if ($SqlCode) {
 		$errorInfo = [];
