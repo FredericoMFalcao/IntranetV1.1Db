@@ -58,3 +58,20 @@ function extractJsonFields(array $in) {
 function sql_startTransaction() { global $dbo; $dbo->beginTransaction(); }
 function sql_rollback()         { global $dbo; $dbo->rollBack(); }
 function sql_commit()           { global $dbo; $dbo->commit(); }
+
+
+/*
+*	2. Simple C.U.D. Operations
+*
+*/
+function quoteArray(array $a) {
+	$b = [];
+	foreach ($a as $k => $v) 
+		if (in_array(gettype($v), ["boolean", "integer","float"])) $b[$k] = $v;
+		elseif (in_array(gettype($v), ["string"])) $b[$k] = "'".str_replace("'",'"',$v)."'";
+		else $b[$k] = "'".json_encode($v)."'";
+	return $b;
+}
+function insert_into(string $tblName, array $data, &$errorInfo = null) {
+	return sql("INSERT INTO $tblName (`".implode("`, `", array_keys($data))."`) VALUES (".implode(", ",quoteArray($data)).")", $errorInfo);
+}
