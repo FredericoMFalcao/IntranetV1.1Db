@@ -5,6 +5,8 @@
 # POST : POST=$(</dev/stdin)
 # GET:   $QUERY_STRING
 
+# Capture POST data and discard it
+cat < /dev/stdin > /dev/null
 
 # 0.1 Init response
 echo "Content-Type: text/plain"
