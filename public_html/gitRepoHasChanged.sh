@@ -6,12 +6,12 @@
 # GET:   $QUERY_STRING
 
 # Capture POST data and discard it
-cat < /dev/stdin > /dev/null
+POST=$(</dev/stdin)
 
 # 0.1 Init response
 echo "Content-Type: text/plain"
 echo ""
-echo "Will redeploy all branches..."
+echo "Will redeploy all branches asynchronously..."
 
 # 0.2 Change to the dir of the current script
 cd "$( dirname "${BASH_SOURCE[0]}" )"
@@ -26,4 +26,3 @@ cd "$( dirname "${BASH_SOURCE[0]}" )"
 
 
  ../../redeployAllBranches.sh &
-echo "Success!"
