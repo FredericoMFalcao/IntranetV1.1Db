@@ -1,6 +1,6 @@
-<?php if ($_GET['createNewBranchWithName']??false) {$output = json_encode(shell_exec(__DIR__."/../../fork.sh ".$_GET['createNewBranchWithName']) ?? "success"); die("alert('{$_GET['createNewBranchWithName']} branch created ($output)}');");} ?>
-<?php if ($_GET['deleteThisBranch']??false)        {$output = json_encode(shell_exec(__DIR__."/../../deleteThisBranch.sh ") ?? "success"); die("alert('Branch deleted ($output)}');");} ?>
-<?php if ($_GET['forceCodeDeployment']??false)     {$output = json_encode(shell_exec("FORCE_DEPLOY=1 ".__DIR__."/../deploy_code.sh ") ?? "success"); die("alert('Success! ($output)}');");} ?>
+<?php if ($_GET['createNewBranchWithName']??false) {$output = json_encode(shell_exec(__DIR__."/../../fork.sh ".$_GET['createNewBranchWithName']) ?? "success"); die("$('.ajax-in-progress').hide();alert('{$_GET['createNewBranchWithName']} branch created ($output)}');");} ?>
+<?php if ($_GET['deleteThisBranch']??false)        {$output = json_encode(shell_exec(__DIR__."/../../deleteThisBranch.sh ") ?? "success"); die("$('.ajax-in-progress').hide();alert('Branch deleted ($output)}');");} ?>
+<?php if ($_GET['forceCodeDeployment']??false)     {$output = json_encode(shell_exec("FORCE_DEPLOY=1 ".__DIR__."/../deploy_code.sh ") ?? "success"); die("$('.ajax-in-progress').hide();alert('Success! ($output)}');");} ?>
 
 <html>
 	<head>
@@ -17,17 +17,31 @@
 		<script src="/js/highlight.min.js"></script>
 		<script>hljs.initHighlightingOnLoad();</script>
 
-			
 
 	</head>
 	<body class="container">
 		<h2>Links</h2>
 			<ul class="list-group list-group-horizontal">
 				<li class="list-group-item">	<a class="btn btn-default" href="sql_explorer.php">sql explorer</a></li>
-				<li class="list-group-item">	<button class="btn btn-danger" onclick="$.ajax({url:'',data:{deleteThisBranch:confirm('Are you sure?')},success:function(data){eval(data);}});">Delete this branch</button></li>
-				<li class="list-group-item">	<button class="btn btn-primary" onclick="$.ajax({url:'',data:{forceCodeDeployment:1},success:function(data){eval(data);}});">Force Code Deployment</button></li>
+				<li class="list-group-item">	
+					<button class="btn btn-danger" onclick="$(this).find('.ajax-in-progress').show(); $.ajax({url:'',data:{deleteThisBranch:confirm('Are you sure?')},success:function(data){eval(data);}});">
+						<span class="spinner-border spinner-border-sm ajax-in-progress" role="status" style="display:none" ></span>
+						Delete this branch
+					</button>
+				</li>
+				<li class="list-group-item">	
+					<button class="btn btn-primary" onclick="$(this).find('.ajax-in-progress').show();$.ajax({url:'',data:{forceCodeDeployment:1},success:function(data){eval(data);}});">
+						<span class="spinner-border spinner-border-sm ajax-in-progress" role="status" style="display:none" ></span>
+						Force Code Deployment
+					</button>
+				</li>
 				<li class="list-group-item">	<button class="btn btn-primary" onclick="alert('not yet implemented');">Merge Branch Into Master</button></li>
-				<li class="list-group-item">	<button class="btn btn-primary" onclick="$.ajax({url:'',data:{createNewBranchWithName:prompt('New Branch Name?')},success:function(data){eval(data);}});">Fork</button></li>
+				<li class="list-group-item">	
+					<button class="btn btn-primary" onclick="$(this).find('.ajax-in-progress').show();$.ajax({url:'',data:{createNewBranchWithName:prompt('New Branch Name?')},success:function(data){eval(data);}});">
+						<span class="spinner-border spinner-border-sm ajax-in-progress" role="status" style="display:none" ></span>
+						Fork
+					</button>
+				</li>
 			</ul>
 		<hr>
 		
