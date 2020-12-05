@@ -14,3 +14,9 @@ Each module is expected to have several subfolders:
 3. 03_views - one or several sql files with a pre-written select query
 4. 04_storedProcedures - one or several sql files with user-callable functions to insert/update/delete data
 5. 05_tests - one or several _php_ fluent API files, that lists tests necessary to guaratee functions perform as expected
+
+
+
+
+
+This is a simple new test string.
