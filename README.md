@@ -18,3 +18,5 @@ Each module is expected to have several subfolders:
 
 
 
+
+This is a simple new test string.
