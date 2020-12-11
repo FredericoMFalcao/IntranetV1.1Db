@@ -17,12 +17,12 @@ CREATE PROCEDURE <?=tableNameWithModule()?> (
     DECLARE n INT;
     DECLARE c INT;
     DECLARE i INT;
-    SET d = LAST_DAY(JSON_UNQUOTE(JSON_EXTRACT(in_Periodo, '$.Inicio'))) + INTERVAL 1 DAY - INTERVAL 1 MONTH;
     -- d: primeiro dia do mês em que se inicia o período
-    SET n = MONTH(JSON_UNQUOTE(JSON_EXTRACT(in_Periodo, '$.Fim'))) - MONTH(JSON_UNQUOTE(JSON_EXTRACT(in_Periodo, '$.Inicio'))) + 1;
+    SET d = LAST_DAY(JSON_VALUE(in_Periodo, '$.Inicio')) + INTERVAL 1 DAY - INTERVAL 1 MONTH;
     -- n: número de meses abrangidos pelo período
-    SET c = LENGTH(in_Conta) - LENGTH(REPLACE(in_Conta, ":", "")) + 1;
+    SET n = PERIOD_DIFF(EXTRACT(YEAR_MONTH FROM JSON_VALUE(in_Periodo, '$.Fim')), EXTRACT(YEAR_MONTH FROM JSON_VALUE(in_Periodo, '$.Inicio'))) + 1;
     -- c: número de contas (para o caso de contas multi, e.g. 'CR0101:AN0202')
+    SET c = LENGTH(in_Conta) - LENGTH(REPLACE(in_Conta, ":", "")) + 1;
     SET i = 1;
     
 
@@ -39,12 +39,12 @@ CREATE PROCEDURE <?=tableNameWithModule()?> (
       
     
     -- 1. Criar linhas na tabela de lançamentos
-    WHILE d <= JSON_UNQUOTE(JSON_EXTRACT(in_Periodo, '$.Fim')) DO
+    WHILE d <= JSON_VALUE(in_Periodo, '$.Fim') DO
     
       -- a) Caso em que o período é composto apenas por meses completos:
       IF (
-        DAY(JSON_UNQUOTE(JSON_EXTRACT(in_Periodo, '$.Inicio'))) = 1 AND
-        JSON_UNQUOTE(JSON_EXTRACT(in_Periodo, '$.Fim')) = LAST_DAY(JSON_UNQUOTE(JSON_EXTRACT(in_Periodo, '$.Fim')))
+        DAY(JSON_VALUE(in_Periodo, '$.Inicio')) = 1 AND
+        JSON_VALUE(in_Periodo, '$.Fim') = LAST_DAY(JSON_VALUE(in_Periodo, '$.Fim'))
         ) THEN
           INSERT INTO <?=tableNameWithModule("Lancamentos")?> (Conta, CoefRateio, Mes, DocNumSerie)
           VALUES (in_Conta, in_CoefRateio / n, d, in_DocNumSerie);
@@ -55,8 +55,8 @@ CREATE PROCEDURE <?=tableNameWithModule()?> (
         VALUES (
           in_Conta,
           in_CoefRateio * (
-            (DATEDIFF(LEAST(LAST_DAY(d), JSON_UNQUOTE(JSON_EXTRACT(in_Periodo, '$.Fim'))), GREATEST(d, JSON_UNQUOTE(JSON_EXTRACT(in_Periodo, '$.Inicio')))) + 1) /
-            (DATEDIFF(JSON_UNQUOTE(JSON_EXTRACT(in_Periodo, '$.Fim')), JSON_UNQUOTE(JSON_EXTRACT(in_Periodo, '$.Inicio'))) + 1)
+            (DATEDIFF(LEAST(LAST_DAY(d), JSON_VALUE(in_Periodo, '$.Fim')), GREATEST(d, JSON_VALUE(in_Periodo, '$.Inicio'))) + 1) /
+            (DATEDIFF(JSON_VALUE(in_Periodo, '$.Fim'), JSON_VALUE(in_Periodo, '$.Inicio')) + 1)
             ),
           d,
           in_DocNumSerie
