@@ -71,6 +71,8 @@ CREATE OR REPLACE PROCEDURE <?=tableNameWithModule()?> (IN in_Options TEXT)
           UPDATE <?=tableNameWithModule("Documentos")?> 
           SET Estado = 'Concluido'
           WHERE Id = in_DocId;
+          
+        END IF;
         
       END IF;
       
