@@ -1,5 +1,5 @@
 -- ------------------------
---  Module: Documentos  EventListner: onProcessingDocumentoAprovado
+--  Module: Documentos | EventListner: onProcessingDocumentoAprovado
 --
 --  Descrição: altera o estado de um documento (para a frente no workflow)
 -- ------------------------
@@ -53,6 +53,24 @@ CREATE OR REPLACE PROCEDURE <?=tableNameWithModule()?> (IN in_Options TEXT)
         UPDATE <?=tableNameWithModule("Documentos")?>  
         SET Estado = 'Concluido'
         WHERE Id = in_DocId;
+      
+      -- 1.3. Fatura de cliente
+      ELSEIF v_DocTipo = 'FaturaCliente' THEN
+      
+        IF v_Estado = 'PorClassificarCliente' THEN
+          UPDATE <?=tableNameWithModule("Documentos")?> 
+          SET Estado = 'PorClassificarAnalitica'
+          WHERE Id = in_DocId;
+      
+        ELSEIF v_Estado = 'PorClassificarAnalitica' THEN
+          UPDATE <?=tableNameWithModule("Documentos")?> 
+          SET Estado = 'PorAnexarCPagamento'
+          WHERE Id = in_DocId;
+      
+        ELSEIF v_Estado = 'PorAnexarCPagamento' THEN
+          UPDATE <?=tableNameWithModule("Documentos")?> 
+          SET Estado = 'Concluido'
+          WHERE Id = in_DocId;
         
       END IF;
       

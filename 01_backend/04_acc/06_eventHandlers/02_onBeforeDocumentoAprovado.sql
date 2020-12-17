@@ -1,14 +1,13 @@
 -- --------------------
---  Module: Accounting EventListner: onBeforeDocumentoAprovado
+--  Module: Accounting | EventListner: onBeforeDocumentoAprovado
 --
 --  Descrição: chama o stored procedure adequado ao tipo do documento que foi aprovado
 -- --------------------
 
-DROP PROCEDURE IF EXISTS <?=tableNameWithModule()?>;
-
 DELIMITER //
 
-CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_Options JSON)
+CREATE OR REPLACE PROCEDURE <?=tableNameWithModule()?> (IN in_Options JSON)
+
   BEGIN
     DECLARE in_DocId INT;
     DECLARE in_Extra JSON;
@@ -23,6 +22,9 @@ CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_Options JSON)
       
     ELSEIF v_DocTipo = "ComprovativoPagamento" THEN
       CALL <?=tableNameWithModule("ComprovativoPagamentoAprovar")?> (in_DocId, in_Extra);
+      
+    ELSEIF v_DocTipo = "FaturaCliente" THEN
+      CALL <?=tableNameWithModule("FaturaClienteAprovar")?> (in_DocId, in_Extra);
       
     END IF;
     

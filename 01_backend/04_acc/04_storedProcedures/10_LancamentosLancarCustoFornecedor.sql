@@ -1,8 +1,6 @@
-DROP PROCEDURE IF EXISTS <?=tableNameWithModule()?>;
-
 DELIMITER //
 
-CREATE PROCEDURE <?=tableNameWithModule()?> (
+CREATE OR REPLACE PROCEDURE <?=tableNameWithModule()?> (
   IN in_NumSerie                    TEXT,
   IN in_ClassificacaoAnalitica      TEXT
   -- e.g. [{"CentroResultados": "CR0101", "Analitica": "AN0202", "Colaborador": "COabc", "Valor": 1000}, {...}]
@@ -41,11 +39,11 @@ CREATE PROCEDURE <?=tableNameWithModule()?> (
 
       CALL <?=tableNameWithModule("CriarLancamento")?> (
         CONCAT_WS(":",
-          JSON_VALUE(JSON_EXTRACT(in_ClassificacaoAnalitica, CONCAT("$[", i, "]")), '$.CentroResultados'),
-          JSON_VALUE(JSON_EXTRACT(in_ClassificacaoAnalitica, CONCAT("$[", i, "]")), '$.Analitica'),
-          JSON_VALUE(JSON_EXTRACT(in_ClassificacaoAnalitica, CONCAT("$[", i, "]")), '$.Colaborador')
+          JSON_VALUE(in_ClassificacaoAnalitica, CONCAT("$[", i, "].CentroResultados")),
+          JSON_VALUE(in_ClassificacaoAnalitica, CONCAT("$[", i, "].Analitica")),
+          JSON_VALUE(in_ClassificacaoAnalitica, CONCAT("$[", i, "].Colaborador"))
         ),
-        JSON_VALUE(JSON_EXTRACT(in_ClassificacaoAnalitica, CONCAT("$[", i, "]")), '$.Valor') / v_ValorFatura * -1,
+        JSON_VALUE(in_ClassificacaoAnalitica, CONCAT("$[", i, "].Valor")) / v_ValorFatura * -1,
         v_PeriodoFaturacao,
         in_NumSerie
       );

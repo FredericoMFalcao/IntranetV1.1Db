@@ -1,5 +1,8 @@
+-- ------------------------
 -- Tabela: Contas
+--
 -- Descrição: Lista todos os nomes e propriedades das contas contabilísticas da aplicação
+-- ------------------------
 
 CREATE TABLE <?=tableNameWithModule()?> (
   Conta VARCHAR(20) NOT NULL, -- Dois primeiros caracteres reflectem o tipo de conta
@@ -36,6 +39,6 @@ INSERT INTO <?=tableNameWithModule()?> (Conta, Nome) VALUES ('CO456',"Teste02");
 INSERT INTO <?=tableNameWithModule()?> (Conta, Nome) VALUES ('CB01',"Teste01");
 -- Impostos:
 INSERT INTO <?=tableNameWithModule()?> (Conta, Nome) VALUES ('IM01',"ImpostosRetencao");
-
-
--- vim: syntax=sql
+-- Clientes:
+INSERT INTO <?=tableNameWithModule()?> (Conta, Nome) VALUES ('CL1',"Cliente1");
+INSERT INTO <?=tableNameWithModule()?> (Conta, Nome) VALUES ('CL2',"Cliente2");

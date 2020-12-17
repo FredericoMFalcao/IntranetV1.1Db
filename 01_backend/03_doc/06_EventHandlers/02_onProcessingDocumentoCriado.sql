@@ -1,5 +1,5 @@
 -- ------------------------
---  Module: Documentos  EventListner: onProcessingDocumentoCriado
+--  Module: Documentos | EventListner: onProcessingDocumentoCriado
 --
 --  Descrição: insere uma linha na tabela Documentos
 -- ------------------------
