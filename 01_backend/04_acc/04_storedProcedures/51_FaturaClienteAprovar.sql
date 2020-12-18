@@ -61,7 +61,7 @@ CREATE OR REPLACE PROCEDURE <?=tableNameWithModule()?> (IN in_FaturaId INT, IN i
                 'NumFatura', in_NumFatura,
                 'ProjetoProvisorio', in_Projeto,
                 'DataFatura', in_DataFatura,
-                'DataRecebida', in_DataRecebida,
+                'DataEnviada', in_DataEnviada,
                 'DataValidade', in_DataValidade,
                 'ClienteCodigo', in_ClienteCodigo,
                 'Moeda', in_Moeda,
