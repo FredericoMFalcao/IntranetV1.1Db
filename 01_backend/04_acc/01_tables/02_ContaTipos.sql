@@ -14,5 +14,6 @@ VALUES ("Analitica", "AN"),
        ("CentroResultados", "CR"),
        ("Cliente", "CL"),
        ("Colaborador", "CO"),
-       ("Fornecedor", "FO")
+       ("Fornecedor", "FO"),
+       ("Impostos", "IM")
 ;

@@ -20,7 +20,7 @@ CREATE OR REPLACE PROCEDURE <?=tableNameWithModule()?> (IN in_FaturaId INT, IN i
     DECLARE in_PeriodoFaturacao           JSON;  -- e.g. {"Inicio": "2011-11-25", "Fim": "2011-12-25"}
     DECLARE in_DataValidade               DATE;
     DECLARE in_ClienteCodigo              TEXT;
-    DECLARE in_Valor                      FLOAT;
+    DECLARE in_Valor                      JSON;  -- e.g. {"Bens": {"ValorBase": 0.00, "Iva": 0.00}, "Servicos": {"ValorBase":0.00,"Iva":0.00}}
     DECLARE in_Moeda                      TEXT;
     DECLARE in_Descricao                  TEXT;
     -- Inputs para classificar analítica:
@@ -38,7 +38,7 @@ CREATE OR REPLACE PROCEDURE <?=tableNameWithModule()?> (IN in_FaturaId INT, IN i
     SET in_PeriodoFaturacao = JSON_EXTRACT(in_Extra, '$.PeriodoFaturacao');
     SET in_DataValidade = JSON_VALUE(in_Extra, '$.DataValidade');
     SET in_ClienteCodigo = JSON_VALUE(in_Extra, '$.ClienteCodigo');
-    SET in_Valor = JSON_VALUE(in_Extra, '$.Valor');
+    SET in_Valor = JSON_EXTRACT(in_Extra, '$.Valor');
     SET in_Moeda = JSON_VALUE(in_Extra, '$.Moeda');
     SET in_Descricao = JSON_VALUE(in_Extra, '$.Descricao');
     SET in_ClassificacaoAnalitica = JSON_EXTRACT(in_Extra, '$.ClassificacaoAnalitica');
@@ -56,18 +56,20 @@ CREATE OR REPLACE PROCEDURE <?=tableNameWithModule()?> (IN in_FaturaId INT, IN i
         Extra = JSON_MERGE (
           Extra,
           JSON_MERGE(
-            JSON_OBJECT(
-              'NumFatura', in_NumFatura,
-              'ProjetoProvisorio', in_Projeto,
-              'DataFatura', in_DataFatura,
-              'DataRecebida', in_DataEnviada,
-              'DataValidade', in_DataValidade,
-              'ClienteCodigo', in_ClienteCodigo,
-              'Valor', in_Valor,
-              'Moeda', in_Moeda,
-              'Descricao', in_Descricao      
+            JSON_MERGE(
+              JSON_OBJECT(
+                'NumFatura', in_NumFatura,
+                'ProjetoProvisorio', in_Projeto,
+                'DataFatura', in_DataFatura,
+                'DataRecebida', in_DataRecebida,
+                'DataValidade', in_DataValidade,
+                'ClienteCodigo', in_ClienteCodigo,
+                'Moeda', in_Moeda,
+                'Descricao', in_Descricao      
+              ),
+              CONCAT("{\"PeriodoFaturacao\":", in_PeriodoFaturacao, "}")
             ),
-            CONCAT("{\"PeriodoFaturacao\":", in_PeriodoFaturacao, "}")
+            CONCAT("{\"Valor\":", in_Valor, "}")
           )
         )
       WHERE Id = in_FaturaId;

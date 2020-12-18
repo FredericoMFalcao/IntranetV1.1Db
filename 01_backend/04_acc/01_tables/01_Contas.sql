@@ -38,7 +38,8 @@ INSERT INTO <?=tableNameWithModule()?> (Conta, Nome) VALUES ('CO456',"Teste02");
 -- Contas bancárias:
 INSERT INTO <?=tableNameWithModule()?> (Conta, Nome) VALUES ('CB01',"Teste01");
 -- Impostos:
-INSERT INTO <?=tableNameWithModule()?> (Conta, Nome) VALUES ('IM01',"ImpostosRetencao");
+INSERT INTO <?=tableNameWithModule()?> (Conta, Nome) VALUES ('IM01',"Impostos retidos a fornecedores");
+INSERT INTO <?=tableNameWithModule()?> (Conta, Nome) VALUES ('IM02',"IVA");
 -- Clientes:
 INSERT INTO <?=tableNameWithModule()?> (Conta, Nome) VALUES ('CL1',"Cliente1");
 INSERT INTO <?=tableNameWithModule()?> (Conta, Nome) VALUES ('CL2',"Cliente2");
