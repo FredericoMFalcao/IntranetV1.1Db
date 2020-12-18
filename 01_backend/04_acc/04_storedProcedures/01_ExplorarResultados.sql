@@ -36,8 +36,8 @@ CREATE OR REPLACE PROCEDURE <?=tableNameWithModule()?> (
       END AS Periodo,
       CASE
         WHEN LEFT(in_Agregador, 2) = "FO"
-          THEN CAST(SUM(a.CoefRateio * ACC_FFValorTotal(b.Extra) * (-1)) AS DECIMAL(18, 2))
-        ELSE CAST(SUM(a.CoefRateio * ACC_FFValorTotal(b.Extra)) AS DECIMAL(18, 2))
+          THEN CAST(SUM(a.CoefRateio * ACC_FaturaValorTotal(b.Extra) * (-1)) AS DECIMAL(18, 2))
+        ELSE CAST(SUM(a.CoefRateio * ACC_FaturaValorTotal(b.Extra)) AS DECIMAL(18, 2))
       END AS Valor
     FROM <?=tableNameWithModule("Lancamentos")?> AS a
       LEFT JOIN <?=tableNameWithModule("Documentos","DOC")?> AS b ON a.DocNumSerie = b.NumSerie

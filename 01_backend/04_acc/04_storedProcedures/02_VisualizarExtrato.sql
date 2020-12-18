@@ -24,7 +24,7 @@ CREATE OR REPLACE PROCEDURE <?=tableNameWithModule()?> (
       CASE WHEN LEFT(in_Conta, 2) != "FO" THEN ACC_ExtrairConta("CR", a.Conta) END AS CentroResultados,
       CASE WHEN LEFT(in_Conta, 2) != "FO" THEN ACC_ExtrairConta("AN", a.Conta) END AS Analitica,
       JSON_VALUE(b.Extra, '$.Descricao') AS Descricao,
-      CAST(SUM(a.CoefRateio * ACC_FFValorTotal(b.Extra)) AS DECIMAL(18, 2)) AS Valor,
+      CAST(SUM(a.CoefRateio * ACC_FaturaValorTotal(b.Extra)) AS DECIMAL(18, 2)) AS Valor,
       b.FileId
     FROM <?=tableNameWithModule("Lancamentos")?> AS a
       LEFT JOIN <?=tableNameWithModule("Documentos","DOC")?> AS b ON a.DocNumSerie = b.NumSerie

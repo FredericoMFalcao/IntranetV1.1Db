@@ -12,9 +12,9 @@ SELECT
 	CONVERT(JSON_EXTRACT (a.Extra, '$.DataFatura'), DATE) AS DataFatura,
 	c.Nome AS FornecedorNome,
 	JSON_EXTRACT (c.Extra, '$.FornecedorNIF') AS FornecedorNIF,
-	ACC_FFValorTotal(a.Extra) - 0 AS ValorLiquido,                              -- provisório
-	ACC_FFValorTotal(a.Extra) AS ValorTotal,
-	ACC_FFValorTotal(a.Extra) * 1 AS ValorPagoAKZ                               -- provisório
+	ACC_FaturaValorTotal(a.Extra) - 0 AS ValorLiquido,                              -- provisório
+	ACC_FaturaValorTotal(a.Extra) AS ValorTotal,
+	ACC_FaturaValorTotal(a.Extra) * 1 AS ValorPagoAKZ                               -- provisório
 FROM <?=tableNameWithModule("Documentos","DOC")?> AS a
 INNER JOIN <?=tableNameWithModule("Lancamentos")?> AS b ON a.NumSerie = b.DocNumSerie
 INNER JOIN <?=tableNameWithModule("Contas")?> AS c ON b.Conta = c.Conta

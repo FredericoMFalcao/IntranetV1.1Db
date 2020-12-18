@@ -13,7 +13,7 @@ SELECT
 	JSON_EXTRACT (c.Extra, '$.FornecedorNIF') AS FornecedorNIF,
 	'Centro' AS CentroResultados,                                     -- provisório
 	'Analitica' AS Analitica,                                         -- provisório
-	ACC_FFValorTotal(a.Extra) AS Valor,
+	ACC_FaturaValorTotal(a.Extra) AS Valor,
 	JSON_EXTRACT (a.Extra, '$.Moeda') AS Moeda,
 	JSON_EXTRACT (a.Extra, '$.Projeto') AS Projeto,
 	'C. Geral' AS CGeral,                                             -- provisório

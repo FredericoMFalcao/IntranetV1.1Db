@@ -19,7 +19,7 @@ CREATE OR REPLACE PROCEDURE <?=tableNameWithModule()?> (
     DECLARE i INT;
     
     SET v_PeriodoFaturacao = JSON_EXTRACT((SELECT Extra FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE NumSerie = in_NumSerie), '$.PeriodoFaturacao');
-    SET v_ValorFatura = ACC_FFValorTotal((SELECT Extra FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE NumSerie = in_NumSerie));
+    SET v_ValorFatura = ACC_FaturaValorTotal((SELECT Extra FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE NumSerie = in_NumSerie));
     SET v_Iva = ACC_FaturaIva((SELECT Extra FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE NumSerie = in_NumSerie));
     SET i = 0;
     

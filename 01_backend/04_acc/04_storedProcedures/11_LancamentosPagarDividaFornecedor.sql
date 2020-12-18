@@ -11,7 +11,7 @@ CREATE PROCEDURE <?=tableNameWithModule()?> (IN in_FaturaId INT, IN in_Comprovat
     DECLARE v_Retencao FLOAT;
     SET v_NumSerie = (SELECT NumSerie FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE Id = in_FaturaId);
     SET v_PeriodoFaturacao = JSON_EXTRACT((SELECT Extra FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE Id = in_FaturaId), '$.PeriodoFaturacao');
-    SET v_ValorFatura = ACC_FFValorTotal((SELECT Extra FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE Id = in_FaturaId));
+    SET v_ValorFatura = ACC_FaturaValorTotal((SELECT Extra FROM <?=tableNameWithModule("Documentos","DOC")?> WHERE Id = in_FaturaId));
     SET v_Retencao = ACC_FFRetencao(v_NumSerie);
     
            
