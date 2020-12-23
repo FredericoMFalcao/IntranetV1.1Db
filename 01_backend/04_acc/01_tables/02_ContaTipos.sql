@@ -8,12 +8,3 @@ CREATE TABLE <?=tableNameWithModule()?> (
   PRIMARY KEY(Tipo)
 );
 
-INSERT INTO <?=tableNameWithModule()?>
-VALUES ("Analitica", "AN"),
-       ("ContaBancaria", "CB"),
-       ("CentroResultados", "CR"),
-       ("Cliente", "CL"),
-       ("Colaborador", "CO"),
-       ("Fornecedor", "FO"),
-       ("Impostos", "IM")
-;

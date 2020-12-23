@@ -15,20 +15,3 @@ CREATE TABLE <?=tableNameWithModule()?> (
 );
 
 
--- - Dados Iniciais - --
-
--- Faturas de fornecedor:
-INSERT INTO <?=tableNameWithModule()?> (TipoDoc, Estado, Descricao, `Schema`) VALUES ('FaturaFornecedor', 'PorClassificarFornecedor', 'Existe no sistema apenas com um PDF.','{"Fornecedor":"string","Descricao":"string?"}');
-INSERT INTO <?=tableNameWithModule()?> (TipoDoc, Estado, Descricao, `Schema`) VALUES ('FaturaFornecedor', 'PorClassificarAnalitica', 'À espera de ser classificada em termos de contabilidade analítica.','{"CentroResultados":"string","Analitica":"string","Colaborador":"string"}');
-INSERT INTO <?=tableNameWithModule()?> (TipoDoc, Estado, Descricao) VALUES ('FaturaFornecedor', 'PorRegistarContabilidade', 'À espera de integrar custo no software de contabilidade fiscal.');
-INSERT INTO <?=tableNameWithModule()?> (TipoDoc, Estado, Descricao, `Schema`) VALUES ('FaturaFornecedor', 'PorAnexarCPagamento', 'À espera de ser anexado comprovativo de pagamento.','{"FileId":"string"}');
-INSERT INTO <?=tableNameWithModule()?> (TipoDoc, Estado, Descricao) VALUES ('FaturaFornecedor', 'PorRegistarPagamentoContab', 'À espera de integrar pagamento no software de contabilidade fiscal.');
-INSERT INTO <?=tableNameWithModule()?> (TipoDoc, Estado, Descricao) VALUES ('FaturaFornecedor', 'Concluido', 'Todos os procedimentos foram realizados.');
--- Comprovativos de pagamento:
-INSERT INTO <?=tableNameWithModule()?> (TipoDoc, Estado) VALUES ('ComprovativoPagamento', 'PorAprovar');
-INSERT INTO <?=tableNameWithModule()?> (TipoDoc, Estado) VALUES ('ComprovativoPagamento', 'Concluido');
--- Faturas de cliente:
-INSERT INTO <?=tableNameWithModule()?> (TipoDoc, Estado) VALUES ('FaturaCliente', 'PorClassificarCliente');
-INSERT INTO <?=tableNameWithModule()?> (TipoDoc, Estado) VALUES ('FaturaCliente', 'PorClassificarAnalitica');
-INSERT INTO <?=tableNameWithModule()?> (TipoDoc, Estado) VALUES ('FaturaCliente', 'PorAnexarCPagamento');
-INSERT INTO <?=tableNameWithModule()?> (TipoDoc, Estado) VALUES ('FaturaCliente', 'Concluido');

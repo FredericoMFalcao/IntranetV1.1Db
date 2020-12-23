@@ -39,22 +39,3 @@ CREATE TABLE PLT_VirtualTablesFields (
 );
 
 
--- -- INITIAL DATA ----
-INSERT INTO PLT_VirtualTables (Name, PrimaryKey) VALUES ('Fornecedor','["Codigo"]');
-INSERT INTO PLT_VirtualTablesFields (ParentTable, Name, Type) VALUES ('Fornecedor','Codigo','INT');
-INSERT INTO PLT_VirtualTablesFields (ParentTable, Name, Type) VALUES ('Fornecedor','Nome','TEXT');
-INSERT INTO PLT_VirtualTablesFields (ParentTable, Name, Type) VALUES ('Fornecedor','NomeCurto','TEXT');
-INSERT INTO PLT_VirtualTablesFields (ParentTable, Name, Type) VALUES ('Fornecedor','NIF','INT');
-INSERT INTO PLT_VirtualTablesFields (ParentTable, Name, Type) VALUES ('Fornecedor','Morarada','TEXT');
-
-INSERT INTO PLT_VirtualTables (Name, PrimaryKey) VALUES ('CentroResultados','["Codigo"]');
-INSERT INTO PLT_VirtualTablesFields (ParentTable, Name, Type) VALUES ('CentroResultados','Codigo','INT');
-INSERT INTO PLT_VirtualTablesFields (ParentTable, Name, Type) VALUES ('CentroResultados','Nome','TEXT');
-INSERT INTO PLT_VirtualTablesFields (ParentTable, Name, Type) VALUES ('CentroResultados','PermitirCustos','INT');
-INSERT INTO PLT_VirtualTablesFields (ParentTable, Name, Type) VALUES ('CentroResultados','PermitirProveitos','INT');
-
-INSERT INTO PLT_VirtualTables (Name, PrimaryKey) VALUES ('Analitica','["Codigo"]');
-INSERT INTO PLT_VirtualTablesFields (ParentTable, Name, Type) VALUES ('Analitica','Codigo','INT');
-INSERT INTO PLT_VirtualTablesFields (ParentTable, Name, Type) VALUES ('Analitica','Nome','TEXT');
-INSERT INTO PLT_VirtualTablesFields (ParentTable, Name, Type) VALUES ('Analitica','PermitirCustos','INT');
-INSERT INTO PLT_VirtualTablesFields (ParentTable, Name, Type) VALUES ('Analitica','PermitirProveitos','INT');
