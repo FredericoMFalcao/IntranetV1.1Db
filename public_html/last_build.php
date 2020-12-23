@@ -20,6 +20,8 @@
 
 	</head>
 	<body class="container">
+		<h1>Branch: <?=implode("",array_slice(explode("/",__DIR__),-2,1))?></h1>
+	
 		<h2>Links</h2>
 			<ul class="list-group list-group-horizontal">
 				<li class="list-group-item">	<a class="btn btn-default" href="sql_explorer.php">sql explorer</a></li>
