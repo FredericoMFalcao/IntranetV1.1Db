@@ -24,7 +24,7 @@
 	
 		<h2>Links</h2>
 			<ul class="list-group list-group-horizontal">
-				<li class="list-group-item">	<a class="btn btn-default" href="sql_explorer.php">sql explorer</a></li>
+				<li class="list-group-item">	<a class="btn btn-default" href="code_sandbox.php">Code Sandbox</a></li>
 				<li class="list-group-item">	
 					<button class="btn btn-danger" onclick="$(this).find('.ajax-in-progress').show(); $.ajax({url:'',data:{deleteThisBranch:confirm('Are you sure?')},success:function(data){eval(data);}});">
 						<span class="spinner-border spinner-border-sm ajax-in-progress" role="status" style="display:none" ></span>
