@@ -49,13 +49,20 @@ def connectToMariaDBServer ( host, user, password, defaultDb ) :
 # 
 
 MARIADB_ERRORINFO_CODE_FOR_SUCCESS="00000"
-def sql(query, errorInfo = []):
+def sql(query, errorInfo = [], mutli = False):
+   global cnx, isConnected, cursor
    if not isConnected:
       errorInfo.extend([0,0,"Not connected to any database server."])
       return False
    try:
-      cursor.execute(query)
-      return cursor.fetchall()
+      if mutli:
+        gen = cursor.execute(query, multi=True); output = []
+        for g in gen:
+         output.append(g.fetchall() if g.with_rows else None)
+        return output
+      else:
+        cursor.execute(query)
+        return cursor.fetchall()
    except mysql.connector.Error as err:
       errorInfo.extend([err.errno,err.sqlstate,err.msg])
    return False

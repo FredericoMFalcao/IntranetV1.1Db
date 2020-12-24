@@ -13,10 +13,12 @@ function runPythonInterpreter() {
 	$process = proc_open('/usr/bin/python3', $descriptorspec, $pipes, __DIR__, []);
 
 	if (is_resource($process)) {
-	    if (isset($_POST['DBConnection']) && $_POST['DBConnection'])
-		$pythonCode = $pythonDBLib."\n\n".$_POST['pythonCode'];
-	    else
-		$pythonCode = $_POST['pythonCode'];
+	    $pythonCode = "";
+	    // Add necessary LIBs
+	    if (isset($_POST['DBConnection']) && $_POST['DBConnection']) $pythonCode .= $pythonDBLib."\n\n";
+	    if (isset($_POST['importJSON']) && $_POST['importJSON']) $pythonCode .= "\nimport json\n";
+	    // Add Code
+	    $pythonCode .= $_POST['pythonCode'];
 
 	    fwrite($pipes[0], $pythonCode); fclose($pipes[0]);
 	    $pythonRes =  stream_get_contents($pipes[1]); fclose($pipes[1]);
@@ -34,7 +36,7 @@ import json,sys, os
 
 # 1. Connect to Database Server
 #####################
-db_cred = json.loads(''.join(open('./project_root/.db_credentials_rawSql.json', 'r').readlines()))
+db_cred = json.loads(''.join(open('./project_root/.db_credentials.json', 'r').readlines()))
 branch_name = os.path.dirname(os.path.abspath(__file__)).split("/")[-2]
 db_cred["defaultDb"] = "IntranetV2" + ("_"+branch_name if branch_name != "master" else "")
 if not "server" in db_cred or not "user" in db_cred or not "password" in db_cred or not "defaultDb" in db_cred :
@@ -45,6 +47,19 @@ else:
 
 # queryResult = db.sql(get_arguments["q"].value, errorInfo)
 # print(json.dumps(queryResult if queryResult != False else errorInfo))
+EOS;
+
+$PythonPlaceholderCode = <<<EOS
+# Usage (sample):
+# errorInfo = []
+# import json
+# # single query:
+# print(db.sql("SELECT * FROM ACC_Contas"))
+# # multi query:
+# print(db.sql("CALL ACC_ExplorarResultados('"+json.dumps({"Ano":2020,"Visao":"F","Agregador":"CR"})+"')",errorInfo,True))
+
+
+
 EOS;
 
 /*
@@ -58,19 +73,30 @@ if (isset($_POST['pythonCode'])) $pythonRes = runPythonInterpreter();
 <head>
 </head>
 <body>
-	<h2>Python</h2>
+	<h1>Code Sandbox</h1>
+	<ul>
+		<li><a href="#python">Python</a></li>
+		<li><a href="#sql">SQL</a></li>
+	</ul>
+	<hr>
+	<h2 id="python">Python</h2>
 	<form method="POST" action="">
-		<input type="checkbox" checked="checked" name="DBConnection" value="DBConnection" />DB Connection<br>
+		<input type="checkbox" checked="checked" name="DBConnection" value="DBConnection" />DB : db.sql()<br>
+		<input type="checkbox" checked="checked" name="importJSON" value="importJSON" />JSON : json.dump(), json.loads()<br>
 		<hr>
 		<input type="submit" value="Run" /><br>
-		<textarea name="pythonCode" rows="10" cols="120"><?=(isset($_POST['pythonCode'])?$_POST['pythonCode']:"Use: db.sql(...) to run SQL queries")?></textarea>
+		<textarea 
+			name="pythonCode" 
+			rows="10" 
+			cols="120"
+		><?=(isset($_POST['pythonCode'])?$_POST['pythonCode']:$PythonPlaceholderCode)?></textarea>
 	</form>
 	<textarea rows="10" cols="120"><?=(isset($pythonRes)?$pythonRes:"Output will be shown here")?></textarea>
 <br><br>
 
 	<hr>
 	<hr>
-	<h2>SQL </h2>
+	<h2 id="sql">SQL </h2>
 	<form method="GET">
 		<input type="text" name="q" placeholder="sql query here..." ></input>
 		<input type="submit" value="submit" />
