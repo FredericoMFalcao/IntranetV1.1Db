@@ -71,6 +71,11 @@ if (isset($_POST['pythonCode'])) $pythonRes = runPythonInterpreter();
 ?>
 <html>
 <head>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.59.0/lib/codemirror.css">
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.59.0/lib/codemirror.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.59.0/mode/python/python.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.59.0/mode/sql/sql.js"></script>
 </head>
 <body>
 	<h1>Code Sandbox</h1>
@@ -85,7 +90,7 @@ if (isset($_POST['pythonCode'])) $pythonRes = runPythonInterpreter();
 		<input type="checkbox" checked="checked" name="importJSON" value="importJSON" />JSON : json.dump(), json.loads()<br>
 		<hr>
 		<input type="submit" value="Run" /><br>
-		<textarea 
+		<textarea id="pythonCode"
 			name="pythonCode" 
 			rows="10" 
 			cols="120"
@@ -97,13 +102,18 @@ if (isset($_POST['pythonCode'])) $pythonRes = runPythonInterpreter();
 	<hr>
 	<hr>
 	<h2 id="sql">SQL </h2>
-	<form method="GET">
-		<input type="text" name="q" placeholder="sql query here..." ></input>
+	<form method="POST" action="">
+		<textarea id="sqlCode"
+			name="sqlCode" 
+			rows="10" 
+			cols="120"
+		><?=(isset($_POST['sqlCode'])?$_POST['sqlCode']:"")?></textarea>
 		<input type="submit" value="submit" />
 	</form>
 	<hr>
 
-	<?php if (isset($data) && isset($data[0])) : ?>
+	<?php $errorInfo = []; if (isset($_POST['sqlCode'])) $data = sql($_POST['sqlCode'],$errorInfo);  ?>
+	<?php if (isset($data) && $data !== false && isset($data[0])) : ?>
 	<table>
 	<thead>
 		<tr>
@@ -122,9 +132,21 @@ if (isset($_POST['pythonCode'])) $pythonRes = runPythonInterpreter();
 		<?php endforeach; ?>
 	</tbody>
 	</table>
+	<?php elseif(isset($data) && $data === false): ?>
+		<pre><?php print_r($errorInfo); ?></pre>
 	<?php else : ?>
 	Empty result set.
 	<?php endif; ?>
+<script>
+  CodeMirror.fromTextArea(document.getElementById("pythonCode"), {
+    lineNumbers: true,
+    mode       : "python"
+  });
+  CodeMirror.fromTextArea(document.getElementById("sqlCode"), {
+    lineNumbers: true,
+    mode       : "sql"
+  });
+</script>
 </body>
 </html>
 
