@@ -14,22 +14,26 @@ CREATE OR REPLACE PROCEDURE <?=tableNameWithModule()?> (in_Arguments JSON)
 
   BEGIN
   
+    -- Inputs obrigatórios:
     DECLARE in_Agregador TEXT;     -- "CR", "AN", "CO", "FO", "CL", "CR01", "AN0202", "CO123", "FO0000111", "CL001", etc
     DECLARE in_Visao CHAR(1);      -- "F": Faturação, "G": Gestão, "T": Tesouraria
+    -- in_Moeda CHAR(3)
+    
+    -- Inputs exclusivos às visões F e G:
     DECLARE in_Movimento CHAR(1);  -- "C": Custos, "P": Proveitos, "R": Resultados
     DECLARE in_Ano INT;
-    -- in_Moeda CHAR(3)
     
     SET in_Agregador = JSON_VALUE(in_Arguments, '$.Agregador');
     SET in_Visao = JSON_VALUE(in_Arguments, '$.Visao');
-    SET in_Movimento = JSON_VALUE(in_Arguments, '$.Movimento');
-    SET in_Ano = JSON_VALUE(in_Arguments, '$.Ano');
     
     
     -- -------
     -- 1. Visão: F / G (Agregador: CR / AN / CO, Movimento: C / P / R, Ano: 20XX)
     -- -------
     IF in_Visao IN ("F", "G") THEN
+    
+      SET in_Movimento = JSON_VALUE(in_Arguments, '$.Movimento');
+      SET in_Ano = JSON_VALUE(in_Arguments, '$.Ano');
   
       SELECT
         CASE
@@ -56,7 +60,7 @@ CREATE OR REPLACE PROCEDURE <?=tableNameWithModule()?> (in_Arguments JSON)
       
       
     -- -------
-    -- 2. Visão: T (Agregador: FO / CL, Movimento: -, Ano: -)
+    -- 2. Visão: T (Agregador: FO / CL)
     -- -------
     ELSEIF in_Visao = "T" THEN
     
