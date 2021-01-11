@@ -1,6 +1,22 @@
 <VirtualHost *:443>
 	ServerAdmin webmaster@localhost
 	DocumentRoot <?=getcwd()?>/public_html
+	
+	# Map /sql to single PHP script
+	<Location "/sql">
+		RewriteEngine On
+		RewriteBase /
+		RewriteRule ^sql\.php$ – [L] 
+		RewriteCond %{REQUEST_FILENAME} !-f 
+		RewriteCond %{REQUEST_FILENAME} !-d 
+		RewriteRule . sql.php [L] 
+	</Location>
+
+	# Map file requests to proper folder
+	Alias "/FileAccess" "/ExtraSpace/Dropbox/IntranetV2_Files"
+	<Directory "/ExtraSpace/Dropbox/IntranetV2_Files">
+		Require all granted
+	</Directory>
 
 	# Enable BASH scripts
 	<Directory "<?=getcwd()?>">
