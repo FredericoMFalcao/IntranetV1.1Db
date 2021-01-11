@@ -5,7 +5,7 @@
 DROP VIEW IF EXISTS VIW_FF_PorClassificarFornecedor;
 
 CREATE VIEW VIW_FF_PorClassificarFornecedor AS
-SELECT FileId
+SELECT Id, FileId
 FROM <?=tableNameWithModule("Documentos","DOC")?> 
 WHERE Tipo = 'FaturaFornecedor'
   AND Estado = 'PorClassificarFornecedor'
