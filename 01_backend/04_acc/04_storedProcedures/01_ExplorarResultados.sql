@@ -21,7 +21,9 @@ CREATE OR REPLACE PROCEDURE <?=tableNameWithModule()?> (in_Arguments JSON)
     
     -- Inputs exclusivos às visões F e G:
     DECLARE in_Movimento CHAR(1);  -- "C": Custos, "P": Proveitos, "R": Resultados
-    DECLARE in_Ano INT;
+    DECLARE in_Periodo INT;        -- e.g. 2018 (ano completo 2018), 201802201806 (entre Fev e Jun de 2018)
+    DECLARE v_AnoMesInicio INT;
+    DECLARE v_AnoMesFim INT;
     
     SET in_Agregador = JSON_VALUE(in_Arguments, '$.Agregador');
     SET in_Visao = JSON_VALUE(in_Arguments, '$.Visao');
@@ -33,7 +35,14 @@ CREATE OR REPLACE PROCEDURE <?=tableNameWithModule()?> (in_Arguments JSON)
     IF in_Visao IN ("F", "G") THEN
     
       SET in_Movimento = JSON_VALUE(in_Arguments, '$.Movimento');
-      SET in_Ano = JSON_VALUE(in_Arguments, '$.Ano');
+      SET in_Periodo = JSON_VALUE(in_Arguments, '$.Periodo');
+      IF LENGTH(in_Periodo) = 4 THEN
+        SET v_AnoMesInicio = (in_Periodo * 100) + 1;
+        SET v_AnoMesFim = (in_Periodo * 100) + 12;
+      ELSEIF LENGTH(in_Periodo) = 12 THEN
+        SET v_AnoMesInicio = LEFT(in_Periodo, 6);
+        SET v_AnoMesFim = RIGHT(in_Periodo, 6);
+      END IF;
   
       SELECT
         CASE
@@ -43,7 +52,7 @@ CREATE OR REPLACE PROCEDURE <?=tableNameWithModule()?> (in_Arguments JSON)
         CASE in_Visao
           WHEN "F" THEN EXTRACT(YEAR_MONTH FROM JSON_VALUE(b.Extra, '$.DataFatura'))
           WHEN "G" THEN EXTRACT(YEAR_MONTH FROM a.Mes)
-        END AS Periodo,
+        END AS AnoMes,
         CAST(SUM(a.CoefRateio * ACC_FaturaValorTotal(b.Extra)) AS DECIMAL(18, 2)) AS Valor
       FROM <?=tableNameWithModule("Lancamentos")?> AS a
         LEFT JOIN <?=tableNameWithModule("Documentos","DOC")?> AS b ON a.DocNumSerie = b.NumSerie
@@ -52,11 +61,12 @@ CREATE OR REPLACE PROCEDURE <?=tableNameWithModule()?> (in_Arguments JSON)
           WHEN in_Movimento = "C" THEN a.CoefRateio < 0
           WHEN in_Movimento = "P" THEN a.CoefRateio > 0
         ELSE 1 END
-      GROUP BY Agregador, Periodo
+      GROUP BY Agregador, AnoMes
       HAVING 
-        LEFT(Periodo, 4) = in_Ano AND
+        AnoMes >= v_AnoMesInicio AND
+        AnoMes <= v_AnoMesFim AND
         LEFT(Agregador, LENGTH(in_Agregador)) = in_Agregador
-      ORDER BY Agregador, Periodo;
+      ORDER BY Agregador, AnoMes;
       
       
     -- -------
