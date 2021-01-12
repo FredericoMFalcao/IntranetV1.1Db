@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__."/_tests_lib.php";
+/* require_once __DIR__."/_tests_lib.php";
 
 
 (new TestSuite("Faturas Fornecedor"))
