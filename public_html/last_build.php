@@ -1,5 +1,5 @@
 <?php if ($_GET['createNewBranchWithName']??false) {$output = json_encode(shell_exec(__DIR__."/../../fork.sh ".$_GET['createNewBranchWithName']) ?? "success"); die("$('.ajax-in-progress').hide();alert('{$_GET['createNewBranchWithName']} branch created ($output)}');");} ?>
-<?php if ($_GET['deleteThisBranch']??false)        {$output = json_encode(shell_exec(__DIR__."/../../deleteThisBranch.sh ") ?? "success"); die("$('.ajax-in-progress').hide();alert('Branch deleted ($output)}');");} ?>
+<?php //if ($_GET['deleteThisBranch']??false)        {$output = json_encode(shell_exec(__DIR__."/../../deleteThisBranch.sh ".explode(".",$_SERVER['HTTP_HOST'])[0] ?? "success"); die("$('.ajax-in-progress').hide();alert('Branch deleted ($output)}');");} ?>
 <?php if ($_GET['forceCodeDeployment']??false)     {$output = json_encode(shell_exec("FORCE_DEPLOY=1 ".__DIR__."/../deploy_code.sh ") ?? "success"); die("$('.ajax-in-progress').hide();alert('Success! ($output)}');");} ?>
 
 <html>

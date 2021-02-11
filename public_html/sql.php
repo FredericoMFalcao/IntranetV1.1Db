@@ -1,5 +1,11 @@
 <?php require_once __DIR__."/../db_support_functions.php"; 
 
+//
+// 1. DRIVER : converts HTTP queries to SQL Stored Procedure Calls
+//
+
+// 1.1 Checks if stored procedure exists
+// 1.2 Checks which arguments are required
 
 $url = $_SERVER['REQUEST_URI'];
 $url = str_replace("?".$_SERVER['QUERY_STRING'],"", $url);
